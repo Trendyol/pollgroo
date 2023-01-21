@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from 'ui';
+import { Button, DummyMolecule, DummyOrganism } from 'ui';
 
 export default function HomePage() {
   const onClickHandler = () => console.log('Button clicked');
@@ -7,7 +7,18 @@ export default function HomePage() {
   return (
     <div>
       <h1>Home Page</h1>
-      <Button onClick={onClickHandler} />
+      <div>
+        <span>from atoms</span>
+        <Button onClick={onClickHandler} />
+      </div>
+      <div>
+        <span>from molecules</span>
+        <DummyMolecule />
+      </div>
+      <div>
+        <span>from organisms</span>
+        <DummyOrganism />
+      </div>
       <nav>
         <Link href="/about">About</Link>
       </nav>
