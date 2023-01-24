@@ -7,7 +7,7 @@ export interface ButtonProps {
 
 export const Button = ({ text, onClick }: ButtonProps) => {
   return (
-    <button className="text-3xl" onClick={() => onClick()}>
+    <button className="text-3xl text-blue-700" onClick={() => onClick()}>
       {text || 'Simple Button'}
     </button>
   );
