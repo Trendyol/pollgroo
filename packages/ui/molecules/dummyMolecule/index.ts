@@ -1,1 +1,0 @@
-export { DummyMolecule } from './dummyMolecule';

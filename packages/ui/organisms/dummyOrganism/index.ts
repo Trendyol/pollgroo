@@ -1,1 +1,0 @@
-export { DummyOrganism } from "./dummyOrganism";
