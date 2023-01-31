@@ -10,8 +10,9 @@
     "lint": "next lint",
     "cypress": "cypress open",
     "cypress:headless": "cypress run",
+    "playwright": "playwright test",
     "e2e": "start-server-and-test dev http://localhost:3000 cypress",
-    "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless"
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 playwright"
   },
   "dependencies": {
     "next": "^13.1.1",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@playwright/test": "^1.29.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.2.5",
