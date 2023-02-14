@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Button } from '@/button';
+import { Button } from '@/atoms/button';
 
 describe('Render the button', () => {
   const onClickHandler = jest.fn();
