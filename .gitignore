@@ -35,3 +35,6 @@ yarn-error.log*
 
 #IDE
 .idea
+
+#storybook
+storybook-static
