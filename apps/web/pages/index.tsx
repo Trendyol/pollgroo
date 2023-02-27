@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from 'ui';
+import { Button, Typography } from 'ui';
 
 export default function HomePage() {
   const onClickHandler = () => console.log('Button clicked');
@@ -11,6 +11,12 @@ export default function HomePage() {
       <nav>
         <Link href="/about">About</Link>
       </nav>
+      <Typography className="text-center lg:text-left" size="xxl" element="h1" color="primary" data-testid="ali">
+        <span>test</span>
+      </Typography>
+      <Typography className="text-center lg:text-left" size="xxs" element="p" color="primary">
+        test2
+      </Typography>
     </div>
   );
 }
