@@ -2,7 +2,16 @@
 module.exports = {
   content: ['./*/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "primary": "#0038FF",
+      }
+    },
   },
   plugins: [],
+  safelist: [
+    {
+      pattern: /(text)-(primary)/,
+    },
+  ],
 };
