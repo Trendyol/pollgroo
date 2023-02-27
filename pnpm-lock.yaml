@@ -49,6 +49,7 @@ importers:
       jest-presets: workspace:*
       next: ^13.1.1
       postcss: ^8.4.21
+      postcss-loader: ^7.0.2
       react: ^18.2.0
       react-dom: ^18.2.0
       start-server-and-test: ^1.15.2
@@ -88,6 +89,7 @@ importers:
       jest: 29.3.1_@types+node@17.0.45
       jest-presets: link:../../packages/jest-presets
       postcss: 8.4.21
+      postcss-loader: 7.0.2_6jdsrmfenkuhhw3gx4zvjlznce
       start-server-and-test: 1.15.2
       tailwindcss: 3.2.4_postcss@8.4.21
       tsconfig: link:../../packages/tsconfig
@@ -11825,6 +11827,20 @@ packages:
       schema-utils: 3.1.1
       semver: 7.3.8
       webpack: 4.46.0
+    dev: true
+
+  /postcss-loader/7.0.2_6jdsrmfenkuhhw3gx4zvjlznce:
+    resolution: {integrity: sha512-fUJzV/QH7NXUAqV8dWJ9Lg4aTkDCezpTS5HgJ2DvqznexTbSTxgi/dTECvTZ15BwKTtk8G/bqI/QTu2HPd3ZCg==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      postcss: ^7.0.0 || ^8.0.1
+      webpack: ^5.0.0
+    dependencies:
+      cosmiconfig: 7.1.0
+      klona: 2.0.6
+      postcss: 8.4.21
+      semver: 7.3.8
+      webpack: 5.75.0
     dev: true
 
   /postcss-modules-extract-imports/2.0.0:
