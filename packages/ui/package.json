@@ -29,5 +29,8 @@
     "tailwindcss": "^3.2.4",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "classnames": "2.3.2"
   }
 }
