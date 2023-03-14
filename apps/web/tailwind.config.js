@@ -8,14 +8,31 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0038FF'
+        primary: '#0038FF',
+        secondary: '#1D2939',
+        lightgray: '#D0D5DD'
+      },
+      animation: {
+        gradient: 'gradient 1s ease infinite',
+      },
+      keyframes: {
+        gradient: {
+          '0%, 100%': {
+            'background-size': '400% 400%',
+            'background-position': 'center center',
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'center center',
+          },
+        },
       },
     },
   },
   plugins: [],
   safelist: [
     {
-      pattern: /(text)-(primary)/,
+      pattern: /(text|bg)/,
     },
   ],
 };

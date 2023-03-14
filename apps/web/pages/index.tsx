@@ -1,22 +1,23 @@
-import Link from 'next/link';
-import { Button, Typography } from 'ui';
+import { Typography } from '@/../../packages/ui';
+import translate from '@/translations/translate';
+import Image from 'next/image';
 
 export default function HomePage() {
-  const onClickHandler = () => console.log('Button clicked');
-
   return (
-    <div>
-      <h1 className="text-3xl text-red-700">Home Page</h1>
-      <Button onClick={onClickHandler} />
-      <nav>
-        <Link href="/about">About</Link>
-      </nav>
-      <Typography className="text-center lg:text-left" size="xxl" element="h1" color="primary" data-testid="ali">
-        <span>test</span>
-      </Typography>
-      <Typography className="text-center lg:text-left" size="xxs" element="p" color="primary">
-        test2
-      </Typography>
-    </div>
+    <main className="h-screen flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center gap-y-8">
+        <Image className="lg:w-56" src="/logo/pollgroo.svg" alt="POLLGROO" width="160" height="160" priority={true} />
+        <Typography size="xxs" color="lightgray" element="p">
+          {translate('LANDING_DESCRIPTION')}
+        </Typography>
+        <Typography
+          element="h1"
+          size="xxl"
+          className="p-2 font-bold leading-15 text-center bg-gradient-to-r from-blue-300 via-teal-800 to-blue-300 bg-clip-text animate-gradient text-transparent"
+        >
+          {translate('LANDING_GREETING')}
+        </Typography>
+      </div>
+    </main>
   );
 }

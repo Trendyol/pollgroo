@@ -6,7 +6,7 @@ describe('Home page', () => {
     render(<Home />);
 
     const heading = screen.getByRole('heading', {
-      name: 'Home Page',
+      name: 'Coming Soon',
     });
 
     expect(heading).toBeInTheDocument();
