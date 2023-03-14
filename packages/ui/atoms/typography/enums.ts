@@ -1,14 +1,15 @@
 export enum TextSize {
     base = "text-base",
-    xxs = "text-sm lg:text-2xl",
+    xxs = "text-sm lg:text-xl",
     xs = "",
     md = "",
     lg = "",
     xl = "",
-    xxl = "text-3xl lg:text-6xl"
+    xxl = "text-5xl lg:text-7xl"
 }
 
 export enum TextColor {
     primary = "text-primary",
-    default = "text-black"
+    default = "",
+    lightgray = "text-lightgray"
 }
