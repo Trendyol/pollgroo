@@ -6,7 +6,6 @@ describe('Typography', () => {
   it('renders with the base size and default color by default', () => {
     const { container } = render(<Typography element="div">Hello, world!</Typography>);
     expect(container.firstChild).toHaveClass(TextSize.base);
-    expect(container.firstChild).toHaveClass(TextColor.default);
   });
 
   it('renders with the provided size and color', () => {

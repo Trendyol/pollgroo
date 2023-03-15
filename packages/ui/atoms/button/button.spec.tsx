@@ -12,7 +12,7 @@ describe('Render the button', () => {
   it('should render with default props', async () => {
     const buttonText = 'Simple Button';
 
-    render(<Button onClick={onClickHandler} />);
+    render(<Button onClick={onClickHandler}>{buttonText}</Button>);
 
     const button = screen.getByText(buttonText);
     expect(button).toBeInTheDocument();
@@ -21,10 +21,28 @@ describe('Render the button', () => {
   it('should render with custom text', async () => {
     const buttonText = 'Button Text';
 
-    render(<Button text={buttonText} onClick={onClickHandler} />);
+    render(<Button onClick={onClickHandler}>{buttonText}</Button>);
 
     const button = screen.getByText(buttonText);
     expect(button).toBeInTheDocument();
+  });
+});
+
+describe('Render the button with variant', () => {
+  const onClickHandler = jest.fn();
+
+  afterEach(() => {
+    onClickHandler.mockClear();
+  });
+
+  it('should render with default props', async () => {
+    const buttonText = 'Simple Button';
+
+    render(<Button onClick={onClickHandler} variant="primary">{buttonText}</Button>);
+
+    const button = screen.getByText(buttonText);
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveClass("bg-primary");
   });
 });
 
@@ -36,7 +54,8 @@ describe('Click the button', () => {
   });
 
   it('should called click handler once', async () => {
-    render(<Button onClick={onClickHandler} />);
+    const buttonText = 'Simple Button';
+    render(<Button onClick={onClickHandler}>{buttonText}</Button>);
 
     const button = screen.getByText('Simple Button');
     await userEvent.click(button);
@@ -45,7 +64,8 @@ describe('Click the button', () => {
   });
 
   it('should called click handler 3 times', async () => {
-    render(<Button onClick={onClickHandler} />);
+    const buttonText = 'Simple Button';
+    render(<Button onClick={onClickHandler}>{buttonText}</Button>);
 
     const button = screen.getByText('Simple Button');
     await userEvent.click(button);

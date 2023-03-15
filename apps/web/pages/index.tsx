@@ -1,4 +1,6 @@
-import { Typography } from '@/../../packages/ui';
+import { Input, Typography } from '@/../../packages/ui';
+import { LabeledInput } from '@/../../packages/ui';
+
 import translate from '@/translations/translate';
 import Image from 'next/image';
 
