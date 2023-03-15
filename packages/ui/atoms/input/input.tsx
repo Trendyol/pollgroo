@@ -10,6 +10,7 @@ export interface IProps extends InputProps {
   props?: any;
   error?: boolean;
   errorMessage?: string;
+  children?: string | JSX.Element;
 }
 
 export const Input = ({ className, error, errorMessage, fluid = false, ...props }: IProps) => {

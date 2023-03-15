@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ButtonVariant } from './enums';
 
 export interface IProps {
-  children: React.ReactNode;
+  children: string | JSX.Element;
   variant?: keyof typeof ButtonVariant;
   className?: string;
   onClick?: () => void;
