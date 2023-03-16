@@ -8,9 +8,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0038FF',
+        primary: '#0066FF',
         secondary: '#1D2939',
-        lightgray: '#D0D5DD'
+        lightgray: '#D0D5DD',
+        bordergray: '#EAECF0',
+        labelgray: '#98A2B3',
+        black: '#101828',
+        lightred: '#FFEBEB',
+        red: '#DC2626'
       },
       animation: {
         gradient: 'gradient 1s ease infinite',

@@ -9,9 +9,9 @@ export default {
 
 const Template: ComponentStory<typeof Typography> = (args) => <Typography {...args}>{args.children}</Typography>;
 
-export const Primary = Template.bind({});
+export const Default = Template.bind({});
 
-Primary.args = {
+Default.args = {
   children: "This is a example typography text",
   element: "h1"
 };

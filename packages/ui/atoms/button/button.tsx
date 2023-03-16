@@ -1,14 +1,21 @@
-import * as React from 'react';
+import React from 'react';
+import classNames from 'classnames';
+import { ButtonVariant } from './enums';
 
-export interface ButtonProps {
-  text?: string;
-  onClick: () => void;
+export interface IProps {
+  children: string | JSX.Element;
+  variant?: keyof typeof ButtonVariant;
+  className?: string;
+  onClick?: () => void;
+  fluid?: boolean;
 }
 
-export const Button = ({ text, onClick }: ButtonProps) => {
+export const Button = ({ children, variant = 'primary', className, onClick, fluid = false }: IProps) => {
+  const buttonClasses = classNames(ButtonVariant[variant], 'rounded-lg', { 'w-full': fluid }, className);
+
   return (
-    <button className="text-3xl text-blue-700" onClick={() => onClick()}>
-      {text || 'Simple Button'}
+    <button className={buttonClasses} onClick={onClick}>
+      {children}
     </button>
   );
 };
