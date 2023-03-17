@@ -1,5 +1,5 @@
-import { Button } from 'ui';
 import React from 'react';
+import { Button } from 'ui';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {

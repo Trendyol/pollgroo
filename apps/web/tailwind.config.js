@@ -12,11 +12,13 @@ module.exports = {
         secondary: '#1D2939',
         lightgray: '#D0D5DD',
         bordergray: '#EAECF0',
+        silver: '#667085',
         labelgray: '#98A2B3',
         gray: '#98A2B3',
         black: '#101828',
         lightred: '#FFEBEB',
-        red: '#DC2626'
+        red: '#DC2626',
+        lightblue: '#F3F5F9'
       },
       animation: {
         gradient: 'gradient 1s ease infinite',
