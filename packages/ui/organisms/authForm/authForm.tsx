@@ -3,9 +3,10 @@ import { Button, Link, Typography } from '../../atoms';
 import { LabeledInput } from '../../molecules';
 import { ButtonText, DescriptionText, FooterText, HeaderText, LinkPage, LinkText } from './enums';
 // import { useForm, Controller } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+// import { yupResolver } from '@hookform/resolvers/yup';
 
 interface FormValues {
   fullname?: string;
@@ -21,15 +22,11 @@ export interface IProps {
 }
 
 export const AuthForm = ({ type, onSubmit }: IProps) => {
-  // const schema = yup.object().shape({
-  //   email: yup.string().email().required(),
-  //   ...(type === 'login' || type === 'register' ? { password: yup.string().required() } : {}),
-  //   ...(type === 'register' ? { fullname: yup.string().required() } : {}),
-  // });
-
-  console.log("YUP --->", yup);
-  console.log("useForm --->", useForm);
-  console.log("yupResolver --->", yupResolver);
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    ...(type === 'login' || type === 'register' ? { password: yup.string().required() } : {}),
+    ...(type === 'register' ? { fullname: yup.string().required() } : {}),
+  });
 
   // const {
   //   control,
@@ -41,6 +38,20 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
   //   resolver: yupResolver(schema),
   // });
 
+  const formik = useFormik<FormValues>({
+    initialValues: {
+      email: '',
+      password: '',
+      fullname: '',
+    },
+    validationSchema: schema,
+    onSubmit: (values) => {
+      console.log(values);
+      onSubmit(values);
+    },
+  });
+
+  const { touched, handleBlur } = formik;
 
   // const submitHandler = (data: FormValues) => {
   //   console.log(data);
@@ -56,27 +67,45 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
   // };
 
   const renderInput = (name: InputName, label: string, type: string) => {
+    // return (
+    //   <Controller
+    //     name={name}
+    //     control={control}
+    //     defaultValue=""
+    //     render={({ field }) => (
+    //       <LabeledInput
+    //         className="w-full"
+    //         label={label}
+    //         name={name}
+    //         type={type}
+    //         value={field.value}
+    //         onChange={field.onChange}
+    //         onBlur={() => handleBlur(name)}
+    //         onFocus={() => handleFocus(name)}
+    //         error={!!errors[name]?.message}
+    //         errorMessage={errors[name]?.message}
+    //         fluid
+    //       />
+    //     )}
+    //   />
+    // );
+
     return (
-      // <Controller
-      //   name={name}
-      //   control={control}
-      //   defaultValue=""
-      //   render={({ field }) => (
-          <LabeledInput
-            className="w-full"
-            label={label}
-            name={name}
-            type={type}
-            // value={field.value}
-            // onChange={field.onChange}
-            // onBlur={() => handleBlur(name)}
-            // onFocus={() => handleFocus(name)}
-            // error={!!errors[name]?.message}
-            // errorMessage={errors[name]?.message}
-            fluid
-          />
-        // )}
-      // />
+      <LabeledInput
+        className="w-full"
+        label={label}
+        name={name}
+        type={type}
+        value={formik.values[name]}
+        onChange={formik.handleChange}
+        onBlur={(e) => {
+          handleBlur(e);
+          formik.setFieldTouched(name, true, false);
+        }}
+        error={touched[name] && !!formik.errors[name]}
+        errorMessage={touched[name] ? formik.errors[name] : ''}
+        fluid
+      />
     );
   };
 
@@ -104,7 +133,9 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
 
   return (
     <section id="authForm" className="h-full p-4 flex flex-col justify-between lg:flex-1">
-      <form className="flex flex-col h-full items-center gap-y-8" > {/*onSubmit={handleSubmit(submitHandler)}*/}
+      <form className="flex flex-col h-full items-center gap-y-8" onSubmit={formik.handleSubmit}>
+        {' '}
+        {/*onSubmit={handleSubmit(submitHandler)}*/}
         <div className="w-full">
           <Typography className="font-bold text-black" element="h4" size="xl">
             {HeaderText[type]}
