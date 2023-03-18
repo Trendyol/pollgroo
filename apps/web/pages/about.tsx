@@ -1,13 +1,5 @@
-import { Typography } from "@/../../packages/ui";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
+import { AuthPage, Typography } from 'ui';
 
 export default function AboutPage() {
-  console.log(yup, useForm);
-  return (
-    <div>
-      <h1>About Page</h1>
-      <Typography size="xl" element="p">sd</Typography>
-    </div>
-  );
+  return <AuthPage logoUrl="/sads" type="login" onSubmit={() => console.log('sa')} />;
 }
