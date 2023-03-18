@@ -7,11 +7,14 @@ module.exports = {
         primary: '#0066FF',
         secondary: '#1D2939',
         lightgray: '#D0D5DD',
+        silver: '#667085',
         bordergray: '#EAECF0',
         labelgray: '#98A2B3',
+        gray: '#98A2B3',
         black: '#101828',
         lightred: '#FFEBEB',
-        red: '#DC2626'
+        red: '#DC2626',
+        lightblue: '#F3F5F9'
       },
     },
   },

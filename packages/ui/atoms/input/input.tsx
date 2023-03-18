@@ -30,10 +30,10 @@ export const Input = ({ className, error, errorMessage, fluid = false, ...props 
   );
 
   return (
-    <div>
+    <div className='relative'>
       <input className={inputClassName} {...props} />
       {errorMessage && (
-        <Typography className="py-1" element="p" color="red" size='xxs'>
+        <Typography className="py-1 absolute" element="p" color="red" size='xxs'>
           {errorMessage}
         </Typography>
       )}
