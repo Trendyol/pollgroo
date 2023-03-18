@@ -28,7 +28,7 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
   // });
 
   console.log("YUP --->", yup);
-  console.log("useForm --->", useForm());
+  console.log("useForm --->", useForm);
   console.log("yupResolver --->", yupResolver);
 
   // const {
