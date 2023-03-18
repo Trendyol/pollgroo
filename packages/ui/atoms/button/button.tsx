@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { ButtonVariant } from './enums';
+import { useForm } from 'react-hook-form';
 
 export interface IProps {
   children: string | JSX.Element;
@@ -11,6 +12,7 @@ export interface IProps {
 }
 
 export const Button = ({ children, variant = 'primary', className, onClick, fluid = false }: IProps) => {
+  console.log(useForm());
   const buttonClasses = classNames(ButtonVariant[variant], 'rounded-lg', { 'w-full': fluid }, className);
 
   return (
