@@ -21,23 +21,23 @@ export interface IProps {
 }
 
 export const AuthForm = ({ type, onSubmit }: IProps) => {
-  // const schema = yup.object().shape({
-  //   email: yup.string().email().required(),
-  //   ...(type === 'login' || type === 'register' ? { password: yup.string().required() } : {}),
-  //   ...(type === 'register' ? { fullname: yup.string().required() } : {}),
-  // });
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    ...(type === 'login' || type === 'register' ? { password: yup.string().required() } : {}),
+    ...(type === 'register' ? { fullname: yup.string().required() } : {}),
+  });
 
   console.log(yup, useForm, yupResolver);
 
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   formState: { errors }
-  //   trigger,
-  //   clearErrors,
-  // } = useForm<FormValues>({
-  //   resolver: yupResolver(schema),
-  // });
+  const {
+    // control,
+    // handleSubmit,
+    formState: { errors },
+    trigger,
+    clearErrors
+  } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+  });
 
 
   // const submitHandler = (data: FormValues) => {
@@ -45,13 +45,13 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
   //   onSubmit(data);
   // };
 
-  // const handleBlur = (fieldName: InputName) => {
-  //   trigger(fieldName);
-  // };
+  const handleBlur = (fieldName: InputName) => {
+    trigger(fieldName);
+  };
 
-  // const handleFocus = (fieldName: InputName) => {
-  //   clearErrors(fieldName);
-  // };
+  const handleFocus = (fieldName: InputName) => {
+    clearErrors(fieldName);
+  };
 
   const renderInput = (name: InputName, label: string, type: string) => {
     return (
@@ -67,10 +67,10 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
             type={type}
             // value={field.value}
             // onChange={field.onChange}
-            // onBlur={() => handleBlur(name)}
-            // onFocus={() => handleFocus(name)}
-            // error={!!errors[name]?.message}
-            // errorMessage={errors[name]?.message}
+            onBlur={() => handleBlur(name)}
+            onFocus={() => handleFocus(name)}
+            error={!!errors[name]?.message}
+            errorMessage={errors[name]?.message}
             fluid
           />
         // )}
