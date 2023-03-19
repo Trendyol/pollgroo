@@ -5,7 +5,7 @@ import { AuthForm } from '@/../../packages/ui';
 
 export default function AboutPage() {
   console.log('useForm --->', useForm);
-  console.log('useFormik --->', useFormik);
+  console.log('useFormik --->', useFormik({} as any));
   return (
     <div>
       <h1>About Page</h1>
