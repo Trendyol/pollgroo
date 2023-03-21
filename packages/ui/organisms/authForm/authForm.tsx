@@ -38,7 +38,6 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
 
 
   const submitHandler = (data: FormValues) => {
-    console.log(data);
     onSubmit(data);
   };
 
