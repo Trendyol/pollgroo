@@ -1,7 +1,5 @@
-import { Input, Typography } from '@/../../packages/ui';
-import { LabeledInput } from '@/../../packages/ui';
-
-import translate from '@/translations/translate';
+import { Typography } from '@/../../packages/ui';
+import translate from 'translations';
 import Image from 'next/image';
 
 export default function HomePage() {

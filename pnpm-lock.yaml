@@ -55,6 +55,7 @@ importers:
       react-dom: ^18.2.0
       start-server-and-test: ^1.15.2
       tailwindcss: ^3.2.4
+      translations: workspace:*
       tsconfig: workspace:*
       typescript: ^4.5.3
       ui: workspace:*
@@ -94,6 +95,7 @@ importers:
       postcss-loader: 7.0.2_6jdsrmfenkuhhw3gx4zvjlznce
       start-server-and-test: 1.15.2
       tailwindcss: 3.2.4_postcss@8.4.21
+      translations: link:../../packages/translations
       tsconfig: link:../../packages/tsconfig
       typescript: 4.9.4
 
@@ -116,6 +118,9 @@ importers:
       ts-jest: 29.0.5_p6ekqnroyms5nhqbfxosryz7rm
 
   packages/prettier-config:
+    specifiers: {}
+
+  packages/translations:
     specifiers: {}
 
   packages/tsconfig:
@@ -143,6 +148,7 @@ importers:
       react-dom: ^18.2.0
       react-hook-form: ^7.43.7
       tailwindcss: ^3.2.4
+      translations: workspace:*
       tsconfig: workspace:*
       typescript: ^4.5.2
       yup: ^1.0.2
@@ -168,6 +174,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.43.7_react@18.2.0
       tailwindcss: 3.2.4_postcss@8.4.21
+      translations: link:../translations
       tsconfig: link:../tsconfig
       typescript: 4.9.4
       yup: 1.0.2

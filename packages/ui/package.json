@@ -29,6 +29,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.7",
     "tailwindcss": "^3.2.4",
+    "translations": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2",
     "yup": "^1.0.2"

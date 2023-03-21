@@ -5,6 +5,7 @@ import { ButtonText, DescriptionText, FooterText, HeaderText, LinkPage, LinkText
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import translate from "translations";
 
 interface FormValues {
   fullname?: string;
@@ -122,7 +123,7 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
       </Typography>
       {type === 'login' && (
         <Link className="text-center" href="/forgot-password" color="primary">
-          Forgot your password ?
+          {translate("FORGOT_YOUR_PASSWORD")}
         </Link>
       )}
     </section>
