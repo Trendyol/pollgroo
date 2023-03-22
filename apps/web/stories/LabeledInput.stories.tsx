@@ -1,5 +1,5 @@
-import { LabeledInput } from 'ui';
 import React from 'react';
+import { LabeledInput } from 'ui';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {
