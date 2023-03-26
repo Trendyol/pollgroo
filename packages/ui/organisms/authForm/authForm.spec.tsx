@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { AuthForm } from '@/organisms';
 
 describe('<AuthForm /> specs', () => {
@@ -139,8 +139,10 @@ describe('<AuthForm /> specs', () => {
     render(<AuthForm type="forgotPassword" onSubmit={onSubmit} />);
 
     const emailInput = screen.getByLabelText('Email');
-    emailInput.focus();
-    emailInput.blur();
+    await act(async () => {
+      emailInput.focus();
+      emailInput.blur();
+    })
 
     await waitFor(() =>
       expect(

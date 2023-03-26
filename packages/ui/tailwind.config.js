@@ -11,9 +11,11 @@ module.exports = {
         bordergray: '#EAECF0',
         labelgray: '#98A2B3',
         gray: '#98A2B3',
+        darkgray: '#344054',
         black: '#101828',
         lightred: '#FFEBEB',
         red: '#DC2626',
+        blue: '#BAD1FE',
         lightblue: '#F3F5F9'
       },
     },
@@ -21,7 +23,7 @@ module.exports = {
   plugins: [],
   safelist: [
     {
-      pattern: /(text|bg)/,
+      pattern: /(text|bg|border)/,
     },
   ],
 };
