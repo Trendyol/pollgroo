@@ -3,12 +3,10 @@ import Home from '@/pages/index';
 
 describe('Home page', () => {
   it('should render heading', () => {
+    // act
     render(<Home />);
 
-    const heading = screen.getByRole('heading', {
-      name: 'Coming Soon',
-    });
-
-    expect(heading).toBeInTheDocument();
+    // assert
+    expect(screen.getByText('A new perspective on driving business')).toBeInTheDocument();
   });
 });

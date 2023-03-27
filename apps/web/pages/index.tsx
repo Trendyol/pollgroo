@@ -10,13 +10,6 @@ export default function HomePage() {
         <Typography size="xxs" color="lightgray" element="p">
           {translate('LANDING_DESCRIPTION')}
         </Typography>
-        <Typography
-          element="h1"
-          size="xxl"
-          className="p-2 font-bold leading-15 text-center bg-gradient-to-r from-blue-300 via-teal-800 to-blue-300 bg-clip-text animate-gradient text-transparent"
-        >
-          {translate('LANDING_GREETING')}
-        </Typography>
       </div>
     </main>
   );

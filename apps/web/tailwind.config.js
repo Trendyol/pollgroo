@@ -22,21 +22,6 @@ module.exports = {
         blue: '#BAD1FE',
         lightblue: '#F3F5F9'
       },
-      animation: {
-        gradient: 'gradient 1s ease infinite',
-      },
-      keyframes: {
-        gradient: {
-          '0%, 100%': {
-            'background-size': '400% 400%',
-            'background-position': 'center center',
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'center center',
-          },
-        },
-      },
     },
   },
   plugins: [],
