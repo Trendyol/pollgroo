@@ -11,9 +11,6 @@ const App = ({ Component, pageProps }: AppProps) => {
         html {
           font-family: ${inter.style.fontFamily};
         }
-        body {
-          background: ${"#1D2939"};
-        }
       `}</style>
       <Component {...pageProps} />
     </>

@@ -15,32 +15,19 @@ module.exports = {
         silver: '#667085',
         labelgray: '#98A2B3',
         gray: '#98A2B3',
+        darkgray: '#344054',
         black: '#101828',
         lightred: '#FFEBEB',
         red: '#DC2626',
+        blue: '#BAD1FE',
         lightblue: '#F3F5F9'
-      },
-      animation: {
-        gradient: 'gradient 1s ease infinite',
-      },
-      keyframes: {
-        gradient: {
-          '0%, 100%': {
-            'background-size': '400% 400%',
-            'background-position': 'center center',
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'center center',
-          },
-        },
       },
     },
   },
   plugins: [],
   safelist: [
     {
-      pattern: /(text|bg)/,
+      pattern: /(text|bg|border)/,
     },
   ],
 };
