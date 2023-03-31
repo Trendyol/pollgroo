@@ -10,7 +10,7 @@ export const DashboardPage = ({ logoUrl }: any) => {
 
       <main className="w-full">
         <SubNavigation subNavigationText="Dashboard" />
-ü      </main>
+      </main>
     </div>
   );
 };
