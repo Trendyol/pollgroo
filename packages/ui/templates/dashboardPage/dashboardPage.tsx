@@ -1,13 +1,16 @@
 import React from 'react';
-import { Navigation } from '../../organisms';
+import { Navigation, SubNavigation } from '../../organisms';
 
 export const DashboardPage = ({ logoUrl }: any) => {
   return (
-    <div>
-      <header>
-        <Navigation logoUrl={logoUrl}/>
-      </header>
-      <main className="py-16 lg:pl-72 lg:py-0">Dashboard</main>
+    <div className="flex flex-col lg:flex-row">
+      <div>
+        <Navigation logoUrl={logoUrl} />
+      </div>
+
+      <main className="w-full">
+        <SubNavigation subNavigationText="Dashboard" />
+ü      </main>
     </div>
   );
 };

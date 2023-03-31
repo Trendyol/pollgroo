@@ -3,7 +3,7 @@ export enum TextSize {
   xxs = 'text-xs lg:text-sm',
   xs = 'text-sm lg:text-base',
   md = '',
-  lg = '',
+  lg = 'text-lg lg:text-xl',
   xl = 'text-3xl lg:text-5xl',
   xxl = 'text-5xl lg:text-7xl',
 }
@@ -15,5 +15,6 @@ export enum TextColor {
   red = 'text-red',
   labelgray = 'text-labelgray',
   silver = 'text-silver',
-  gray = 'text-gray'
+  gray = 'text-gray',
+  black = 'text-black'
 }

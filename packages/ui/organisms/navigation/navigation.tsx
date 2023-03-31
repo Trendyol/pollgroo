@@ -17,7 +17,7 @@ export const Navigation = ({ logoUrl }: IProps) => {
 
   const navClass = classNames('fixed w-full', { 'h-screen': show }, 'lg:h-screen lg:w-72');
   const navBrandClass = classNames(
-    'fixed z-50 w-full flex bg-lightblue border-lightgray justify-between items-center px-5 py-4',
+    'fixed z-50 w-full flex bg-lightblue border-lightgray justify-between items-center px-5 py-4 lg:py-8',
     'lg:items-center lg:justify-center lg:relative lg:border-none',
     { 'border-b': !show }
   );
@@ -33,6 +33,7 @@ export const Navigation = ({ logoUrl }: IProps) => {
   };
 
   return (
+    <>
     <nav className={navClass}>
       <div className={navBrandClass}>
         <Image priority className="h-auto w-30" src={logoUrl} alt="Pollgroo" width={125} height={100} />
@@ -56,5 +57,7 @@ export const Navigation = ({ logoUrl }: IProps) => {
         ))}
       </ul>
     </nav>
+    <div className='h-16 w-full lg:h-screen lg:w-72'></div>
+    </>
   );
 };
