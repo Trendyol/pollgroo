@@ -1,4 +1,5 @@
 export { AuthForm } from './authForm';
-export { AuthBanner } from "./authBanner";
-export { Navigation } from "./navigation";
 export { SubNavigation } from "./subNavigation";
+export { AuthBanner } from './authBanner';
+export { Navigation } from './navigation';
+export { GameCard } from './gameCard';

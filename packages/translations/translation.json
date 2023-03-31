@@ -1,5 +1,8 @@
 {
   "tr": {
+    "VIEW": "View",
+    "EDIT": "Edit",
+    "RESULT": "RESULT",
     "LANDING_DESCRIPTION": "",
     "LANDING_GREETING": "",
     "FORGOT_YOUR_PASSWORD": "",
@@ -7,6 +10,9 @@
     "BANNER_DESCRIPTION_TEXT": ""
   },
   "en": {
+    "VIEW": "View",
+    "EDIT": "Edit",
+    "RESULT": "RESULT",
     "LANDING_DESCRIPTION": "A new perspective on driving business",
     "LANDING_GREETING": "Coming Soon",
     "FORGOT_YOUR_PASSWORD": "Forgot your password ?",
