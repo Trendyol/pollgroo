@@ -6,7 +6,7 @@ jest.mock('@/../../packages/ui', () => ({
 }));
 
 describe('<Dashboard /> specs', () => {
-  test('renders the DashboardPage component with the correct logo URL', () => {
+  it('renders the DashboardPage component with the correct logo URL', () => {
     // act
     render(<Dashboard />);
 
