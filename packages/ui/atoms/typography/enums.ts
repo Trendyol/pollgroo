@@ -16,5 +16,12 @@ export enum TextColor {
   labelgray = 'text-labelgray',
   silver = 'text-silver',
   gray = 'text-gray',
-  black = 'text-black'
+  black = 'text-black',
+}
+
+export enum TextWeight {
+  regular = 'font-normal',
+  medium = 'font-medium',
+  semibold = 'font-semibold',
+  bold = 'font-bold',
 }
