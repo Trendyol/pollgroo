@@ -1,0 +1,1 @@
+export {ScoringButton} from './scoring-button';
