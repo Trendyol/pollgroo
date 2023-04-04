@@ -20,7 +20,9 @@ module.exports = {
         lightred: '#FFEBEB',
         red: '#DC2626',
         blue: '#BAD1FE',
-        lightblue: '#F3F5F9'
+        lightblue: '#F3F5F9',
+        borderprimary: "#0066FF",
+        backgroundprimary: "#0066FF33"
       },
     },
   },
