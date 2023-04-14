@@ -1,12 +1,11 @@
 import React from 'react';
-import { Input, InputProps } from '../../atoms';
-import { Typography } from '../../atoms/typography';
+import { Dropdown, DropdownProps, Typography } from '../../atoms';
 
-export interface IProps extends InputProps {
+export interface IProps extends DropdownProps {
   label: string;
 }
 
-export const LabeledInput = ({ className, error, id, label, ...props }: IProps) => {
+export const LabeledDropdown = ({ className, error, id, label, options, ...props }: IProps) => {
   const inputId = id || label.toLowerCase().replace(/\s/g, '-');
   const labelProps = { htmlFor: inputId };
   return (
@@ -20,7 +19,7 @@ export const LabeledInput = ({ className, error, id, label, ...props }: IProps) 
       >
         {label}
       </Typography>
-      <Input id={inputId} error={error} {...props} />
+      <Dropdown options={options} error={error} {...props} />
     </div>
   );
 };
