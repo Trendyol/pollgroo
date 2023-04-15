@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '../../atoms';
-import { GameResultCardScoreBadge } from '../gameResultCardScoreBadge';
+import { GameResultCardScoreBadge } from '../../molecules/gameResultCardScoreBadge';
 import translate from 'translations';
 
 export interface IProps {

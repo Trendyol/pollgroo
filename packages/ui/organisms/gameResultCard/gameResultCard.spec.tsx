@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import * as Translate from 'translations';
-import { GameResultCard } from '../gameResultCard';
+import { GameResultCard } from '.';
 
 describe('GameResultCard component', () => {
   const props = {
