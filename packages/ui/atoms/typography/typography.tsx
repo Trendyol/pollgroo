@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import { TextColor, TextSize, TextWeight } from './enums';
+import { ReactNode } from 'react';
 
 export interface IProps {
-  size?: keyof typeof TextSize;
   element: keyof JSX.IntrinsicElements;
-  children: string | JSX.Element;
+  children: ReactNode;
+  size?: keyof typeof TextSize;
   className?: string;
   color?: keyof typeof TextColor;
   weight?: keyof typeof TextWeight;
@@ -25,8 +26,7 @@ export const Typography = ({
 
   return (
     <Component className={classes} {...props}>
-      {children}
+      <>{children}</>
     </Component>
   );
 };
-

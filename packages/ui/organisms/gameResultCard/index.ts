@@ -1,0 +1,1 @@
+export { GameResultCard } from './gameResultCard';

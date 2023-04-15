@@ -12,11 +12,13 @@ export enum TextColor {
   primary = 'text-primary',
   default = '',
   lightgray = 'text-lightgray',
+  darkgray = 'text-darkgray',
   red = 'text-red',
   labelgray = 'text-labelgray',
   silver = 'text-silver',
   gray = 'text-gray',
   black = 'text-black',
+  white = 'text-white',
 }
 
 export enum TextWeight {

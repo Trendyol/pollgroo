@@ -1,0 +1,1 @@
+export { GameResultCardScoreBadge } from './GameResultCardScoreBadge';
