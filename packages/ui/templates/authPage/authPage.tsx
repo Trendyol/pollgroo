@@ -1,11 +1,6 @@
 import React from 'react';
 import { AuthBanner, AuthForm } from '../../organisms';
-
-interface FormValues {
-  fullname?: string;
-  email: string;
-  password?: string;
-}
+import { FormValues } from './interfaces';
 
 export interface IProps {
   logoUrl: string;
