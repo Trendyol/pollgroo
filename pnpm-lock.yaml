@@ -4,6 +4,7 @@ importers:
 
   .:
     specifiers:
+      dotenv-cli: latest
       eslint: ^8.29.0
       eslint-config-custom: workspace:*
       husky: ^8.0.3
@@ -12,6 +13,7 @@ importers:
       prettier-config: workspace:*
       turbo: latest
     devDependencies:
+      dotenv-cli: 7.2.1
       eslint: 8.32.0
       eslint-config-custom: link:packages/eslint-config-custom
       husky: 8.0.3
@@ -47,6 +49,7 @@ importers:
       babel-loader: ^8.3.0
       bcryptjs: ^2.4.3
       cypress: ^12.3.0
+      dotenv-cli: latest
       eslint: 7.32.0
       eslint-config-custom: workspace:*
       jest: ^29.3.1
@@ -97,6 +100,7 @@ importers:
       autoprefixer: 10.4.13_postcss@8.4.21
       babel-loader: 8.3.0_la66t7xldg4uecmyawueag5wkm
       cypress: 12.3.0
+      dotenv-cli: 7.2.1
       eslint: 7.32.0
       eslint-config-custom: link:../../packages/eslint-config-custom
       jest: 29.3.1_@types+node@17.0.45
@@ -117,7 +121,7 @@ importers:
     dependencies:
       eslint-config-next: 13.1.2_7uibuqfxkfaozanbtbziikiqje
       eslint-config-prettier: 8.6.0_eslint@8.32.0
-      eslint-config-turbo: 0.0.10_eslint@8.32.0
+      eslint-config-turbo: 1.9.1_eslint@8.32.0
 
   packages/jest-presets:
     specifiers:
@@ -6972,8 +6976,28 @@ packages:
       is-obj: 2.0.0
     dev: true
 
+  /dotenv-cli/7.2.1:
+    resolution: {integrity: sha512-ODHbGTskqRtXAzZapDPvgNuDVQApu4oKX8lZW7Y0+9hKA6le1ZJlyRS687oU9FXjOVEDU/VFV6zI125HzhM1UQ==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.0.3
+      dotenv-expand: 10.0.0
+      minimist: 1.2.7
+    dev: true
+
+  /dotenv-expand/10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
+    dev: true
+
   /dotenv-expand/5.1.0:
     resolution: {integrity: sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==}
+    dev: true
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
     dev: true
 
   /dotenv/8.6.0:
@@ -7278,13 +7302,13 @@ packages:
       eslint: 8.32.0
     dev: false
 
-  /eslint-config-turbo/0.0.10_eslint@8.32.0:
-    resolution: {integrity: sha512-o4ULFZYM1OihSd63eDGEuy9rt6tW4ma6xnW9grnr44BoJwKaGQko2aka9kfqQs0vtmwD1++Os3ThPHETmzkFzA==}
+  /eslint-config-turbo/1.9.1_eslint@8.32.0:
+    resolution: {integrity: sha512-tUqm5TxI5bpbDEgClbw+UygVPAwYB20FIpAiQsZI8imJNDz30E40TZkp6uWpAKmxykU8T0+t3jwkYokvXmXc0Q==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
       eslint: 8.32.0
-      eslint-plugin-turbo: 0.0.10_eslint@8.32.0
+      eslint-plugin-turbo: 1.9.1_eslint@8.32.0
     dev: false
 
   /eslint-import-resolver-node/0.3.7:
@@ -7435,8 +7459,8 @@ packages:
       string.prototype.matchall: 4.0.8
     dev: false
 
-  /eslint-plugin-turbo/0.0.10_eslint@8.32.0:
-    resolution: {integrity: sha512-T7QRwF4rjBQCJD9AHLHn9ShtHCHNkfIZW5Oio92WtQYhoU5jZCU3ynU+ONFXLuvoUx4dJ19WergIyHL+DwL2+g==}
+  /eslint-plugin-turbo/1.9.1_eslint@8.32.0:
+    resolution: {integrity: sha512-QPd0EG0xkoDkXJLwPQKULxHjkR27VmvJtILW4C9aIrqauLZ+Yc/V7R+A9yVwAi6nkMHxUlCSUsBxmiQP9TIlPw==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:

@@ -2,9 +2,13 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "env": ["MONGODB_URI", "NEXTAUTH_SECRET", "NEXTAUTH_SECRET"],
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "storybook-static/**"]
+    },
+    "web#build": {
+      "dependsOn": ["^build"],
+      "env": ["MONGODB_URI", "NEXTAUTH_SECRET", "NEXTAUTH_SECRET"],
+      "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
       "outputs": []
@@ -29,6 +33,5 @@
     "clean": {
       "cache": false
     }
-  },
-  "globalEnv": ["MONGODB_URI", "NEXTAUTH_SECRET", "NEXTAUTH_SECRET"]
+  }
 }
