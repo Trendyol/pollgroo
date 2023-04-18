@@ -5,6 +5,11 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "storybook-static/**"]
     },
+    "web#build": {
+      "dependsOn": ["^build"],
+      "env": ["MONGODB_URI", "NEXTAUTH_SECRET", "NEXTAUTH_SECRET"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
     "lint": {
       "outputs": []
     },
