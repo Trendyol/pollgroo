@@ -15,8 +15,10 @@ export const NavigationLayout = ({ logoUrl, subNavigationText, children }: IProp
       </div>
 
       <main className="w-full">
-        <SubNavigation subNavigationText={subNavigationText} />
-        {children}
+        <>
+          <SubNavigation subNavigationText={subNavigationText} />
+          {children}
+        </>
       </main>
     </div>
   );
