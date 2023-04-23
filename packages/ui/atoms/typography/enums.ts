@@ -2,8 +2,8 @@ export enum TextSize {
   base = 'text-base',
   xxs = 'text-xs lg:text-sm',
   xs = 'text-sm lg:text-base',
-  md = '',
-  lg = 'text-lg lg:text-xl',
+  md = 'text-base lg:text-xl',
+  lg = 'text-lg lg:text-2xl',
   xl = 'text-3xl lg:text-5xl',
   xxl = 'text-5xl lg:text-7xl',
 }
