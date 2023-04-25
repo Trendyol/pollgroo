@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import { DashboardPage } from '@/templates';
 
-jest.mock('@/organisms/navigation', () => ({
-  Navigation: jest.fn(({ logoUrl }: any) => <div data-testid="navigation-organism">{logoUrl}</div>),
+jest.mock('@/layouts', () => ({
+  NavigationLayout: jest.fn(({ logoUrl, subNavigationText }: any) => (
+    <div data-testid="navigation-layout">
+      <span>{logoUrl}</span>
+      {subNavigationText}
+    </div>
+  )),
 }));
 
 describe('<DashboardPage /> specs', () => {
@@ -14,7 +19,7 @@ describe('<DashboardPage /> specs', () => {
     render(<DashboardPage logoUrl={logoUrl} />);
 
     // assert
-    expect(screen.getByTestId('navigation-organism')).toBeInTheDocument();
+    expect(screen.getByTestId('navigation-layout')).toBeInTheDocument();
     expect(screen.getByText(logoUrl)).toBeInTheDocument();
   });
 });
