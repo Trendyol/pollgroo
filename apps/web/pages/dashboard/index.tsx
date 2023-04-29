@@ -6,8 +6,7 @@ import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { DashboardContextProvider } from 'contexts';
 
-export default function Dashboard({ data, message }: IProps) {
-  console.log(message);
+export default function Dashboard({ data }: IProps) {
   return (
     <DashboardContextProvider gameCardData={data}>
       <DashboardPage logoUrl="/logo/pollgroo3.svg" />
@@ -28,16 +27,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
+    const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
       headers: {
         cookie: context.req.headers.cookie,
       },
-      credentials: "include",
+      withCredentials: true,
     });
-    const data: GameCardData[] = await res.json();
+    const data: GameCardData[] = res.data;
     return { props: { data } };
   } catch (err) {
-    return { props: { data: [], message: err } };
+    return { props: { data: [] } };
   }
 }
 
@@ -61,5 +60,4 @@ interface GameCardData {
 
 interface IProps {
   data: GameCardData[];
-  message?: any;
 }
