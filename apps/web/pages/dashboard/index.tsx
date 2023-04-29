@@ -16,6 +16,7 @@ export default function Dashboard({ data }: IProps) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  console.log(session);
 
   if (!session || !context.req.headers.cookie) {
     return {
@@ -26,13 +27,30 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
-    headers: {
-      cookie: context.req.headers.cookie,
+  // const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
+  //   headers: {
+  //     cookie: context.req.headers.cookie,
+  //   },
+  //   withCredentials: true
+  // });
+  // const data: GameCardData[] = res.data;
+  const data = [{
+    _id: "string",
+    title: "string",
+    isStarted: false,
+    tasks: "[string]",
+    team: {
+      _id: "string",
+      name: "string",
+      members: ["string"],
+      tasks: ["string"],
+      games: ["string"],
+      createdAt: "string",
+      updatedAt: "string",
     },
-    withCredentials: true
-  });
-  const data: GameCardData = res.data;
+    createdAt: "string",
+    updatedAt: "string",
+  }]
 
   return { props: { data } };
 }
