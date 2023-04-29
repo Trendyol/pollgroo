@@ -11,7 +11,7 @@ interface UserDto {
   email: string;
 }
 
-const options: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: 'credentials',
@@ -66,4 +66,4 @@ const options: NextAuthOptions = {
   },
 };
 
-export default NextAuth(options);
+export default NextAuth(authOptions);

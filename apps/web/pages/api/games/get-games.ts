@@ -2,17 +2,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import connectToDatabase from '@/lib/db';
 import Game from '../models/game';
 import User from '../models/user';
-import { getToken } from 'next-auth/jwt';
 import { withAuth } from '@/lib/authMiddleware';
 import('../models/team');
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, secureCookie: false });
-  const userId = token?.sub;
-
   if (req.method === 'GET') {
     try {
       await connectToDatabase();
+      const userId = (req as any).userId;
       const user = await User.findById(userId);
 
       const games = await Game.find({ team: { $in: user.teams } }).populate('team');
