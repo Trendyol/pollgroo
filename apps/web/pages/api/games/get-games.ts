@@ -7,7 +7,7 @@ import { withAuth } from '@/lib/authMiddleware';
 import('../models/team');
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, secureCookie: true });
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, secureCookie: false });
   const userId = token?.sub;
 
   if (req.method === 'GET') {
