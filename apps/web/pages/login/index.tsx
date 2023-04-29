@@ -5,8 +5,7 @@ import loginUser from '@/helpers/loginUser';
 
 const Login = () => {
   const router = useRouter();
-  console.log(process.env.NEXTAUTH_URL);
-  
+    
   const handleSubmit = async (data: FormValues) => {
     try {
       const loginRes = await loginUser(data);
