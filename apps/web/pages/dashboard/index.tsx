@@ -26,6 +26,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
+  if (!(session.user as any).id) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
   const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
     headers: {
       cookie: context.req.headers.cookie,

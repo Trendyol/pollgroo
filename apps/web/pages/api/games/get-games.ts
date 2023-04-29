@@ -12,11 +12,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const userId = (req as any).userId;
       const user = await User.findById(userId);
 
-      const games = await Game.find({ team: { $in: user.teams } }).populate('team');
+      const games = await Game.find({ team: { $in: user?.teams } }).populate('team');
 
       if (!games) {
         return res.status(404).json({ message: 'No Game Found' });
       }
+      
       res.status(200).json(games);
     } catch (error) {
       console.log(error);

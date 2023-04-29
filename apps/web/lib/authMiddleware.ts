@@ -6,7 +6,7 @@ export const withAuth = (handler: NextApiHandler) => async (req: NextApiRequest,
   try {
     const session = await getServerSession(req, res, authOptions);
 
-    if (!session) {
+    if (!session || !(session as any).user.id) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
