@@ -7,6 +7,7 @@ import { getServerSession } from 'next-auth/next';
 import { DashboardContextProvider } from 'contexts';
 
 export default function Dashboard({ data }: IProps) {
+  console.log(data);
   return (
     <DashboardContextProvider gameCardData={data}>
       <DashboardPage logoUrl="/logo/pollgroo3.svg" />
@@ -45,12 +46,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const data: GameCardData[] = res.data;
     return { props: { data } };
   } catch (err) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
+    return { props: { data: err } };
   }
 }
 
