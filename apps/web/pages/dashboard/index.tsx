@@ -35,16 +35,23 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
-    headers: {
-      cookie: context.req.headers.cookie,
-    },
-    withCredentials: true,
-  });
-
-  const data: GameCardData[] = res.data;
-
-  return { props: { data } };
+  try {
+    const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
+      headers: {
+        cookie: context.req.headers.cookie,
+      },
+      withCredentials: true,
+    });
+    const data: GameCardData[] = res.data;
+    return { props: { data } };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
 }
 
 interface GameCardData {

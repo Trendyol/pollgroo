@@ -12,13 +12,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const userId = (req as any).userId;
       const user = await User.findById(userId);
 
-      const games = await Game.find({ team: { $in: user?.teams } }).populate('team');
+      // const games = await Game.find({ team: { $in: user?.teams } }).populate('team');
 
-      if (!games) {
-        return res.status(404).json({ message: 'No Game Found' });
-      }
+      // if (!games) {
+      //   return res.status(404).json({ message: 'No Game Found' });
+      // }
       
-      res.status(200).json(games);
+      res.status(200).json(user);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: 'Internal server error' });
