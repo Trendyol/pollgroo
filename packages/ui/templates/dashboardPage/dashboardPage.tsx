@@ -8,15 +8,15 @@ interface IProps {
 }
 
 export const DashboardPage = ({ logoUrl }: IProps) => {
-  const { gameCardData } = useDashboard();
+  // const { gameCardData } = useDashboard();
 
   return (
     <NavigationLayout logoUrl={logoUrl} subNavigationText="Dashboard">
-      <div>
+      {/* <div>
         {gameCardData.map((game: any) => (
           <GameCard key={game._id} teamName={game.team.name} gameTitle={game.title} />
         ))}
-      </div>
+      </div> */}
     </NavigationLayout>
   );
 };
