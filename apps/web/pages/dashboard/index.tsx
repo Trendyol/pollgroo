@@ -30,6 +30,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     headers: {
       cookie: context.req.headers.cookie,
     },
+    withCredentials: true
   });
   const data: GameCardData = res.data;
 
