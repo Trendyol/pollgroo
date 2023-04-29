@@ -28,13 +28,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   try {
-    const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
       headers: {
         cookie: context.req.headers.cookie,
       },
-      withCredentials: true,
+      credentials: "include",
     });
-    const data: GameCardData[] = res.data;
+    const data: GameCardData[] = await res.json();
     return { props: { data } };
   } catch (err) {
     return { props: { data: [], message: err } };
