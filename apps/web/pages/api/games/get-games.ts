@@ -4,10 +4,10 @@ import Game from '../models/game';
 import User from '../models/user';
 import { getToken } from 'next-auth/jwt';
 import { withAuth } from '@/lib/authMiddleware';
-import ("../models/team");
+import('../models/team');
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const token = await getToken({ req });
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, secureCookie: true });
   const userId = token?.sub;
 
   if (req.method === 'GET') {
@@ -30,4 +30,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default handler;
+export default withAuth(handler);
