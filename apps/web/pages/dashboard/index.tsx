@@ -6,7 +6,8 @@ import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { DashboardContextProvider } from 'contexts';
 
-export default function Dashboard({ data }: IProps) {
+export default function Dashboard({ data, message }: IProps) {
+  console.log(message);
   return (
     <DashboardContextProvider gameCardData={data}>
       <DashboardPage logoUrl="/logo/pollgroo3.svg" />
@@ -36,7 +37,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const data: GameCardData[] = res.data;
     return { props: { data } };
   } catch (err) {
-    return { props: { data: [] } };
+    return { props: { data: [], message: err } };
   }
 }
 
@@ -60,4 +61,5 @@ interface GameCardData {
 
 interface IProps {
   data: GameCardData[];
+  message?: any;
 }
