@@ -7,7 +7,6 @@ import { getServerSession } from 'next-auth/next';
 import { DashboardContextProvider } from 'contexts';
 
 export default function Dashboard({ data }: IProps) {
-  console.log(data);
   return (
     <DashboardContextProvider gameCardData={data}>
       <DashboardPage logoUrl="/logo/pollgroo3.svg" />
@@ -27,15 +26,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  if (!(session.user as any).id) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
   try {
     const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
       headers: {
@@ -46,7 +36,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const data: GameCardData[] = res.data;
     return { props: { data } };
   } catch (err) {
-    return { props: { data: err } };
+    return { props: { data: [] } };
   }
 }
 
