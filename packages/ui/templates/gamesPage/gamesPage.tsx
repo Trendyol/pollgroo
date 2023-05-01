@@ -6,7 +6,7 @@ import { Button } from '../../atoms';
 import { useGame } from 'contexts';
 import translate from 'translations';
 
-interface IProps {
+export interface IProps {
   logoUrl: string;
 }
 

@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import Dashboard, { getServerSideProps }  from '@/pages/dashboard';
+import { getHostUrl } from '../../helpers/getHostUrl';
 import axios from 'axios';
 
 jest.mock('axios');
+
+jest.mock('../../helpers/getHostUrl', () => ({
+  getHostUrl: jest.fn(),
+}));
 
 jest.mock('@/../../packages/ui', () => ({
   DashboardPage: jest.fn(({ logoUrl }: any) => <div data-testid="dashboardPage-template">{logoUrl}</div>),
@@ -32,6 +37,9 @@ describe('<Dashboard /> specs', () => {
           },
         },
       };
+
+      const hostUrl = "localhost:3000"
+      getHostUrl.mockReturnValue(hostUrl);
   
       const result = await getServerSideProps(mockContext);
   
@@ -40,7 +48,7 @@ describe('<Dashboard /> specs', () => {
           data: mockData,
         },
       });
-      expect(axios.get).toHaveBeenCalledWith(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
+      expect(axios.get).toHaveBeenCalledWith(`${hostUrl}/api/games/get-games`, {
         headers: {
           cookie: 'mock-cookie',
         },
@@ -58,6 +66,9 @@ describe('<Dashboard /> specs', () => {
           },
         },
       };
+
+      const hostUrl = "localhost:3000"
+      getHostUrl.mockReturnValue(hostUrl);
   
       const result = await getServerSideProps(mockContext);
   
@@ -66,7 +77,7 @@ describe('<Dashboard /> specs', () => {
           data: [],
         },
       });
-      expect(axios.get).toHaveBeenCalledWith(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
+      expect(axios.get).toHaveBeenCalledWith(`${hostUrl}/api/games/get-games`, {
         headers: {
           cookie: 'mock-cookie',
         },

@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import Games, { getServerSideProps } from '@/pages/games';
+import { getHostUrl } from '../../helpers/getHostUrl';
 import axios from 'axios';
 
 jest.mock('axios');
+
+jest.mock('../../helpers/getHostUrl', () => ({
+  getHostUrl: jest.fn(),
+}));
 
 jest.mock('@/../../packages/ui', () => ({
   GamesPage: jest.fn(({ logoUrl, errorMessage }: any) => <div data-testid="gamesPage-template">{logoUrl}</div>),
@@ -38,6 +43,10 @@ describe('<Games /> specs', () => {
           },
         },
       };
+      
+      const hostUrl = "localhost:3000"
+      getHostUrl.mockReturnValue(hostUrl);
+
 
       const result = await getServerSideProps(mockContext);
 
@@ -46,7 +55,7 @@ describe('<Games /> specs', () => {
           data: mockData,
         },
       });
-      expect(axios.get).toHaveBeenCalledWith(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
+      expect(axios.get).toHaveBeenCalledWith(`${hostUrl}/api/games/get-games`, {
         headers: {
           cookie: 'mock-cookie',
         },
@@ -67,6 +76,9 @@ describe('<Games /> specs', () => {
         },
       };
 
+      const hostUrl = "localhost:3000"
+      getHostUrl.mockReturnValue(hostUrl);
+
       const result = await getServerSideProps(context);
 
       expect(result).toEqual({
@@ -75,7 +87,7 @@ describe('<Games /> specs', () => {
           errorMessage: errorMessage,
         },
       });
-      expect(axios.get).toHaveBeenCalledWith(`${process.env.NEXTAUTH_URL}/api/games/get-games`, {
+      expect(axios.get).toHaveBeenCalledWith(`${hostUrl}/api/games/get-games`, {
         headers: {
           cookie: context.req.headers.cookie,
         },

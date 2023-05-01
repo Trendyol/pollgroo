@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DashboardPage } from 'ui';
 import { GetServerSidePropsContext } from 'next';
 import { DashboardContextProvider } from 'contexts';
+import { getHostUrl } from '../../helpers/getHostUrl';
 
 export default function Dashboard({ data }: IProps) {
   return (
@@ -13,8 +14,7 @@ export default function Dashboard({ data }: IProps) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const isLocal = context.req.headers.host?.includes('localhost');
-  const hostUrl = isLocal ? `http://${context.req.headers.host}` : `https://${context.req.headers.host}`;
+  const hostUrl = getHostUrl(context.req.headers.host);
   try {
     const res = await axios.get(`${hostUrl}/api/games/get-games`, {
       headers: {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getHostUrl } from '../../helpers/getHostUrl';
 import { GameContextProvider } from 'contexts';
 import { GetServerSidePropsContext } from 'next';
 import { GamesPage } from 'ui';
@@ -12,8 +13,7 @@ export default function Games({ data, errorMessage}: IProps) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const isLocal = context.req.headers.host?.includes('localhost');
-  const hostUrl = isLocal ? `http://${context.req.headers.host}` : `https://${context.req.headers.host}`;
+  const hostUrl = getHostUrl(context.req.headers.host);
   try {
     const res = await axios.get(`${hostUrl}/api/games/get-games`, {
       headers: {
