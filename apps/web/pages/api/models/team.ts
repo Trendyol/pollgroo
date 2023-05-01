@@ -5,6 +5,7 @@ const TeamSchema = new Schema(
     name: {
       type: String,
       required: true,
+      unique: true
     },
     members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],

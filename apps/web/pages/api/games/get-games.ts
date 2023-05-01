@@ -1,26 +1,31 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import connectToDatabase from '@/lib/db';
 import Game from '../models/game';
 import User from '../models/user';
 import { withAuth } from '@/lib/authMiddleware';
+import { ExtendedNextApiRequest, IUser } from '../interfaces';
 import('../models/team');
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     try {
       await connectToDatabase();
-      const userId = (req as any).userId;
-      const user = await User.findById(userId);
+      const userId = req.userId;
+      const user: IUser | null = await User.findById(userId);
+
+      if(!user?.teams.length) {
+        res.status(403).json({ message: "You don't have any team. Join a team first."})
+      }
 
       const games = await Game.find({ team: { $in: user?.teams } }).populate('team');
 
       if (!games) {
-        return res.status(404).json({ message: 'No Game Found' });
+        res.status(404).json({ message: 'No Game Found' });
       }
       
       res.status(200).json(games);
     } catch (error) {
-      console.log(error);
+      console.info(error);
       res.status(500).json({ message: 'Internal server error' });
     }
   } else {

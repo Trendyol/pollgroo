@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { DashboardPage } from '@/templates';
+import { useDashboard } from 'contexts';
 
 jest.mock('@/layouts', () => ({
   NavigationLayout: jest.fn(({ logoUrl, subNavigationText }: any) => (
@@ -10,7 +11,27 @@ jest.mock('@/layouts', () => ({
   )),
 }));
 
+jest.mock('contexts', () => ({
+  useDashboard: jest.fn(),
+}));
+
 describe('<DashboardPage /> specs', () => {
+  let mockGameCardData = [];
+  beforeEach(() => {
+    mockGameCardData = [
+      {
+        _id: '1',
+        team: { name: 'Team A' },
+        title: 'Game 1',
+      },
+      {
+        _id: '2',
+        team: { name: 'Team B' },
+        title: 'Game 2',
+      },
+    ];
+    (useDashboard as jest.Mock).mockReturnValue({ gameCardData: mockGameCardData });
+  });
   it('renders the DashboardPage with the correct logo URL in Navigation component', () => {
     // assign
     const logoUrl = 'https://example.com/logo.svg';

@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import connectToDatabase from '@/lib/db';
 import Game from '../models/game';
 import Team from '../models/team';
+import { withAuth } from '@/lib/authMiddleware';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       await connectToDatabase();
@@ -17,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       await Team.findByIdAndUpdate(
         teamId,
-        { $push: { teams: newGame._id } }
+        { $push: { games: newGame._id } }
       );
 
       const game = await newGame.save();
@@ -30,3 +31,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(405).json({ message: 'Method not allowed' });
   }
 }
+
+export default withAuth(handler);

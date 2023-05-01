@@ -1,10 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import connectToDatabase from '@/lib/db';
 import Game from '../../models/game';
 import Task from '../../models/task';
 import Team from '../../models/team';
+import { ExtendedNextApiRequest } from '../../interfaces';
+import { withAuthAndTeamMember } from '@/lib/authAndTeamMemberMiddleware';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   const { gameId } = req.query;
 
   if (req.method === 'POST') {
@@ -41,13 +43,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else if (req.method === 'GET') {
     try {
       await connectToDatabase();
+
       const game = await Game.findById(gameId).populate('tasks');
 
       if (!game) {
         return res.status(404).json({ message: 'Game not found' });
       }
 
-      res.status(200).json(game.tasks);
+      res.status(200).json(game);
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }
@@ -55,3 +58,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(405).json({ message: 'Method not allowed' });
   }
 }
+
+export default withAuthAndTeamMember(handler);

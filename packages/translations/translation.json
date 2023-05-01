@@ -18,6 +18,8 @@
     "FORGOT_YOUR_PASSWORD": "Forgot your password ?",
     "BANNER_HEADER_TEXT": "Is the team indecisive? Vote it go!",
     "BANNER_DESCRIPTION_TEXT": "Blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla.",
-    "TASK": "Task"
+    "TASK": "Task",
+    "CREATE": "Create",
+    "CREATE_PLUS": "Create +"
   }
 }
