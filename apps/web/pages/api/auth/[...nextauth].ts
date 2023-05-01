@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import connectToMongoDB from '@/lib/db';
 import User from '@/pages/api/models/user';
 import { ITeam } from '../interfaces';
+import('@/pages/api/models/team');
 
 interface UserDto {
   id: string;
