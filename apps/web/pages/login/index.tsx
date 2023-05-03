@@ -5,7 +5,7 @@ import loginUser from '@/helpers/loginUser';
 
 const Login = () => {
   const router = useRouter();
-  
+    
   const handleSubmit = async (data: FormValues) => {
     try {
       const loginRes = await loginUser(data);

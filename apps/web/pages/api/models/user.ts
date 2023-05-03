@@ -19,6 +19,7 @@ const UserSchema = new Schema(
       required: [true, 'Password is required'],
       select: false,
     },
+    teams: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
   },
   { versionKey: false }
 );

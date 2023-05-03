@@ -19,7 +19,7 @@ export const LabeledDropdown = ({ className, error, id, label, options, ...props
       >
         {label}
       </Typography>
-      <Dropdown options={options} error={error} {...props} />
+      <Dropdown options={options} error={error} id={inputId} {...props} />
     </div>
   );
 };

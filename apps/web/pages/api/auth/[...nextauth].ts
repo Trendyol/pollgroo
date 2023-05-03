@@ -3,15 +3,17 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import connectToMongoDB from '@/lib/db';
 import User from '@/pages/api/models/user';
-import { IUser } from '../interfaces';
+import { ITeam } from '../interfaces';
+import('@/pages/api/models/team');
 
 interface UserDto {
   id: string;
   fullname: string;
   email: string;
+  teams: ITeam[];
 }
 
-const options: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: 'credentials',
@@ -25,9 +27,9 @@ const options: NextAuthOptions = {
           throw new Error(err);
         });
 
-        const user: IUser = await User.findOne({
+        const user = await User.findOne({
           email: credentials?.email,
-        }).select('+password');
+        }).select('+password').populate('teams');
 
         if (!user) {
           throw new Error('Invalid credentials');
@@ -43,6 +45,7 @@ const options: NextAuthOptions = {
           id: user._id,
           email: user.email,
           fullname: user.fullname,
+          teams: user.teams
         } as UserDto;
       },
     }),
@@ -66,4 +69,4 @@ const options: NextAuthOptions = {
   },
 };
 
-export default NextAuth(options);
+export default NextAuth(authOptions);

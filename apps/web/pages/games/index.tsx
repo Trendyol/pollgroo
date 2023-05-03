@@ -1,15 +1,14 @@
-import React from 'react';
 import axios from 'axios';
-import { DashboardPage } from 'ui';
-import { GetServerSidePropsContext } from 'next';
-import { DashboardContextProvider } from 'contexts';
 import { getHostUrl } from '../../helpers/getHostUrl';
+import { GameContextProvider } from 'contexts';
+import { GetServerSidePropsContext } from 'next';
+import { GamesPage } from 'ui';
 
-export default function Dashboard({ data }: IProps) {
+export default function Games({ data, errorMessage}: IProps) {
   return (
-    <DashboardContextProvider gameCardData={data}>
-      <DashboardPage logoUrl="/logo/pollgroo3.svg" />
-    </DashboardContextProvider>
+    <GameContextProvider data={data}>
+      <GamesPage logoUrl="/logo/pollgroo3.svg" />
+    </GameContextProvider>
   );
 }
 
@@ -24,8 +23,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     });
     const data: GameCardData[] = res.data;
     return { props: { data } };
-  } catch (err) {
-    return { props: { data: [] } };
+  } catch (err: any) {
+    return { props: { data: [], errorMessage: err.response.data.message } };
   }
 }
 
@@ -49,4 +48,5 @@ interface GameCardData {
 
 interface IProps {
   data: GameCardData[];
+  errorMessage?: string;
 }

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Dashboard, { getServerSideProps }  from '@/pages/dashboard';
+import Games, { getServerSideProps } from '@/pages/games';
 import { getHostUrl } from '../../helpers/getHostUrl';
 import axios from 'axios';
 
@@ -10,26 +10,32 @@ jest.mock('../../helpers/getHostUrl', () => ({
 }));
 
 jest.mock('@/../../packages/ui', () => ({
-  DashboardPage: jest.fn(({ logoUrl }: any) => <div data-testid="dashboardPage-template">{logoUrl}</div>),
+  GamesPage: jest.fn(({ logoUrl, errorMessage }: any) => <div data-testid="gamesPage-template">{logoUrl}</div>),
 }));
 
-describe('<Dashboard /> specs', () => {
-  it('renders the DashboardPage component with the correct logo URL', () => {
+describe('<Games /> specs', () => {
+  it('renders the GamesPage component with the correct logo URL', () => {
     // assign
-    const mockData: any = [{ id: 1, title: 'Game 1' }, { id: 2, title: 'Game 2' }];
+    const mockData: any = [
+      { id: 1, title: 'Game 1' },
+      { id: 2, title: 'Game 2' },
+    ];
     // act
-    render(<Dashboard data={mockData}/>);
+    render(<Games data={mockData} />);
 
     // assert
-    expect(screen.getByTestId("dashboardPage-template")).toBeInTheDocument();
+    expect(screen.getByTestId('gamesPage-template')).toBeInTheDocument();
   });
 
   describe('getServerSideProps', () => {
     it('returns data prop when the API call is successful', async () => {
-      const mockData = [{ id: 1, title: 'Game 1' }, { id: 2, title: 'Game 2' }];
+      const mockData = [
+        { id: 1, title: 'Game 1' },
+        { id: 2, title: 'Game 2' },
+      ];
       const mockResponse = { data: mockData };
       axios.get.mockResolvedValue(mockResponse);
-  
+
       const mockContext = {
         req: {
           headers: {
@@ -37,12 +43,13 @@ describe('<Dashboard /> specs', () => {
           },
         },
       };
-
+      
       const hostUrl = "localhost:3000"
       getHostUrl.mockReturnValue(hostUrl);
-  
+
+
       const result = await getServerSideProps(mockContext);
-  
+
       expect(result).toEqual({
         props: {
           data: mockData,
@@ -55,31 +62,34 @@ describe('<Dashboard /> specs', () => {
         withCredentials: true,
       });
     });
-  
-    it('returns empty data prop when the API call fails', async () => {
-      axios.get.mockRejectedValue(new Error('API Error'));
-  
-      const mockContext = {
+
+    it('should return empty data and error message on failed request', async () => {
+      const errorMessage = 'Error fetching games';
+
+      axios.get.mockRejectedValue({ response: { data: { message: errorMessage } } });
+
+      const context = {
         req: {
           headers: {
-            cookie: 'mock-cookie',
+            cookie: 'your-cookie-value',
           },
         },
       };
 
       const hostUrl = "localhost:3000"
       getHostUrl.mockReturnValue(hostUrl);
-  
-      const result = await getServerSideProps(mockContext);
-  
+
+      const result = await getServerSideProps(context);
+
       expect(result).toEqual({
         props: {
           data: [],
+          errorMessage: errorMessage,
         },
       });
       expect(axios.get).toHaveBeenCalledWith(`${hostUrl}/api/games/get-games`, {
         headers: {
-          cookie: 'mock-cookie',
+          cookie: context.req.headers.cookie,
         },
         withCredentials: true,
       });
