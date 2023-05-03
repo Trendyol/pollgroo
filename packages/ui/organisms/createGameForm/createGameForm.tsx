@@ -80,6 +80,10 @@ export const CreateGameForm = () => {
   };
 
   const renderDropdown = (name: InputName, label: string, options: { id: string; value: string }[]) => {
+    // if needed they can be used in LabeledDropdown
+    // onBlur={() => handleBlur(name)} if needed they can be uncomment.
+    // onFocus={() => handleFocus(name)}
+    // error={!!errors[name]?.message}
     return (
       <Controller
         name={name}
@@ -93,9 +97,6 @@ export const CreateGameForm = () => {
             options={options}
             value={field.value}
             onChange={field.onChange}
-            // onBlur={() => handleBlur(name)} if needed they can be uncomment.
-            // onFocus={() => handleFocus(name)}
-            // error={!!errors[name]?.message}
             fluid
           />
         )}
