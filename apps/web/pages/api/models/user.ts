@@ -20,6 +20,18 @@ const UserSchema = new Schema(
       select: false,
     },
     teams: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
+    profileCircleBackgroundColor: {
+      type: String,
+      required: false,
+    },
+    profileCircleTextColor: {
+      type: String,
+      required: false,
+    },
+    profileCircleText: {
+      type: String,
+      required: false
+    }
   },
   { versionKey: false }
 );

@@ -19,19 +19,17 @@ export const GamesPage = ({ logoUrl }: IProps) => {
 
   return (
     <NavigationLayout logoUrl={logoUrl} subNavigationText="Games">
-      <div>
-        <div className="px-6 pt-10 lg:px-20">
-          <Button className="ml-auto block" variant="text" onClick={handleCreateClick}>
-            {translate('CREATE_PLUS')}
-          </Button>
-          <div className="pt-5 flex flex-col gap-5 lg:pt-10 lg:flex-row lg:grid lg:grid-cols-3">
-            {gameCardData.map((game: GameCardData) => (
-              <GameCard key={game._id} teamName={game.team.name} gameTitle={game.title} gameId={game._id} />
-            ))}
-          </div>
+      <div className="px-6 pt-10 lg:px-20">
+        <Button className="ml-auto block" variant="text" onClick={handleCreateClick}>
+          {translate('CREATE_PLUS')}
+        </Button>
+        <div className="pt-5 flex flex-col gap-5 lg:pt-10 lg:grid lg:grid-cols-3">
+          {gameCardData.map((game: GameCardData) => (
+            <GameCard key={game._id} teamName={game.team.name} gameTitle={game.title} gameId={game._id} />
+          ))}
         </div>
-        <CreateGameModal />
       </div>
+      <CreateGameModal />
     </NavigationLayout>
   );
 };

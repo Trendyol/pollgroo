@@ -59,7 +59,7 @@ export const Modal = ({ show, onClose, title, children }: IProp) => {
       }}
       unmountOnExit
     >
-      <div data-testid="modal-overlay" className="lg:fixed lg:inset-0 lg:bg-black/50" onClick={handleClose}>
+      <div data-testid="modal-overlay" className="lg:fixed lg:inset-0 lg:bg-black/50 z-50" onClick={handleClose}>
         <div ref={nodeRef} className={modalClass} onClick={onModalClick}>
           <header className={headerClass}>
             <Typography element="h4" size="md" weight="bold">

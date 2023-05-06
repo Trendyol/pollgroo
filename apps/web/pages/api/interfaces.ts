@@ -6,13 +6,16 @@ export interface IUser {
   fullname: string;
   email: string;
   password: string;
-  teams: string[] | ITeam[];
+  teams: ITeam[];
+  profileCircleBackgroundColor?: string,
+  profileCircleTextColor?: string,
+  profileCircleText?: string
 }
 
 export interface ITeam {
   _id: string;
   name: string;
-  members: string[] | IUser[];
+  members: IUser[];
   tasks: string[];
   games: string[];
 }

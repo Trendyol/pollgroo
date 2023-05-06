@@ -24,6 +24,9 @@ export interface UserData {
   email: string;
   password: string;
   teams: string[] | TeamData[];
+  profileCircleBackgroundColor?: string;
+  profileCircleTextColor?: string;
+  profileCircleText?: string;
 }
 
 export interface TeamData {
@@ -32,14 +35,27 @@ export interface TeamData {
   members: string[] | UserData[];
   tasks: string[];
   games: string[];
+  isMember?: boolean;
+  totalMembers?: number;
+  badgeMembers?: string[] | UserData[];
 }
 
 export interface ExtendedSession extends Session {
   user: {
-    name: string;
+    fullname: string;
     email: string;
-    image: string;
-    teams: TeamData[];
     id: string;
+    profileCircleBackgroundColor?: string;
+    profileCircleTextColor?: string;
+    profileCircleText?: string;
   };
+}
+
+export interface Task {
+  description: string;
+  gameId?: string;
+  metrics?: { maxPoint: number; minPoint: number; name: string; _id: string }[];
+  score?: number;
+  title: string;
+  _id: string;
 }

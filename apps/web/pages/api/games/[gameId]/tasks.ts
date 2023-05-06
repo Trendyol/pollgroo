@@ -4,7 +4,7 @@ import Game from '../../models/game';
 import Task from '../../models/task';
 import Team from '../../models/team';
 import { ExtendedNextApiRequest } from '../../interfaces';
-import { withAuthAndTeamMember } from '@/lib/authAndTeamMemberMiddleware';
+import { withAuthGameAndTeamMember } from '@/lib/authGameAndTeamMemberMiddleware';
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   const { gameId } = req.query;
@@ -22,6 +22,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       const { title, description, metrics } = req.body;
 
       const newTask = new Task({
+        teamId: team._id,
         gameId,
         title,
         description,
@@ -44,13 +45,13 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await connectToDatabase();
 
-      const game = await Game.findById(gameId).populate('tasks');
+      const game = await Game.findById(gameId).populate(['tasks','team']);
 
       if (!game) {
         return res.status(404).json({ message: 'Game not found' });
       }
 
-      res.status(200).json(game);
+      res.status(200).json(game.tasks);
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }
@@ -59,4 +60,4 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withAuthAndTeamMember(handler);
+export default withAuthGameAndTeamMember(handler);

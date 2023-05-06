@@ -26,5 +26,5 @@ export const Large = Template.bind({});
 Large.args = {
   href: '#',
   children: 'Large link',
-  size: 'xxl',
+  size: 'xxxxl',
 };

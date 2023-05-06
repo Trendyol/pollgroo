@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconChevronLeft } from '@tabler/icons-react';
 import { Typography } from '../../atoms';
+import { SubNavigationProfileMenu } from '../subNavigationProfileMenu';
 
 export interface IProps {
   subNavigationText: string;
@@ -8,11 +9,17 @@ export interface IProps {
 
 export const SubNavigation = ({ subNavigationText }: IProps) => {
   return (
-    <div className="py-4 border-b border-lightgray flex items-center lg:rounded-lg lg:border lg:mt-6 lg:mx-20">
+    <div className="py-4 border-b border-lightgray flex items-center lg:rounded-lg lg:border lg:mt-6 lg:mx-20 lg:relative">
       <IconChevronLeft className="absolute ml-2 -z-10 lg:hidden" />
-      <Typography element="h3" color="black" size="lg" className="w-full text-center font-semibold lg:text-left lg:ml-5">
+      <Typography
+        element="h3"
+        color="black"
+        size="lg"
+        className="w-full text-center font-semibold lg:text-left lg:ml-5"
+      >
         {subNavigationText}
       </Typography>
+      <SubNavigationProfileMenu />
     </div>
   );
 };

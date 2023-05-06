@@ -35,7 +35,7 @@ describe('<Link /> specs', () => {
   });
 
   it('applies the specified size', () => {
-    const size = 'xxl';
+    const size = 'xxxxl';
     render(
       <Link href="#" size={size}>
         Test

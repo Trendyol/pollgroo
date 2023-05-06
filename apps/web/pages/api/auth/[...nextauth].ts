@@ -3,14 +3,15 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import connectToMongoDB from '@/lib/db';
 import User from '@/pages/api/models/user';
-import { ITeam } from '../interfaces';
 import('@/pages/api/models/team');
 
 interface UserDto {
   id: string;
   fullname: string;
   email: string;
-  teams: ITeam[];
+  profileCircleBackgroundColor?: string,
+  profileCircleTextColor?: string,
+  profileCircleText?: string
 }
 
 export const authOptions: NextAuthOptions = {
@@ -45,7 +46,9 @@ export const authOptions: NextAuthOptions = {
           id: user._id,
           email: user.email,
           fullname: user.fullname,
-          teams: user.teams
+          profileCircleBackgroundColor: user.profileCircleBackgroundColor,
+          profileCircleTextColor: user.profileCircleTextColor,
+          profileCircleText: user.profileCircleText
         } as UserDto;
       },
     }),
