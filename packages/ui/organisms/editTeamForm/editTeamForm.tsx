@@ -33,7 +33,6 @@ export const EditTeamForm = () => {
   });
 
   const submitHandler = async (data: FormValues) => {
-    console.log("asdasd")
     setShowEditTeamModal(false);
     await editTeam(data.teamName);
     await getTeam();

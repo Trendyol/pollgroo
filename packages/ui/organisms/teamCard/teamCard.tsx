@@ -33,8 +33,6 @@ export const TeamCard = ({ isMember, teamId, name, badgeMembers, totalMembers, i
     }
   };
 
-  console.log(isMyTeamsActive, isMember)
-
   if (!isMember && isMyTeamsActive) {
     return null;
   }
