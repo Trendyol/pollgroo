@@ -7,13 +7,14 @@ export interface IProps {
   title: string;
   taskId: string;
   description: string;
+  gameId: string;
 }
 
-export const TaskCard = ({ title, taskId, description }: IProps) => {
+export const GroomingTaskCard = ({ title, taskId, description, gameId }: IProps) => {
   const { setSelectedTaskToEdit, setShowEditGroomingTaskModal } = useGrooming();
 
   const handleClick = () => {
-    setSelectedTaskToEdit({_id: taskId, title, description});
+    setSelectedTaskToEdit({_id: taskId, title, description, gameId});
     setShowEditGroomingTaskModal(true);
   }
 

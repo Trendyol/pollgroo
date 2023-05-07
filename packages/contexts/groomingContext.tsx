@@ -10,10 +10,18 @@ type GroomingContextValuesType = {
   getGroomingTasks: (gameId: string) => void;
   showEditGroomingTaskModal: boolean;
   setShowEditGroomingTaskModal: (value: boolean) => void;
-  selectedTaskToEdit: Task;
-  setSelectedTaskToEdit: (value: Task) => void;
+  selectedTaskToEdit: EditTaskPayload;
+  setSelectedTaskToEdit: (value: EditTaskPayload) => void;
   editGroomingTask: (title: string, description: string) => void;
+  removeGroomingTask: (value: string) => void;
 };
+
+interface EditTaskPayload {
+  _id: string;
+  title: string;
+  description: string;
+  gameId: string;
+}
 
 interface GroomingData {
   _id: string;
@@ -35,9 +43,10 @@ interface GroomingData {
 
 interface Task {
   description: string;
-  gameId?: string;
-  metrics?: { maxPoint: number; minPoint: number; name: string; _id: string }[];
-  score?: number;
+  gameId: string;
+  teamId: string;
+  metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
+  score: number;
   title: string;
   _id: string;
 }
@@ -49,7 +58,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
   const [tasks, setTasks] = useState(data.tasks);
   const [showAddTaskToGameModal, setShowAddTaskToGameModal] = useState(false);
   const [showEditGroomingTaskModal, setShowEditGroomingTaskModal] = useState(false);
-  const [selectedTaskToEdit, setSelectedTaskToEdit] = useState({} as Task);
+  const [selectedTaskToEdit, setSelectedTaskToEdit] = useState({} as EditTaskPayload);
 
   const addTaskToTheGrooming = async (title: string, description: string, gameId: string) => {
     try {
@@ -67,23 +76,28 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
     } catch (err) {}
   };
 
-  const editGroomingTask = useCallback(async (title: string, description: string) => {
-    try {
-      const res = await axios.patch(`/api/tasks/${selectedTaskToEdit._id}`, {
-        title,
-        description,
-      });
-      const theTaskBeforeEdit = tasks.find((task: Task) => task._id === selectedTaskToEdit._id);
-      const theTaskIndexBeforeEdit = tasks.findIndex((task: Task) => task._id === selectedTaskToEdit._id);
-      if (theTaskBeforeEdit) {
-        theTaskBeforeEdit.title = res.data.title;
-        theTaskBeforeEdit.description = res.data.description;
-        tasks[theTaskIndexBeforeEdit] = theTaskBeforeEdit;
-      }
+  const editGroomingTask = useCallback(
+    async (title: string, description: string) => {
+      try {
+        await axios.patch(`/api/tasks/${selectedTaskToEdit._id}`, {
+          title,
+          description,
+        });
+      } catch (err) {}
+    },
+    [selectedTaskToEdit]
+  );
 
-      setTasks(tasks);
-    } catch (err) {}
-  }, [tasks, selectedTaskToEdit]);
+  const removeGroomingTask = useCallback(
+    async (gameId: string) => {
+      try {
+        await axios.patch(`/api/games/${gameId}/tasks`, {
+          taskId: selectedTaskToEdit._id,
+        });
+      } catch (err) {}
+    },
+    [selectedTaskToEdit]
+  );
 
   const values = useMemo(
     () => ({
@@ -98,6 +112,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       selectedTaskToEdit,
       setSelectedTaskToEdit,
       editGroomingTask,
+      removeGroomingTask,
     }),
     [
       groomingData,
@@ -109,6 +124,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       selectedTaskToEdit,
       setSelectedTaskToEdit,
       editGroomingTask,
+      removeGroomingTask,
     ]
   );
   return <GroomingContext.Provider value={values}>{children}</GroomingContext.Provider>;

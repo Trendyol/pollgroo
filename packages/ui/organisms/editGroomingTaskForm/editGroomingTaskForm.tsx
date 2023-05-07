@@ -3,7 +3,7 @@ import translate from 'translations';
 import * as yup from 'yup';
 import { Button } from '../../atoms';
 import { LabeledInput } from '../../molecules';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, get } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useGrooming } from 'contexts';
 
@@ -15,7 +15,8 @@ interface FormValues {
 type InputName = 'taskTitle' | 'taskDescription';
 
 export const EditGroomingTaskForm = () => {
-  const { editGroomingTask, setShowEditGroomingTaskModal, selectedTaskToEdit } = useGrooming();
+  const { editGroomingTask, setShowEditGroomingTaskModal, selectedTaskToEdit, getGroomingTasks, removeGroomingTask } =
+    useGrooming();
 
   const schema = yup.object().shape({
     taskTitle: yup.string().required(),
@@ -35,6 +36,13 @@ export const EditGroomingTaskForm = () => {
   const submitHandler = async (data: FormValues) => {
     setShowEditGroomingTaskModal(false);
     await editGroomingTask(data.taskTitle, data.taskDescription);
+    await getGroomingTasks(selectedTaskToEdit.gameId);
+  };
+
+  const handleRemove = async () => {
+    setShowEditGroomingTaskModal(false);
+    await removeGroomingTask(selectedTaskToEdit.gameId);
+    await getGroomingTasks(selectedTaskToEdit.gameId);
   };
 
   const handleBlur = (fieldName: InputName) => {
@@ -81,13 +89,16 @@ export const EditGroomingTaskForm = () => {
 
   return (
     <form
-      id="createGameForm"
+      id="editGroomingForm"
       className="flex flex-col h-full items-center gap-y-7 pt-4 px-5"
       onSubmit={handleSubmit(submitHandler)}
     >
       {renderFormElements()}
       <Button className="h-11 text-white font-bold" type="submit" fluid>
         {translate('SAVE')}
+      </Button>
+      <Button onClick={handleRemove} className="h-11 font-bold" variant="danger" fluid>
+        {translate('REMOVE')}
       </Button>
     </form>
   );

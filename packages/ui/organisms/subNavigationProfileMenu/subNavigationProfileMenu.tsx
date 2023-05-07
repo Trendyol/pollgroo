@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography } from '../../atoms';
 import { useSession } from 'next-auth/react';
 import { ExtendedSession } from '../../interfaces';
+import { ProfileCircle } from '../../molecules';
 
 export const SubNavigationProfileMenu = () => {
   const { data: session } = useSession();
@@ -12,19 +13,17 @@ export const SubNavigationProfileMenu = () => {
   }
 
   return (
-    <div className="absolute -z-10 mr-4 right-0 lg:flex lg:items-center lg:justify-center lg:gap-x-2">
-      <Typography className="hidden lg:inline-block" element="p" color="darkgray" weight="regular" size="md">
-        {extendedSession.user.fullname}
-      </Typography>
-      <div
-        style={{
-          backgroundColor: `${extendedSession.user.profileCircleBackgroundColor}`,
-          color: `${extendedSession.user.profileCircleTextColor}`,
-        }}
-        className={`h-10 w-10 rounded-full flex items-center justify-center font-bold`}
-      >
-        {extendedSession.user.profileCircleText}
+    <>
+      <div className="cursor-pointer absolute mr-4 right-0 lg:flex lg:items-center lg:justify-center lg:gap-x-2">
+        <Typography className="hidden lg:inline-block" element="p" color="darkgray" weight="regular" size="md">
+          {extendedSession.user.fullname}
+        </Typography>
+        <ProfileCircle
+          profileCircleBackgroundColor={extendedSession.user.profileCircleBackgroundColor}
+          profileCircleTextColor={extendedSession.user.profileCircleTextColor}
+          profileCircleText={extendedSession.user.profileCircleText}
+        />
       </div>
-    </div>
+    </>
   );
 };

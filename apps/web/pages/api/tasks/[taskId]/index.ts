@@ -3,8 +3,9 @@ import connectToDatabase from '@/lib/db';
 import Task from '../../models/task';
 import Game from '../../models/game';
 import Team from '../../models/team';
+import { withAuth } from '@/lib/authMiddleware';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { taskId } = req.query;
 
   if (req.method === 'DELETE') {
@@ -40,3 +41,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 }
+
+export default withAuth(handler);

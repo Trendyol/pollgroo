@@ -10,7 +10,7 @@ export const GroomingWaitingInfo = () => {
 
   return (
     <div className="flex flex-col items-center justify-center py-7 gap-y-5">
-      <Typography element="h4" color="gray" size="xxl" weight="semibold">
+      <Typography element="h4" color="gray" size="xxl" weight="semibold" className='text-center'>
         {team?.name}
       </Typography>
       <IconClock className="text-primary w-7 h-7 lg:w-14 lg:h-14" />

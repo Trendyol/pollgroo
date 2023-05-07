@@ -15,7 +15,7 @@ export const Navigation = ({ logoUrl }: IProps) => {
   const router = useRouter();
   const { pathname } = router;
 
-  const navClass = classNames('fixed w-full', { 'h-screen': show }, 'lg:h-screen lg:w-72');
+  const navClass = classNames('fixed z-[60] w-full', { 'h-screen': show }, 'lg:h-screen lg:w-72');
   const navBrandClass = classNames(
     'fixed z-50 w-full flex bg-lightblue border-lightgray justify-between items-center px-5 py-4 lg:py-8',
     'lg:items-center lg:justify-center lg:relative lg:border-none',
@@ -31,6 +31,17 @@ export const Navigation = ({ logoUrl }: IProps) => {
   const toggleMenu = () => {
     setShow(!show);
   };
+
+  React.useEffect(() => {
+    if (show) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [show]);
 
   return (
     <>

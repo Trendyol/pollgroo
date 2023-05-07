@@ -45,13 +45,24 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await connectToDatabase();
 
-      const game = await Game.findById(gameId).populate(['tasks','team']);
+      const game = await Game.findById(gameId).populate(['tasks', 'team']);
 
       if (!game) {
         return res.status(404).json({ message: 'Game not found' });
       }
 
       res.status(200).json(game.tasks);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  } else if (req.method === 'PATCH') {
+    try {
+      await connectToDatabase();
+      const { taskId } = req.body;
+
+      await Game.findByIdAndUpdate(gameId, { $pull: { tasks: taskId } }, { new: true });
+
+      return res.status(200).json({ message: 'Task removed successfully' });
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }

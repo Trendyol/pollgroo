@@ -5,7 +5,7 @@ import { TeamsPage } from 'ui';
 import { TeamsContextProvider } from 'contexts';
 import Head from 'next/head';
 
-export default function Games({ data, errorMessage }: any) {
+export default function Teams({ data, errorMessage }: any) {
   return (
     <>
       <Head>

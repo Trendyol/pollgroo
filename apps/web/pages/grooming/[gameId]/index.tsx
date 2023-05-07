@@ -4,6 +4,8 @@ import { GetServerSidePropsContext } from 'next';
 import { getHostUrl } from '../../../helpers/getHostUrl';
 import { GroomingPage } from 'ui';
 import { GroomingContextProvider } from 'contexts';
+import Head from 'next/head';
+import { GroomingData } from '@/types/common';
 
 interface IProps {
   data: GroomingData;
@@ -11,9 +13,17 @@ interface IProps {
 
 export default function Grooming({ data }: IProps) {
   return (
-    <GroomingContextProvider data={data}>
-      <GroomingPage logoUrl="/logo/pollgroo3.svg" />
-    </GroomingContextProvider>
+    <>
+      <Head>
+        <title>Pollgroo - Grooming</title>
+        <meta name="description" content="Pollgroo" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <GroomingContextProvider data={data}>
+        <GroomingPage logoUrl="/logo/pollgroo3.svg" />
+      </GroomingContextProvider>
+    </>
   );
 }
 
@@ -33,31 +43,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     console.log(err);
     return { props: { data: [] } };
   }
-}
-
-interface GroomingData {
-  _id: string;
-  title: string;
-  isStarted: boolean;
-  tasks: Task[];
-  team: {
-    _id: string;
-    name: string;
-    members: string[];
-    tasks: string[];
-    games: string[];
-    createdAt: string;
-    updatedAt: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Task {
-  description: string;
-  gameId?: string;
-  metrics?: { maxPoint: number; minPoint: number; name: string; _id: string }[];
-  score?: number;
-  title: string;
-  _id: string;
 }

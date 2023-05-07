@@ -17,7 +17,7 @@ export const Modal = ({ show, onClose, title, children }: IProp) => {
     'lg:bg-white lg:justify-between lg:px-6 lg:pt-10 lg:border-b-0'
   );
   const modalClass = classNames(
-    'fixed top-0 min-h-screen w-full bg-white transition-all duration-500 translate-y-full z-50',
+    'fixed top-0 min-h-screen w-full bg-white transition-all duration-500 translate-y-full z-[100]',
     'lg:translate-y-0 lg:translate-x-full lg:w-1/3 lg:right-0'
   );
   const closeIconClass = classNames(
@@ -59,7 +59,7 @@ export const Modal = ({ show, onClose, title, children }: IProp) => {
       }}
       unmountOnExit
     >
-      <div data-testid="modal-overlay" className="lg:fixed lg:inset-0 lg:bg-black/50 z-50" onClick={handleClose}>
+      <div data-testid="modal-overlay" className="lg:fixed lg:inset-0 lg:bg-black/50 z-[90]" onClick={handleClose}>
         <div ref={nodeRef} className={modalClass} onClick={onModalClick}>
           <header className={headerClass}>
             <Typography element="h4" size="md" weight="bold">

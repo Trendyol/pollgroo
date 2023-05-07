@@ -13,18 +13,40 @@ type GameContextValuesType = {
 interface TeamData {
   _id: string;
   name: string;
-  members: string[];
-  tasks: string[];
+  members: UserData[];
+  tasks: Task[];
   games: string[];
   createdAt: string;
   updatedAt: string;
+  totalMembers?: number;
+  badgeMembers?: UserData[];
+}
+
+interface Task {
+  description: string;
+  gameId: string;
+  teamId: string;
+  metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
+  score: number;
+  title: string;
+  _id: string;
+}
+interface UserData {
+  _id: string;
+  fullname: string;
+  email: string;
+  password: string;
+  teams: TeamData[];
+  profileCircleBackgroundColor: string;
+  profileCircleTextColor: string;
+  profileCircleText: string;
 }
 
 interface GameCardData {
   _id: string;
   title: string;
   isStarted: boolean;
-  tasks: string[];
+  tasks: Task[];
   team: TeamData;
   createdAt: string;
   updatedAt: string;
@@ -40,7 +62,7 @@ export const GameContextProvider: React.FC<{ children: ReactNode; data: GameCard
   useEffect(() => {
     const getTeamData = async () => {
       try {
-        const res = await axios.get('api/teams/get-teams');
+        const res = await axios.get('api/teams/user-teams');
         setTeamData(res.data.teams);
       } catch (err) {}
     };

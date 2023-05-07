@@ -2,6 +2,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { SubNavigation } from '@/organisms';
 
+jest.mock('@/organisms/SubNavigationProfileMenu', () => ({
+  SubNavigationProfileMenu: jest.fn(({ children }) => <div id="SubNavigationProfileMenu">{children}</div>),
+}));
+
 describe('<SubNavigation /> specs', () => {
   it('renders sub navigation text', () => {
     const subNavigationText = 'Some text';

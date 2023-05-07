@@ -34,9 +34,9 @@ export const AddTaskToGroomingForm = () => {
   });
 
   const submitHandler = async (data: FormValues) => {
+    setShowAddTaskToGameModal(false);
     await addTaskToTheGrooming(data.taskTitle, data.taskDescription, gameId);
     await getGroomingTasks(gameId);
-    setShowAddTaskToGameModal(false);
   };
 
   const handleBlur = (fieldName: InputName) => {
@@ -83,7 +83,7 @@ export const AddTaskToGroomingForm = () => {
 
   return (
     <form
-      id="createGameForm"
+      id="addTaskToGroomingForm"
       className="flex flex-col h-full items-center gap-y-7 pt-4 px-5"
       onSubmit={handleSubmit(submitHandler)}
     >

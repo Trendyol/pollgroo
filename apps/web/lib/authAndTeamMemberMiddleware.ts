@@ -18,12 +18,18 @@ export const withAuthAndTeamMember =
       }
 
       const userId = session.user.id;
-      const team = await Team.findById(teamId).lean().exec();
+      const team = await Team.findOne({
+        _id: teamId,
+        members: {
+          $in: [userId],
+        },
+      }).exec();
 
-      if (team.members.includes(userId)) {
+      if (!team) {
         return res.status(403).json({ message: 'You are not a member of this team' });
       }
 
+      req.userId = userId;
       return handler(req, res);
     } catch (error) {
       res.status(500).json({ message: 'Internal Server Error' });

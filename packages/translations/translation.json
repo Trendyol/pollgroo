@@ -29,6 +29,10 @@
     "SAVE": "Save",
     "START": "Start",
     "JOIN": "Join",
-    "TEAM_MEMBERS": "Team Members:"
+    "TEAM_MEMBERS": "Team Members:",
+    "BACKLOG": "Backlog",
+    "DELETE": "Delete",
+    "REMOVE": "Remove",
+    "LOGOUT": "Logout"
   }
 }

@@ -4,6 +4,8 @@ import { GetServerSidePropsContext } from 'next';
 import { getHostUrl } from '../../../helpers/getHostUrl';
 import { TeamPage } from 'ui';
 import { TeamContextProvider } from 'contexts';
+import Head from 'next/head';
+import { TeamData } from '@/types/common';
 
 interface IProps {
   data: TeamData;
@@ -11,9 +13,17 @@ interface IProps {
 
 export default function Team({ data }: IProps) {
   return (
-    <TeamContextProvider data={data}>
-      <TeamPage logoUrl="/logo/pollgroo3.svg" />
-    </TeamContextProvider>
+    <>
+      <Head>
+        <title>Pollgroo - Team</title>
+        <meta name="description" content="Pollgroo" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <TeamContextProvider data={data}>
+        <TeamPage logoUrl="/logo/pollgroo3.svg" />
+      </TeamContextProvider>
+    </>
   );
 }
 
@@ -33,14 +43,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     console.log(err);
     return { props: { data: [] } };
   }
-}
-
-interface TeamData {
-  _id: string;
-  name: string;
-  members: string[];
-  tasks: string[];
-  games: string[];
-  createdAt: string;
-  updatedAt: string;
 }

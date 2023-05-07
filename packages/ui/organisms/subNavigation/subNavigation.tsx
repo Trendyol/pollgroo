@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconChevronLeft } from '@tabler/icons-react';
 import { Typography } from '../../atoms';
-import { SubNavigationProfileMenu } from '../subNavigationProfileMenu';
+import { SubNavigationProfileMenu } from '../../organisms';
 
 export interface IProps {
   subNavigationText: string;
