@@ -5,3 +5,4 @@ export { LabeledDropdown } from './labeledDropdown';
 export { Modal } from './modal';
 export { ProfileCircle } from './profileCircle';
 export { Loader } from './loader';
+export { EmptyPageWarningBox } from './emptyPageWarningBox';

@@ -33,6 +33,7 @@
     "BACKLOG": "Backlog",
     "DELETE": "Delete",
     "REMOVE": "Remove",
-    "LOGOUT": "Logout"
+    "LOGOUT": "Logout",
+    "DASHBOARD_WARNING_TEXT": "You don't have any upcoming game"
   }
 }
