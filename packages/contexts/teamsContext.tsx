@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useMemo, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useMemo, useState, ReactNode, useCallback } from 'react';
 import axios from 'axios';
+import { useApp } from './appContext';
 
 type TeamsContextValuesType = {
   teams: TeamData[];
@@ -55,30 +56,42 @@ const TeamsContext = createContext({} as TeamsContextValuesType);
 export const TeamsContextProvider: React.FC<{ children: ReactNode; data: TeamData[] }> = ({ children, data }) => {
   const [teams, setTeams] = useState(data);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
+  const { setShowLoader } = useApp();
 
-  const postCreateTeamData = async (title: string) => {
-    try {
-      await axios.post('/api/teams/create-team', {
-        name: title,
-      });
-    } catch (err) {}
-  };
+  const postCreateTeamData = useCallback(
+    async (title: string) => {
+      try {
+        await axios.post('/api/teams/create-team', {
+          name: title,
+        });
+      } catch (err) {
+        setShowLoader(false);
+      }
+    },
+    [setShowLoader]
+  );
 
-  const getTeams = async () => {
+  const getTeams = useCallback(async () => {
     try {
       const res = await axios.get('/api/teams/get-teams');
       setTeams(res.data.teams);
-    } catch (err) {}
-  };
-
-  const joinTeam = async (teamId: string): Promise<JoinTeamReturnModel> => {
-    try {
-      const res = await axios.patch<JoinTeamReturnModel>(`/api/teams/${teamId}/join`);
-      return res.data;
-    } catch (err: any) {
-      return { success: false, message: err.message };
+    } catch (err) {
+      setShowLoader(false);
     }
-  };
+  }, [setShowLoader]);
+
+  const joinTeam = useCallback(
+    async (teamId: string): Promise<JoinTeamReturnModel> => {
+      try {
+        const res = await axios.patch<JoinTeamReturnModel>(`/api/teams/${teamId}/join`);
+        return res.data;
+      } catch (err: any) {
+        setShowLoader(false);
+        return { success: false, message: err.message };
+      }
+    },
+    [setShowLoader]
+  );
 
   const values = useMemo(
     () => ({
@@ -90,7 +103,7 @@ export const TeamsContextProvider: React.FC<{ children: ReactNode; data: TeamDat
       postCreateTeamData,
       joinTeam,
     }),
-    [teams, setTeams, showCreateTeamModal, setShowCreateTeamModal]
+    [teams, setTeams, showCreateTeamModal, setShowCreateTeamModal, getTeams, joinTeam, postCreateTeamData]
   );
   return <TeamsContext.Provider value={values}>{children}</TeamsContext.Provider>;
 };

@@ -14,13 +14,13 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       const user: IUser | null = await User.findById(userId);
 
       if(!user?.teams.length) {
-        res.status(403).json({ message: "You don't have any team. Join a team first."})
+        return res.status(403).json({ message: "You don't have any team. Join a team first."})
       }
 
       const games = await Game.find({ team: { $in: user?.teams } }).populate('team');
 
       if (!games) {
-        res.status(404).json({ message: 'No Game Found' });
+        return res.status(404).json({ message: 'No Game Found' });
       }
       
       res.status(200).json(games);

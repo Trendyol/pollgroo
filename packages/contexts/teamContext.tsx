@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo, useState, useCallback, ReactNode } from 'react';
 import axios from 'axios';
+import { useApp } from './appContext';
 
 type TeamContextValuesType = {
   team: TeamData;
@@ -75,40 +76,41 @@ export const TeamContextProvider: React.FC<{ children: ReactNode; data: TeamData
   const [showEditTeamTaskModal, setShowEditTeamTaskModal] = useState(false);
   const [showEditTeamModal, setShowEditTeamModal] = useState(false);
   const [selectTeamToEdit, setSelectTeamToEdit] = useState({} as EditTeamPayload);
+  const { setShowLoader } = useApp();
 
-  const getTeamTasks = async (teamId: string) => {
-    try {
-      const res = await axios.get(`/api/teams/${teamId}/tasks`);
-      setTasks(res.data.tasks);
-    } catch (err) {}
-  };
+  const getTeamTasks = useCallback(
+    async (teamId: string) => {
+      try {
+        const res = await axios.get(`/api/teams/${teamId}/tasks`);
+        setTasks(res.data.tasks);
+      } catch (err) {
+        setShowLoader(false);
+      }
+    },
+    [setShowLoader]
+  );
 
   const editTeamTask = useCallback(
     async (title: string, description: string) => {
       try {
-        const res = await axios.patch(`/api/tasks/${selectTeamTaskToEdit._id}`, {
+        await axios.patch(`/api/tasks/${selectTeamTaskToEdit._id}`, {
           title,
           description,
         });
-        const theTaskBeforeEdit = tasks.find((task: Task) => task._id === selectTeamTaskToEdit._id);
-        const theTaskIndexBeforeEdit = tasks.findIndex((task: Task) => task._id === selectTeamTaskToEdit._id);
-        if (theTaskBeforeEdit) {
-          theTaskBeforeEdit.title = res.data.title;
-          theTaskBeforeEdit.description = res.data.description;
-          tasks[theTaskIndexBeforeEdit] = theTaskBeforeEdit;
-        }
-
-        setTasks(tasks);
-      } catch (err) {}
+      } catch (err) {
+        setShowLoader(false);
+      }
     },
-    [tasks, selectTeamTaskToEdit]
+    [selectTeamTaskToEdit, setShowLoader]
   );
 
   const deleteTeamTask = useCallback(async () => {
     try {
       await axios.delete(`/api/tasks/${selectTeamTaskToEdit._id}`);
-    } catch (err) {}
-  }, [selectTeamTaskToEdit]);
+    } catch (err) {
+      setShowLoader(false);
+    }
+  }, [selectTeamTaskToEdit, setShowLoader]);
 
   const editTeam = useCallback(
     async (name: string) => {
@@ -116,23 +118,29 @@ export const TeamContextProvider: React.FC<{ children: ReactNode; data: TeamData
         await axios.patch(`/api/teams/${team._id}`, {
           name,
         });
-      } catch (err) {}
+      } catch (err) {
+        setShowLoader(false);
+      }
     },
-    [team]
+    [team, setShowLoader]
   );
 
   const deleteTeam = useCallback(async () => {
     try {
       await axios.delete(`/api/teams/${team._id}`);
-    } catch (err) {}
-  }, [team]);
+    } catch (err) {
+      setShowLoader(false);
+    }
+  }, [team, setShowLoader]);
 
   const getTeam = useCallback(async () => {
     try {
       const res = await axios.get(`/api/teams/${team._id}`, {});
       setTeam(res.data.team);
-    } catch (err) {}
-  }, [team]);
+    } catch (err) {
+      setShowLoader(false);
+    }
+  }, [team, setShowLoader]);
 
   const values = useMemo(
     () => ({
@@ -171,6 +179,7 @@ export const TeamContextProvider: React.FC<{ children: ReactNode; data: TeamData
       selectTeamToEdit,
       setSelectTeamToEdit,
       getTeam,
+      getTeamTasks,
     ]
   );
   return <TeamContext.Provider value={values}>{children}</TeamContext.Provider>;

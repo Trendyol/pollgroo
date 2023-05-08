@@ -5,7 +5,7 @@ import { Button } from '../../atoms';
 import { LabeledInput } from '../../molecules';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useGrooming } from 'contexts';
+import { useApp, useGrooming } from 'contexts';
 
 interface FormValues {
   taskTitle: string;
@@ -16,6 +16,7 @@ type InputName = 'taskTitle' | 'taskDescription';
 
 export const AddTaskToGroomingForm = () => {
   const { groomingData, addTaskToTheGrooming, getGroomingTasks, setShowAddTaskToGameModal } = useGrooming()
+  const { setShowLoader } = useApp()
   const gameId = groomingData._id;
 
   const schema = yup.object().shape({
@@ -34,9 +35,11 @@ export const AddTaskToGroomingForm = () => {
   });
 
   const submitHandler = async (data: FormValues) => {
+    setShowLoader(true);
     setShowAddTaskToGameModal(false);
     await addTaskToTheGrooming(data.taskTitle, data.taskDescription, gameId);
     await getGroomingTasks(gameId);
+    setShowLoader(false);
   };
 
   const handleBlur = (fieldName: InputName) => {

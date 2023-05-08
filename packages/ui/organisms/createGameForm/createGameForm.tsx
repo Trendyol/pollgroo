@@ -5,7 +5,7 @@ import { Button } from '../../atoms';
 import { LabeledDropdown, LabeledInput } from '../../molecules';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useGame } from 'contexts';
+import { useApp, useGame } from 'contexts';
 import { TeamData } from '../../interfaces';
 
 interface FormValues {
@@ -17,6 +17,8 @@ type InputName = 'gameTitle' | 'teamDropdown';
 
 export const CreateGameForm = () => {
   const { setShowCreateGameModal, teamData, getGameCardData, postCreateGameData } = useGame();
+  const { setShowLoader } = useApp();
+
   const schema = yup.object().shape({
     gameTitle: yup.string().required(),
     teamDropdown: yup.string().required(),
@@ -33,13 +35,15 @@ export const CreateGameForm = () => {
   });
 
   const submitHandler = async (data: FormValues) => {
+    setShowCreateGameModal(false);
+    setShowLoader(true);
     const selectedTeamId = teamData.find((team: TeamData) => data.teamDropdown === team.name)?._id;
     const title = data.gameTitle;
     if (selectedTeamId) {
       await postCreateGameData(title, selectedTeamId);
     }
-    setShowCreateGameModal(false);
     await getGameCardData();
+    setShowLoader(false);
   };
 
   const handleBlur = (fieldName: InputName) => {

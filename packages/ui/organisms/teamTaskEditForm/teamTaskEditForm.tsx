@@ -5,7 +5,7 @@ import { Button } from '../../atoms';
 import { LabeledInput } from '../../molecules';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useTeam } from 'contexts';
+import { useApp, useTeam } from 'contexts';
 
 interface FormValues {
   taskTitle: string;
@@ -16,6 +16,7 @@ type InputName = 'taskTitle' | 'taskDescription';
 
 export const TeamTaskEditForm = () => {
   const { editTeamTask, setShowEditTeamTaskModal, selectTeamTaskToEdit, getTeamTasks, deleteTeamTask } = useTeam();
+  const { setShowLoader } = useApp();
 
   const schema = yup.object().shape({
     taskTitle: yup.string().required(),
@@ -34,14 +35,18 @@ export const TeamTaskEditForm = () => {
 
   const submitHandler = async (data: FormValues) => {
     setShowEditTeamTaskModal(false);
+    setShowLoader(true);
     await editTeamTask(data.taskTitle, data.taskDescription);
     await getTeamTasks(selectTeamTaskToEdit.teamId);
+    setShowLoader(false);
   };
 
   const handleDelete = async () => {
     setShowEditTeamTaskModal(false);
+    setShowLoader(true);
     await deleteTeamTask();
     await getTeamTasks(selectTeamTaskToEdit.teamId);
+    setShowLoader(false);
   };
 
   const handleBlur = (fieldName: InputName) => {

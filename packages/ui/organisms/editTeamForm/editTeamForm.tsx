@@ -5,7 +5,7 @@ import { Button } from '../../atoms';
 import { LabeledInput } from '../../molecules';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useTeam } from 'contexts';
+import { useApp, useTeam } from 'contexts';
 import { useRouter } from 'next/router';
 
 interface FormValues {
@@ -16,6 +16,7 @@ type InputName = 'teamName';
 
 export const EditTeamForm = () => {
   const { setShowEditTeamModal, team, getTeam, deleteTeam, editTeam } = useTeam();
+  const { setShowLoader } = useApp();
   const router = useRouter();
 
   const schema = yup.object().shape({
@@ -34,13 +35,17 @@ export const EditTeamForm = () => {
 
   const submitHandler = async (data: FormValues) => {
     setShowEditTeamModal(false);
+    setShowLoader(true);
     await editTeam(data.teamName);
     await getTeam();
+    setShowLoader(false);
   };
 
   const handleDelete = async () => {
     setShowEditTeamModal(false);
+    setShowLoader(true);
     await deleteTeam();
+    setShowLoader(false);
     router.push('/teams');
   };
 

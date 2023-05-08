@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useMemo, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useMemo, useState, useEffect, ReactNode, useCallback } from 'react';
 import axios from 'axios';
+import { useApp } from './appContext';
 
 type GameContextValuesType = {
   showCreateGameModal: boolean;
@@ -58,34 +59,44 @@ export const GameContextProvider: React.FC<{ children: ReactNode; data: GameCard
   const [showCreateGameModal, setShowCreateGameModal] = useState(false);
   const [gameCardData, setGameCardData] = useState(data);
   const [teamData, setTeamData] = useState([] as TeamData[]);
+  const { setShowLoader } = useApp();
 
   useEffect(() => {
     const getTeamData = async () => {
       try {
         const res = await axios.get('api/teams/user-teams');
         setTeamData(res.data.teams);
-      } catch (err) {}
+      } catch (err) {
+        setShowLoader(false);
+      }
     };
     if (showCreateGameModal && !Object.keys(teamData).length) {
       getTeamData();
     }
-  }, [showCreateGameModal, teamData]);
+  }, [showCreateGameModal, teamData, setShowLoader]);
 
-  const postCreateGameData = async (title: string, teamId: string) => {
-    try {
-      await axios.post('api/games/create-game', {
-        teamId,
-        title,
-      });
-    } catch (err) {}
-  };
+  const postCreateGameData = useCallback(
+    async (title: string, teamId: string) => {
+      try {
+        await axios.post('api/games/create-game', {
+          teamId,
+          title,
+        });
+      } catch (err) {
+        setShowLoader(false);
+      }
+    },
+    [setShowLoader]
+  );
 
-  const getGameCardData = async () => {
+  const getGameCardData = useCallback(async () => {
     try {
       const res = await axios.get('api/games/get-games');
       setGameCardData(res.data);
-    } catch (err) {}
-  };
+    } catch (err) {
+      setShowLoader(false);
+    }
+  }, [setShowLoader]);
 
   const values = useMemo(
     () => ({
@@ -96,7 +107,7 @@ export const GameContextProvider: React.FC<{ children: ReactNode; data: GameCard
       postCreateGameData,
       teamData,
     }),
-    [showCreateGameModal, setShowCreateGameModal, gameCardData, teamData]
+    [showCreateGameModal, setShowCreateGameModal, gameCardData, teamData, getGameCardData, postCreateGameData]
   );
   return <GameContext.Provider value={values}>{children}</GameContext.Provider>;
 };

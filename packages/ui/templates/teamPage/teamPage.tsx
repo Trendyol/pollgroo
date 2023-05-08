@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useTeam } from 'contexts';
+import { useApp, useTeam } from 'contexts';
 import { NavigationLayout } from '../../layouts';
 import { EditTeamModal, MembersModal, TeamSettingsBox, TeamTaskEditModal, TeamTasksBoard } from '../../organisms';
+import { Loader } from '../../molecules';
 
 interface IProps {
   logoUrl: string;
@@ -10,6 +11,7 @@ interface IProps {
 export const TeamPage = ({ logoUrl }: IProps) => {
   const [showMembersModal, setShowMembersModal] = useState(false);
   const { team } = useTeam();
+  const { showLoader } = useApp();
 
   return (
     <NavigationLayout logoUrl={logoUrl} subNavigationText={team.name}>
@@ -20,6 +22,7 @@ export const TeamPage = ({ logoUrl }: IProps) => {
       <MembersModal show={showMembersModal} setShow={setShowMembersModal} members={team.members} />
       <TeamTaskEditModal />
       <EditTeamModal />
+      <Loader active={showLoader} />
     </NavigationLayout>
   );
 };

@@ -5,7 +5,7 @@ import { Button } from '../../atoms';
 import { LabeledInput } from '../../molecules';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useTeams } from 'contexts';
+import { useApp, useTeams } from 'contexts';
 
 interface FormValues {
   teamTitle: string;
@@ -15,6 +15,7 @@ type InputName = 'teamTitle';
 
 export const CreateTeamForm = () => {
   const { postCreateTeamData, getTeams, setShowCreateTeamModal } = useTeams();
+  const { setShowLoader } = useApp();
   const schema = yup.object().shape({
     teamTitle: yup.string().required(),
   });
@@ -31,8 +32,10 @@ export const CreateTeamForm = () => {
 
   const submitHandler = async (data: FormValues) => {
     setShowCreateTeamModal(false);
+    setShowLoader(true);
     await postCreateTeamData(data.teamTitle);
     await getTeams();
+    setShowLoader(false);
   };
 
   const handleBlur = (fieldName: InputName) => {

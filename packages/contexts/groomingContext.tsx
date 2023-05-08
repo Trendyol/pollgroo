@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useCallback, useMemo, useState, ReactNode } from 'react';
 import axios from 'axios';
+import { useApp } from './appContext';
 
 type GroomingContextValuesType = {
   groomingData: GroomingData;
@@ -54,27 +55,38 @@ interface Task {
 const GroomingContext = createContext({} as GroomingContextValuesType);
 
 export const GroomingContextProvider: React.FC<{ children: ReactNode; data: GroomingData }> = ({ children, data }) => {
+  const { setShowLoader } = useApp();
   const [groomingData, setGroomingData] = useState(data);
   const [tasks, setTasks] = useState(data.tasks);
   const [showAddTaskToGameModal, setShowAddTaskToGameModal] = useState(false);
   const [showEditGroomingTaskModal, setShowEditGroomingTaskModal] = useState(false);
   const [selectedTaskToEdit, setSelectedTaskToEdit] = useState({} as EditTaskPayload);
 
-  const addTaskToTheGrooming = async (title: string, description: string, gameId: string) => {
-    try {
-      await axios.post(`/api/games/${gameId}/tasks`, {
-        title,
-        description,
-      });
-    } catch (err) {}
-  };
+  const addTaskToTheGrooming = useCallback(
+    async (title: string, description: string, gameId: string) => {
+      try {
+        await axios.post(`/api/games/${gameId}/tasks`, {
+          title,
+          description,
+        });
+      } catch (err) {
+        setShowLoader(false);
+      }
+    },
+    [setShowLoader]
+  );
 
-  const getGroomingTasks = async (gameId: string) => {
-    try {
-      const res = await axios.get(`/api/games/${gameId}/tasks`);
-      setTasks(res.data);
-    } catch (err) {}
-  };
+  const getGroomingTasks = useCallback(
+    async (gameId: string) => {
+      try {
+        const res = await axios.get(`/api/games/${gameId}/tasks`);
+        setTasks(res.data);
+      } catch (err) {
+        setShowLoader(false);
+      }
+    },
+    [setShowLoader]
+  );
 
   const editGroomingTask = useCallback(
     async (title: string, description: string) => {
@@ -83,9 +95,11 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
           title,
           description,
         });
-      } catch (err) {}
+      } catch (err) {
+        setShowLoader(false);
+      }
     },
-    [selectedTaskToEdit]
+    [selectedTaskToEdit, setShowLoader]
   );
 
   const removeGroomingTask = useCallback(
@@ -94,9 +108,11 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
         await axios.patch(`/api/games/${gameId}/tasks`, {
           taskId: selectedTaskToEdit._id,
         });
-      } catch (err) {}
+      } catch (err) {
+        setShowLoader(false);
+      }
     },
-    [selectedTaskToEdit]
+    [selectedTaskToEdit, setShowLoader]
   );
 
   const values = useMemo(
@@ -125,6 +141,8 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       setSelectedTaskToEdit,
       editGroomingTask,
       removeGroomingTask,
+      addTaskToTheGrooming,
+      getGroomingTasks,
     ]
   );
   return <GroomingContext.Provider value={values}>{children}</GroomingContext.Provider>;

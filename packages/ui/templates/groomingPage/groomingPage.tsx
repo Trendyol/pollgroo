@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationLayout } from '../../layouts';
-import { useGrooming } from 'contexts';
+import { useApp, useGrooming } from 'contexts';
 import {
   GroomingTasks,
   GroomingWaitingInfo,
@@ -8,6 +8,7 @@ import {
   EditGroomingTaskModal,
   StickyGroomingBottomBox,
 } from '../../organisms';
+import { Loader } from '../../molecules';
 
 export interface IProps {
   logoUrl: string;
@@ -15,6 +16,7 @@ export interface IProps {
 
 export const GroomingPage = ({ logoUrl }: IProps) => {
   const { groomingData } = useGrooming();
+  const { showLoader } = useApp();
 
   return (
     <NavigationLayout logoUrl={logoUrl} subNavigationText={groomingData.title}>
@@ -25,6 +27,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       <AddTaskToGroomingModal />
       <EditGroomingTaskModal />
       <StickyGroomingBottomBox />
+      <Loader active={showLoader} />
     </NavigationLayout>
   );
 };

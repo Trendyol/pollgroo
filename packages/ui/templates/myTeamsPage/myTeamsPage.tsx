@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavigationLayout } from '../../layouts';
-import { useTeams } from 'contexts';
+import { useApp, useTeams } from 'contexts';
 import { CreateTeamModal, TeamCard } from '../../organisms';
 import { TeamData, UserData } from '../../interfaces';
 import { Button } from '../../atoms';
 import translate from 'translations';
+import { Loader } from '../../molecules';
 
 interface IProps {
   logoUrl: string;
@@ -17,13 +18,14 @@ interface ExtendedTeamData extends TeamData {
 
 export const MyTeamsPage = ({ logoUrl }: IProps) => {
   const { teams, setShowCreateTeamModal } = useTeams();
+  const { showLoader } = useApp();
 
   const handleCreateClick = () => {
     setShowCreateTeamModal(true);
   };
 
   return (
-    <NavigationLayout logoUrl={logoUrl} subNavigationText="Teams">
+    <NavigationLayout logoUrl={logoUrl} subNavigationText="My Teams">
       <div className="px-6 py-10 lg:px-20">
         <Button className="ml-auto block" variant="text" onClick={handleCreateClick}>
           {translate('CREATE_PLUS')}
@@ -43,6 +45,7 @@ export const MyTeamsPage = ({ logoUrl }: IProps) => {
         </div>
       </div>
       <CreateTeamModal />
+      <Loader active={showLoader} />
     </NavigationLayout>
   );
 };

@@ -3,8 +3,9 @@ import { NavigationLayout } from '../../layouts';
 import { GameCardData } from '../../interfaces';
 import { GameCard, CreateGameModal } from '../../organisms';
 import { Button } from '../../atoms';
-import { useGame } from 'contexts';
+import { useApp, useGame } from 'contexts';
 import translate from 'translations';
+import { Loader } from '../../molecules';
 
 export interface IProps {
   logoUrl: string;
@@ -12,6 +13,7 @@ export interface IProps {
 
 export const GamesPage = ({ logoUrl }: IProps) => {
   const { gameCardData, setShowCreateGameModal } = useGame();
+  const { showLoader } = useApp();
 
   const handleCreateClick = () => {
     setShowCreateGameModal(true);
@@ -30,6 +32,7 @@ export const GamesPage = ({ logoUrl }: IProps) => {
         </div>
       </div>
       <CreateGameModal />
+      <Loader active={showLoader} />
     </NavigationLayout>
   );
 };
