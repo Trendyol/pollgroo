@@ -1,12 +1,18 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Login from '../../pages/login/index';
+import Login from '@/pages/login';
 import * as nextRouter from 'next/router';
+import * as AppContext from 'contexts/appContext';
+
+jest.mock('contexts/appContext', () => ({
+  useApp: jest.fn().mockReturnValue(() => ({ setShowLoader: jest.fn() }))
+}));
 
 jest.mock('@/helpers/loginUser', () => {
   return jest.fn().mockResolvedValue({ ok: true });
 });
 
 jest.mock('@/../../packages/ui', () => ({
+  Loader: jest.fn(() => <div data-testid="loader"></div>),
   AuthPage: jest.fn(({ logoUrl, type, onSubmit }: any) => {
     const handleSubmit = (event: any) => {
       event.preventDefault();
@@ -29,10 +35,16 @@ jest.mock('@/../../packages/ui', () => ({
 
 describe('<Login /> specs', () => {
   let routerPush: any;
-  let exampleUrl = "example.url"
+  let exampleUrl = "example.url";
+  let setShowLoader: any;
+
   beforeEach(() => {
     routerPush = jest.fn();
+    setShowLoader = jest.fn();
     jest.spyOn(nextRouter, 'useRouter').mockImplementation(() => ({ push: routerPush, query: { callbackUrl: exampleUrl} } as any));
+    jest.spyOn(AppContext, 'useApp').mockReturnValue({
+      setShowLoader,
+    } as any);
   });
 
   afterEach(() => {

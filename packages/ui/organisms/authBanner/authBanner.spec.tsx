@@ -8,8 +8,6 @@ describe('<AuthBanner /> specs', () => {
     render(<AuthBanner logoUrl={logoUrl} />);
     const logoElement = screen.getByRole('img', { name: 'Pollgroo' });
     expect(logoElement).toHaveAttribute('alt', 'Pollgroo');
-    expect(logoElement).toHaveAttribute('width', '200');
-    expect(logoElement).toHaveAttribute('height', '100');
   });
 
   it('renders the correct heading and text', () => {

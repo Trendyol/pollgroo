@@ -2,16 +2,19 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { CreateGameForm } from './createGameForm';
 import * as GameContext from 'contexts/gameContext';
+import * as AppContext from 'contexts/appContext';
 
 describe('<CreateGameForm /> specs', () => {
   let postCreateGameData: any;
   let setShowCreateGameModal: any;
   let getGameCardData: any;
   let teamOptions: any;
+  let setShowLoader: any;
   beforeEach(() => {
     postCreateGameData = jest.fn();
     setShowCreateGameModal = jest.fn();
     getGameCardData = jest.fn();
+    setShowLoader = jest.fn();
     teamOptions = [
       {
         _id: '12345',
@@ -27,6 +30,9 @@ describe('<CreateGameForm /> specs', () => {
       setShowCreateGameModal,
       getGameCardData,
       teamData: teamOptions
+    } as any);
+    jest.spyOn(AppContext, 'useApp').mockReturnValue({
+      setShowLoader
     } as any);
   });
 
@@ -49,6 +55,7 @@ describe('<CreateGameForm /> specs', () => {
     // assert
     await waitFor(() => expect(postCreateGameData).toHaveBeenCalledWith('Test Game', teamOptions[1]._id));
     await waitFor(() => expect(setShowCreateGameModal).toHaveBeenCalledWith(false));
+    await waitFor(() => expect(setShowLoader).toHaveBeenCalledWith(true));
     await waitFor(() => expect(getGameCardData).toHaveBeenCalled());
   });
 
