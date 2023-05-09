@@ -4,12 +4,22 @@ import { DashboardPage } from 'ui';
 import { GetServerSidePropsContext } from 'next';
 import { DashboardContextProvider } from 'contexts';
 import { getHostUrl } from '../../helpers/getHostUrl';
+import Head from 'next/head';
+import { GameCardData } from '@/types/common';
 
 export default function Dashboard({ data }: IProps) {
   return (
-    <DashboardContextProvider gameCardData={data}>
-      <DashboardPage logoUrl="/logo/pollgroo3.svg" />
-    </DashboardContextProvider>
+    <>
+      <Head>
+        <title>Pollgroo - Dashboard</title>
+        <meta name="description" content="Pollgroo" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <DashboardContextProvider gameCardData={data}>
+        <DashboardPage logoUrl="/logo/pollgroo3.svg" />
+      </DashboardContextProvider>
+    </>
   );
 }
 
@@ -27,24 +37,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   } catch (err) {
     return { props: { data: [] } };
   }
-}
-
-interface GameCardData {
-  _id: string;
-  title: string;
-  isStarted: boolean;
-  tasks: string[];
-  team: {
-    _id: string;
-    name: string;
-    members: string[];
-    tasks: string[];
-    games: string[];
-    createdAt: string;
-    updatedAt: string;
-  };
-  createdAt: string;
-  updatedAt: string;
 }
 
 interface IProps {

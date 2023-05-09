@@ -3,12 +3,22 @@ import { getHostUrl } from '../../helpers/getHostUrl';
 import { GameContextProvider } from 'contexts';
 import { GetServerSidePropsContext } from 'next';
 import { GamesPage } from 'ui';
+import Head from 'next/head';
+import { GameCardData } from '@/types/common';
 
-export default function Games({ data, errorMessage}: IProps) {
+export default function Games({ data, errorMessage }: IProps) {
   return (
-    <GameContextProvider data={data}>
-      <GamesPage logoUrl="/logo/pollgroo3.svg" />
-    </GameContextProvider>
+    <>
+      <Head>
+        <title>Pollgroo - Games</title>
+        <meta name="description" content="Pollgroo" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <GameContextProvider data={data}>
+        <GamesPage logoUrl="/logo/pollgroo3.svg" />
+      </GameContextProvider>
+    </>
   );
 }
 
@@ -26,24 +36,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   } catch (err: any) {
     return { props: { data: [], errorMessage: err.response.data.message } };
   }
-}
-
-interface GameCardData {
-  _id: string;
-  title: string;
-  isStarted: boolean;
-  tasks: string[];
-  team: {
-    _id: string;
-    name: string;
-    members: string[];
-    tasks: string[];
-    games: string[];
-    createdAt: string;
-    updatedAt: string;
-  };
-  createdAt: string;
-  updatedAt: string;
 }
 
 interface IProps {

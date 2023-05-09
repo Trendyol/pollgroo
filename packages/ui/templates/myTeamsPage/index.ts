@@ -1,0 +1,1 @@
+export { MyTeamsPage } from './myTeamsPage';

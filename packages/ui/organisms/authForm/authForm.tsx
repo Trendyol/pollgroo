@@ -101,7 +101,7 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
     <section id="authForm" className="h-full p-4 flex flex-col justify-between lg:flex-1">
       <form className="flex flex-col h-full items-center gap-y-8" onSubmit={handleSubmit(submitHandler)}> 
         <div className="w-full">
-          <Typography className="font-bold text-black" element="h4" size="xl">
+          <Typography className="font-bold text-black" element="h4" size="xxxl">
             {HeaderText[type]}
           </Typography>
           <Typography className="mt-2.5 text-gray" element="p">

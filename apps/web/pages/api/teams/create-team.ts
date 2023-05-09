@@ -1,24 +1,22 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import connectToDatabase from '@/lib/db';
 import Team from '../models/team';
 import User from '../models/user';
-import { getToken } from 'next-auth/jwt';
 import { withAuth } from '@/lib/authMiddleware';
+import { ExtendedNextApiRequest } from '../interfaces';
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const token = await getToken({ req });
-  const userId = token?.sub;
+async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       await connectToDatabase();
 
       const team = await Team.create({
         name: req.body.name,
-        members: [userId],
+        members: [req.userId],
       });
 
       await User.findByIdAndUpdate(
-        userId,
+        req.userId,
         { $push: { teams: team._id } }
       );
 

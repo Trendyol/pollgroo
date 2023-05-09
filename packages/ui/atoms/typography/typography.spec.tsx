@@ -9,8 +9,8 @@ describe('Typography', () => {
   });
 
   it('renders with the provided size and color', () => {
-    const { container } = render(<Typography element="div" size="xl" color="primary">Hello, world!</Typography>);
-    expect(container.firstChild).toHaveClass(TextSize.xl);
+    const { container } = render(<Typography element="div" size="xxxl" color="primary">Hello, world!</Typography>);
+    expect(container.firstChild).toHaveClass(TextSize.xxxl);
     expect(container.firstChild).toHaveClass(TextColor.primary);
   });
 

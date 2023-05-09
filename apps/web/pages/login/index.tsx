@@ -1,21 +1,40 @@
 import React from 'react';
-import { AuthPage, FormValues } from '@/../../packages/ui';
+import { AuthPage, FormValues, Loader } from 'ui';
 import { useRouter } from 'next/router';
 import loginUser from '@/helpers/loginUser';
+import Head from 'next/head';
+import { useApp } from 'contexts';
 
 const Login = () => {
   const router = useRouter();
-    
+  const { callbackUrl } = router.query;
+  const { showLoader, setShowLoader } = useApp();
+
   const handleSubmit = async (data: FormValues) => {
+    setShowLoader(true);
     try {
       const loginRes = await loginUser(data);
+      setShowLoader(false);
       if (loginRes?.ok) {
-        router.push('/dashboard');
+        router.push((callbackUrl as string) || '/dashboard');
       }
-    } catch (err) {}
+    } catch (err) {
+      setShowLoader(false);
+    }
   };
 
-  return <AuthPage logoUrl="/logo/pollgroo3.svg" type="login" onSubmit={handleSubmit}></AuthPage>;
+  return (
+    <>
+      <Head>
+        <title>Pollgroo - Login</title>
+        <meta name="description" content="Pollgroo" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <AuthPage logoUrl="/logo/pollgroo3.svg" type="login" onSubmit={handleSubmit}></AuthPage>
+      <Loader active={showLoader} />
+    </>
+  );
 };
 
 export default Login;

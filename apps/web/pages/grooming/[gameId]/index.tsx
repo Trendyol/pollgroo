@@ -2,16 +2,36 @@ import React from 'react';
 import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { getHostUrl } from '../../../helpers/getHostUrl';
+import { GroomingPage } from 'ui';
+import { GroomingContextProvider } from 'contexts';
+import Head from 'next/head';
+import { GroomingData } from '@/types/common';
 
-export default function Grooming({ data }: any) {
-  return <div>{JSON.stringify(data)}</div>;
+interface IProps {
+  data: GroomingData;
+}
+
+export default function Grooming({ data }: IProps) {
+  return (
+    <>
+      <Head>
+        <title>Pollgroo - Grooming</title>
+        <meta name="description" content="Pollgroo" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <GroomingContextProvider data={data}>
+        <GroomingPage logoUrl="/logo/pollgroo3.svg" />
+      </GroomingContextProvider>
+    </>
+  );
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const gameId = context.query.gameId;
   const hostUrl = getHostUrl(context.req.headers.host);
   try {
-    const res = await axios.get(`${hostUrl}/api/games/${gameId}/tasks`, {
+    const res = await axios.get(`${hostUrl}/api/games/${gameId}`, {
       headers: {
         cookie: context.req.headers.cookie,
       },

@@ -1,13 +1,12 @@
 import React from 'react';
+import translate from 'translations';
+import * as yup from 'yup';
 import { Button } from '../../atoms';
 import { LabeledDropdown, LabeledInput } from '../../molecules';
 import { useForm, Controller } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSession } from 'next-auth/react';
-import translate from 'translations';
-import { useGame } from 'contexts';
-import { ExtendedSession, TeamData } from '../../interfaces';
+import { useApp, useGame } from 'contexts';
+import { TeamData } from '../../interfaces';
 
 interface FormValues {
   gameTitle: string;
@@ -17,14 +16,13 @@ interface FormValues {
 type InputName = 'gameTitle' | 'teamDropdown';
 
 export const CreateGameForm = () => {
-  const { setShowCreateGameModal, getGameCardData, postCreateGameData } = useGame();
+  const { setShowCreateGameModal, teamData, getGameCardData, postCreateGameData } = useGame();
+  const { setShowLoader } = useApp();
+
   const schema = yup.object().shape({
     gameTitle: yup.string().required(),
     teamDropdown: yup.string().required(),
   });
-
-  const { data: session } = useSession();
-  const teams = (session as ExtendedSession).user.teams;
 
   const {
     control,
@@ -37,13 +35,15 @@ export const CreateGameForm = () => {
   });
 
   const submitHandler = async (data: FormValues) => {
-    const selectedTeamId = teams.find((team: TeamData) => data.teamDropdown === team.name)?._id;
+    setShowCreateGameModal(false);
+    setShowLoader(true);
+    const selectedTeamId = teamData.find((team: TeamData) => data.teamDropdown === team.name)?._id;
     const title = data.gameTitle;
     if (selectedTeamId) {
       await postCreateGameData(title, selectedTeamId);
     }
-    setShowCreateGameModal(false);
     await getGameCardData();
+    setShowLoader(false);
   };
 
   const handleBlur = (fieldName: InputName) => {
@@ -84,11 +84,16 @@ export const CreateGameForm = () => {
     // onBlur={() => handleBlur(name)} if needed they can be uncomment.
     // onFocus={() => handleFocus(name)}
     // error={!!errors[name]?.message}
+
+    if(!teamData || !teamData[0]) {
+      return null;
+    }
+    
     return (
       <Controller
         name={name}
         control={control}
-        defaultValue={teams[0].name}
+        defaultValue={teamData[0].name}
         render={({ field }) => (
           <LabeledDropdown
             className="w-full"
@@ -105,7 +110,7 @@ export const CreateGameForm = () => {
   };
 
   const renderFormElements = () => {
-    const options = teams.map((team: TeamData) => {
+    const options = teamData.map((team: TeamData) => {
       return { id: team._id, value: team.name };
     });
     return (

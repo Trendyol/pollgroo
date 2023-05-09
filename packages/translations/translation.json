@@ -20,6 +20,20 @@
     "BANNER_DESCRIPTION_TEXT": "Blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla.",
     "TASK": "Task",
     "CREATE": "Create",
-    "CREATE_PLUS": "Create +"
+    "CREATE_PLUS": "Create +",
+    "GAME_NOT_STARTED": "Game Not Started",
+    "PLAYERS_WAITING_INFO_TEXT": "Players waiting you to start the game...",
+    "GROOMING_TASKS": "Grooming Tasks",
+    "ADD": "Add",
+    "SELECT": "Select",
+    "SAVE": "Save",
+    "START": "Start",
+    "JOIN": "Join",
+    "TEAM_MEMBERS": "Team Members:",
+    "BACKLOG": "Backlog",
+    "DELETE": "Delete",
+    "REMOVE": "Remove",
+    "LOGOUT": "Logout",
+    "DASHBOARD_WARNING_TEXT": "You don't have any upcoming game"
   }
 }

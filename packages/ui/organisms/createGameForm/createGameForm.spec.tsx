@@ -2,15 +2,12 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { CreateGameForm } from './createGameForm';
 import * as GameContext from 'contexts/gameContext';
-import * as NextAuth from 'next-auth/react';
-
 
 describe('<CreateGameForm /> specs', () => {
   let postCreateGameData: any;
   let setShowCreateGameModal: any;
   let getGameCardData: any;
   let teamOptions: any;
-  let session: any;
   beforeEach(() => {
     postCreateGameData = jest.fn();
     setShowCreateGameModal = jest.fn();
@@ -25,18 +22,11 @@ describe('<CreateGameForm /> specs', () => {
         name: 'Disco',
       },
     ];
-    session = {
-      user: {
-        teams: teamOptions,
-      },
-    };
     jest.spyOn(GameContext, 'useGame').mockReturnValue({
       postCreateGameData,
       setShowCreateGameModal,
       getGameCardData,
-    } as any);
-    jest.spyOn(NextAuth, 'useSession').mockReturnValue({
-      data: session
+      teamData: teamOptions
     } as any);
   });
 
@@ -72,6 +62,23 @@ describe('<CreateGameForm /> specs', () => {
       gameTitleInput.blur();
     });
 
+    // assert
     await waitFor(() => expect(screen.getByText('gameTitle is a required field')).toBeInTheDocument());
+  });
+
+  it('should not render dropdown when there is no team data', async () => {
+    // assign
+    jest.spyOn(GameContext, 'useGame').mockReturnValue({
+      postCreateGameData,
+      setShowCreateGameModal,
+      getGameCardData,
+      teamData: []
+    } as any);
+    // act
+    render(<CreateGameForm />);
+    const teamDropdownInput = screen.queryByLabelText('Team');
+
+    // assert
+    expect(teamDropdownInput).not.toBeInTheDocument();
   });
 });

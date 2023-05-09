@@ -4,6 +4,7 @@ import User from '@/pages/api/models/user';
 import { hash } from 'bcryptjs';
 import { IUser } from '../interfaces';
 import mongoose from 'mongoose';
+import { calculateLuminance, generateRandomColor, getProfileCircleText, getTextColor } from '@/helpers/userProfile';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -13,6 +14,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!req.body) return res.status(400).json({ error: 'Body is missing' });
 
   const { email, fullname, password } = req.body;
+
+  const randomColor = generateRandomColor();
+  const luminance = calculateLuminance(randomColor);
+  const textColor = getTextColor(luminance);
+  const profileCircleText = getProfileCircleText(fullname);
 
   if (!email || !fullname || !password) {
     return res.status(400).json({ message: 'Email, full name, and password are required' });
@@ -30,12 +36,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (password.length < 8) return res.status(409).json({ error: 'Password should be more than 8 characters long' });
 
     const hashedPassword = await hash(password, 12);
-    await User.create({ email, fullname, password: hashedPassword })
+    await User.create({
+      email,
+      fullname,
+      password: hashedPassword,
+      profileCircleBackgroundColor: randomColor,
+      profileCircleTextColor: textColor,
+      profileCircleText,
+    })
       .then((user: IUser) => {
         const userDto = {
           userId: user._id,
           email: user.email,
           fullname: user.fullname,
+          profileCircleBackgroundColor: user.profileCircleBackgroundColor,
+          profileCircleTextColor: user.profileCircleTextColor,
+          profileCircleText: user.profileCircleText,
         };
 
         res.status(201).json({ user: userDto });

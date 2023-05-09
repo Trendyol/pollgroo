@@ -4,12 +4,12 @@ export interface GameCardData {
   _id: string;
   title: string;
   isStarted: boolean;
-  tasks: string[];
+  tasks: Task[];
   team: {
     _id: string;
     name: string;
-    members: string[];
-    tasks: string[];
+    members: UserData[];
+    tasks: Task[];
     games: string[];
     createdAt: string;
     updatedAt: string;
@@ -23,23 +23,38 @@ export interface UserData {
   fullname: string;
   email: string;
   password: string;
-  teams: string[] | TeamData[];
+  teams: TeamData[];
+  profileCircleBackgroundColor: string;
+  profileCircleTextColor: string;
+  profileCircleText: string;
 }
 
 export interface TeamData {
   _id: string;
   name: string;
-  members: string[] | UserData[];
-  tasks: string[];
+  members: UserData[];
+  tasks: Task[];
   games: string[];
+  isMember?: boolean;
 }
 
 export interface ExtendedSession extends Session {
   user: {
-    name: string;
+    fullname: string;
     email: string;
-    image: string;
-    teams: TeamData[];
     id: string;
+    profileCircleBackgroundColor: string;
+    profileCircleTextColor: string;
+    profileCircleText: string;
   };
+}
+
+export interface Task {
+  description: string;
+  gameId: string;
+  teamId: string;
+  metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
+  score: number;
+  title: string;
+  _id: string;
 }
