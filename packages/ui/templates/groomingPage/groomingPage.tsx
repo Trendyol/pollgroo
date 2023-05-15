@@ -21,8 +21,8 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   const { showLoader } = useApp();
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
-    axios.get("http://localhost:5000/api/data")
+    const socket = io("https://wild-admitted-dibble.glitch.me");
+    axios.get("https://wild-admitted-dibble.glitch.me/api/data")
 
     socket.on('connect', () => {
       console.log('Connected to server');
