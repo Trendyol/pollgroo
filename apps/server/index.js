@@ -11,7 +11,7 @@ const server = app.listen(5000, () => {
 
 const io = socketIO(server, {
   cors: {
-    origin: 'https://pollgroo-web-git-plgr-90-trendyol-web-team.vercel.app',
+    origin: 'https://pollgroo-web-git-plgr-socket-poc-trendyol-web-team.vercel.app',
     methods: ['GET', 'POST'],
     credentials: true,
   },

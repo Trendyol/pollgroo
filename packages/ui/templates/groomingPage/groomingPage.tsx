@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationLayout } from '../../layouts';
 import { useApp, useGrooming } from 'contexts';
 import {
@@ -9,6 +9,8 @@ import {
   StickyGroomingBottomBox,
 } from '../../organisms';
 import { Loader } from '../../molecules';
+import axios from "axios";
+import io from "socket.io-client"
 
 export interface IProps {
   logoUrl: string;
@@ -17,6 +19,24 @@ export interface IProps {
 export const GroomingPage = ({ logoUrl }: IProps) => {
   const { groomingData } = useGrooming();
   const { showLoader } = useApp();
+
+  useEffect(() => {
+    const socket = io("https://pollgroo-server.onrender.com");
+    axios.get("https://pollgroo-server.onrender.com/api/data")
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+      socket.emit('chat message', 'Hello from client');
+    });
+
+    socket.on('chat message', (message: string) => {
+      console.log('Received message:', message);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <NavigationLayout logoUrl={logoUrl} subNavigationText={groomingData.title}>
