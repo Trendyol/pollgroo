@@ -1,15 +1,21 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Register from '../../pages/register/index';
+import Register from '@/pages/register';
 import * as nextRouter from 'next/router';
+import * as AppContext from 'contexts/appContext';
 import axios from 'axios';
 
 jest.mock('axios');
+
+jest.mock('contexts/appContext', () => ({
+  useApp: jest.fn().mockReturnValue(() => ({ setShowLoader: jest.fn() }))
+}));
 
 jest.mock('@/helpers/loginUser', () => {
   return jest.fn().mockResolvedValue({ ok: true });
 });
 
 jest.mock('@/../../packages/ui', () => ({
+  Loader: jest.fn(() => <div data-testid="loader"></div>),
   AuthPage: jest.fn(({ logoUrl, type, onSubmit }: any) => {
     const handleSubmit = (event: any) => {
       event.preventDefault();
@@ -34,9 +40,15 @@ jest.mock('@/../../packages/ui', () => ({
 
 describe('<Register /> specs', () => {
   let routerPush: any;
+  let setShowLoader: any;
+
   beforeEach(() => {
+    setShowLoader = jest.fn();
     routerPush = jest.fn();
     jest.spyOn(nextRouter, 'useRouter').mockImplementation(() => ({ push: routerPush } as any));
+    jest.spyOn(AppContext, 'useApp').mockReturnValue({
+      setShowLoader,
+    } as any);
   });
 
   afterEach(() => {
