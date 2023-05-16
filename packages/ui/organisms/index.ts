@@ -26,3 +26,4 @@ export { TeamTaskEditForm } from './teamTaskEditForm';
 export { MembersModal } from './membersModal';
 export { EditTeamForm } from './editTeamForm';
 export { EditTeamModal } from './editTeamModal';
+export { LabeledScoringButtons } from './labeledScoringButtons';
