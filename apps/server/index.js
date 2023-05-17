@@ -29,12 +29,3 @@ io.on('connection', (socket) => {
     console.log('A user disconnected');
   });
 });
-
-app.get('/api/data', (req, res) => {
-  const data = {
-    message: 'Test request!',
-    timestamp: new Date().toISOString(),
-  };
-
-  res.json(data);
-});
