@@ -11,7 +11,7 @@ const server = app.listen(5000, () => {
 
 const io = socketIO(server, {
   cors: {
-    origin: 'https://pollgroo-web-git-plgr-socket-poc-trendyol-web-team.vercel.app',
+    origin: '*',
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -28,10 +28,6 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
-});
-
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/api/data', (req, res) => {

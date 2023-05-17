@@ -21,8 +21,10 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   const { showLoader } = useApp();
 
   useEffect(() => {
+    // const socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}`);
+    // axios.get(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/api/data`);
     const socket = io("https://pollgroo-server.onrender.com");
-    axios.get("https://pollgroo-server.onrender.com/api/data")
+    axios.get("https://pollgroo-server.onrender.com/api/data");
 
     socket.on('connect', () => {
       console.log('Connected to server');
