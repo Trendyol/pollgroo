@@ -33,3 +33,17 @@ export interface ExtendedSession extends Session {
     id?: string | null;
   };
 }
+
+export interface IGroomingTask {
+  detail: {
+    description: string;
+    gameId: string;
+    teamId: string;
+    metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
+    score: number;
+    title: string;
+    _id: string;
+  };
+  order: number;
+  _id: string;
+}

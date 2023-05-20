@@ -15,7 +15,7 @@ interface FormValues {
 type InputName = 'taskTitle' | 'taskDescription';
 
 export const EditGroomingTaskForm = () => {
-  const { editGroomingTask, setShowEditGroomingTaskModal, selectedTaskToEdit, getGroomingTasks, removeGroomingTask } =
+  const { editGroomingTask, setShowEditGroomingTaskModal, selectedTaskToEdit, getGroomingTasks, removeGroomingTask, getGroomingTeamTasks } =
     useGrooming();
   const { setShowLoader } = useApp();
 
@@ -38,15 +38,17 @@ export const EditGroomingTaskForm = () => {
     setShowEditGroomingTaskModal(false);
     setShowLoader(true);
     await editGroomingTask(data.taskTitle, data.taskDescription);
-    await getGroomingTasks(selectedTaskToEdit.gameId);
+    await getGroomingTasks();
+    await getGroomingTeamTasks();
     setShowLoader(false);
   };
 
   const handleRemove = async () => {
     setShowEditGroomingTaskModal(false);
     setShowLoader(true);
-    await removeGroomingTask(selectedTaskToEdit.gameId);
-    await getGroomingTasks(selectedTaskToEdit.gameId);
+    await removeGroomingTask();
+    await getGroomingTasks();
+    await getGroomingTeamTasks();
     setShowLoader(false);
   };
 

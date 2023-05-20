@@ -19,7 +19,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         return res.status(404).json({ message: 'Game not found' });
       }
 
-      const { title, description, metrics } = req.body;
+      const { title, description, metrics, order } = req.body;
 
       const newTask = new Task({
         teamId: team._id,
@@ -31,7 +31,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
 
       const savedTask = await newTask.save();
 
-      game.tasks.push(savedTask._id);
+      game.tasks.push({ detail: savedTask._id, order});
       team.tasks.push(savedTask._id);
 
       await game.save();
@@ -45,7 +45,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await connectToDatabase();
 
-      const game = await Game.findById(gameId).populate(['tasks', 'team']);
+      const game = await Game.findById(gameId).populate(['tasks.detail', 'team']);
 
       if (!game) {
         return res.status(404).json({ message: 'Game not found' });
@@ -60,7 +60,8 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       await connectToDatabase();
       const { taskId } = req.body;
 
-      await Game.findByIdAndUpdate(gameId, { $pull: { tasks: taskId } }, { new: true });
+      await Game.findByIdAndUpdate(gameId, { $pull: { tasks: { detail: taskId } } }, { new: true });
+      await Task.findByIdAndUpdate(taskId, { gameId: null }, { new: true });
 
       return res.status(200).json({ message: 'Task removed successfully' });
     } catch (error) {

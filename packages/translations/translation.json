@@ -34,6 +34,8 @@
     "DELETE": "Delete",
     "REMOVE": "Remove",
     "LOGOUT": "Logout",
-    "DASHBOARD_WARNING_TEXT": "You don't have any upcoming game"
+    "DASHBOARD_WARNING_TEXT": "You don't have any upcoming game",
+    "BACK_TO_GROOMING": "back to grooming",
+    "REORDER_WARNING": "(You can't reorder team tasks, grooming tasks only feature for now.)"
   }
 }
