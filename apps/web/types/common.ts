@@ -20,7 +20,7 @@ export interface GroomingData {
   _id: string;
   title: string;
   isStarted: boolean;
-  tasks: Task[];
+  tasks: GroomingTask[];
   team: {
     _id: string;
     name: string;
@@ -41,6 +41,20 @@ interface Task {
   metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
   score: number;
   title: string;
+  _id: string;
+}
+
+interface GroomingTask {
+  detail: {
+    description: string;
+    gameId: string;
+    teamId: string;
+    metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
+    score: number;
+    title: string;
+    _id: string;
+  };
+  order: number;
   _id: string;
 }
 

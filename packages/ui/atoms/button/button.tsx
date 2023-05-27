@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { ButtonVariant } from './enums';
 
 export interface IProps {
-  children: string | JSX.Element;
+  children: ReactNode;
   variant?: keyof typeof ButtonVariant;
   className?: string;
   type?: "button" | "submit" | "reset";
@@ -16,7 +16,7 @@ export const Button = ({ children, type, variant = 'primary', className, onClick
 
   return (
     <button className={buttonClasses} type={type || "button"} onClick={onClick}>
-      {children}
+      <>{children}</>
     </button>
   );
 };

@@ -38,7 +38,7 @@ export const AddTaskToGroomingForm = () => {
     setShowLoader(true);
     setShowAddTaskToGameModal(false);
     await addTaskToTheGrooming(data.taskTitle, data.taskDescription, gameId);
-    await getGroomingTasks(gameId);
+    await getGroomingTasks();
     setShowLoader(false);
   };
 

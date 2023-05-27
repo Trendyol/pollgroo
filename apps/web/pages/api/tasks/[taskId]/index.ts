@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(404).json({ message: 'Task not found' });
       }
 
-      await Game.findByIdAndUpdate(deletedTask.gameId, { $pull: { tasks: taskId } }, { new: true });
+      await Game.findByIdAndUpdate(deletedTask.gameId, { $pull: { tasks: { detail: taskId } } }, { new: true });
       await Team.findByIdAndUpdate(deletedTask.teamId, { $pull: { tasks: taskId } }, { new: true });
 
       return res.status(200).json({ message: 'Task deleted successfully' });

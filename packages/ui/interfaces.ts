@@ -58,3 +58,17 @@ export interface Task {
   title: string;
   _id: string;
 }
+
+export interface GroomingTask {
+  detail: {
+    description: string;
+    gameId: string;
+    teamId: string;
+    metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
+    score: number;
+    title: string;
+    _id: string;
+  };
+  order: number;
+  _id: string;
+}

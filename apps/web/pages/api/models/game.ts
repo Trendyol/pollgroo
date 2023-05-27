@@ -10,7 +10,12 @@ const GameSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
+    tasks: [
+      {
+        detail: { type: Schema.Types.ObjectId, ref: 'Task' },
+        order: { type: Number, required: true },
+      },
+    ],
     team: {
       type: Schema.Types.ObjectId,
       ref: 'Team',
