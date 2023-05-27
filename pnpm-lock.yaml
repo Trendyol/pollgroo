@@ -58,6 +58,7 @@ importers:
       mongoose: ^7.0.3
       next: ^13.1.1
       next-auth: ^4.22.0
+      permissions: workspace:*
       postcss: ^8.4.21
       postcss-loader: ^7.0.2
       react: ^18.2.0
@@ -107,6 +108,7 @@ importers:
       eslint-config-custom: link:../../packages/eslint-config-custom
       jest: 29.3.1_@types+node@17.0.45
       jest-presets: link:../../packages/jest-presets
+      permissions: link:../../packages/permissions
       postcss: 8.4.21
       postcss-loader: 7.0.2_6jdsrmfenkuhhw3gx4zvjlznce
       start-server-and-test: 1.15.2
@@ -135,6 +137,9 @@ importers:
     dependencies:
       jest-environment-jsdom: 29.3.1
       ts-jest: 29.0.5_p6ekqnroyms5nhqbfxosryz7rm
+
+  packages/permissions:
+    specifiers: {}
 
   packages/prettier-config:
     specifiers: {}
@@ -166,6 +171,7 @@ importers:
       eslint-config-custom: workspace:*
       jest: ^29.3.1
       jest-presets: workspace:*
+      permissions: workspace:*
       postcss: ^8.4.21
       react: ^18.2.0
       react-beautiful-dnd: ^13.1.1
@@ -199,6 +205,7 @@ importers:
       eslint-config-custom: link:../eslint-config-custom
       jest: 29.3.1
       jest-presets: link:../jest-presets
+      permissions: link:../permissions
       postcss: 8.4.21
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0

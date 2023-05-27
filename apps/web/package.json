@@ -62,6 +62,7 @@
     "tailwindcss": "^3.2.4",
     "translations": "workspace:*",
     "tsconfig": "workspace:*",
+    "permissions": "workspace:*",
     "typescript": "^4.5.3"
   },
   "engines": {

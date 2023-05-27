@@ -11,7 +11,8 @@ interface UserDto {
   email: string;
   profileCircleBackgroundColor?: string,
   profileCircleTextColor?: string,
-  profileCircleText?: string
+  profileCircleText?: string,
+  userType: string
 }
 
 export const authOptions: NextAuthOptions = {
@@ -48,7 +49,8 @@ export const authOptions: NextAuthOptions = {
           fullname: user.fullname,
           profileCircleBackgroundColor: user.profileCircleBackgroundColor,
           profileCircleTextColor: user.profileCircleTextColor,
-          profileCircleText: user.profileCircleText
+          profileCircleText: user.profileCircleText,
+          userType: user.userType
         } as UserDto;
       },
     }),
