@@ -3,18 +3,10 @@ import { Button, Typography } from '../../atoms';
 import translate from 'translations';
 import { GroomingTaskCard } from '../groomingTaskCard';
 import { useGrooming } from 'contexts';
-import { GroomingTask, ExtendedSession } from '../../interfaces';
-import { permissions, userAction } from 'permissions';
-import { useSession } from 'next-auth/react';
+import { GroomingTask } from '../../interfaces';
 
 export const GroomingTasks = () => {
   const { tasks, setIsSelectSelected } = useGrooming();
-  const { data: session } = useSession();
-  const extendedSession = session as ExtendedSession;
-
-  const userHasGroomingTaskAddPermission = permissions[extendedSession?.user.userType]?.includes(
-    userAction.ADD_GROOMING_TASK
-  );
 
   const handleSelectClick = () => {
     setIsSelectSelected(true);
@@ -25,13 +17,11 @@ export const GroomingTasks = () => {
       <Typography element="h5" color="black" size="md" weight="semibold">
         {translate('GROOMING_TASKS')}
       </Typography>
-      {userHasGroomingTaskAddPermission && (
-        <div className="flex justify-end gap-x-1">
-          <Button variant="text" onClick={handleSelectClick}>
-            {translate('SELECT')}
-          </Button>
-        </div>
-      )}
+      <div className="flex justify-end gap-x-1">
+        <Button variant="text" onClick={handleSelectClick}>
+          {translate('SELECT')}
+        </Button>
+      </div>
       <div className="flex flex-col gap-5 lg:grid lg:grid-cols-3">
         {tasks?.map((task: GroomingTask) => (
           <GroomingTaskCard

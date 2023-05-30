@@ -3,6 +3,7 @@ export const permissions = {
     'createGame',
     'editGame',
     'deleteGame',
+    'startGame',
     'createTeam',
     'editTeam',
     'deleteTeam',

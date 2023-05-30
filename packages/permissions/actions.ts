@@ -2,6 +2,7 @@ export enum userAction {
   CREATE_GAME = 'createGame',
   EDIT_GAME = 'editGame',
   DELETE_GAME = 'deleteGame',
+  START_GAME = 'startGame',
   CREATE_TEAM = 'createTeam',
   EDIT_TEAM = 'editTeam',
   DELETE_TEAM = 'deleteTeam',

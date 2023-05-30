@@ -18,6 +18,8 @@ export const withAuthAndTeamMember =
       }
 
       const userId = session.user.id;
+      const userType = session.user.userType;
+      
       const team = await Team.findOne({
         _id: teamId,
         members: {
@@ -30,6 +32,7 @@ export const withAuthAndTeamMember =
       }
 
       req.userId = userId;
+      req.userType = userType;
       return handler(req, res);
     } catch (error) {
       res.status(500).json({ message: 'Internal Server Error' });
