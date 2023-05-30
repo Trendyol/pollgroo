@@ -21,7 +21,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   const { showLoader } = useApp();
 
   useEffect(() => {
-    const socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}`);
+    const socket = io("https://pollgroo-socket-server.onrender.com");
 
     socket.on('connect', () => {
       console.log('Connected to server');
