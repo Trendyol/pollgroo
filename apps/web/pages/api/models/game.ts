@@ -16,6 +16,54 @@ const GameSchema = new Schema(
         order: { type: Number, required: true },
       },
     ],
+    metrics: {
+      type: [{
+        name: {
+          type: String,
+          required: true
+        },
+        points: {
+          type: [Number],
+          required: true
+        },
+        weight: {
+          type: Number,
+          required: true
+        }
+      }],
+      default: [
+        {
+          name: 'performance',
+          points: [1, 2, 3, 4, 5],
+          weight: 30
+        },
+        {
+          name: 'maintenance',
+          points: [1, 2, 3, 4, 5],
+          weight: 25
+        },
+        {
+          name: 'security',
+          points: [1, 2, 3, 4, 5],
+          weight: 10
+        },
+        {
+          name: 'customerEffect',
+          points: [1, 2, 3, 4, 5],
+          weight: 10
+        },
+        {
+          name: 'developmentEase',
+          points: [1, 2, 3, 4, 5],
+          weight: 20
+        },
+        {
+          name: 'storyPoint',
+          points: [1, 2, 3, 4, 5],
+          weight: 0
+        }
+      ]
+    },
     team: {
       type: Schema.Types.ObjectId,
       ref: 'Team',
