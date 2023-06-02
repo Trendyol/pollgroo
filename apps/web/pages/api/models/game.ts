@@ -33,32 +33,38 @@ const GameSchema = new Schema(
       }],
       default: [
         {
-          name: 'Performance',
+          name: 'performance',
+          title: 'Performance',
           points: [1, 2, 3, 4, 5],
           weight: 30
         },
         {
-          name: 'Maintenance',
+          name: 'maintenance',
+          title: 'Maintenance',
           points: [1, 2, 3, 4, 5],
           weight: 25
         },
         {
-          name: 'Security',
+          name: 'security',
+          title: 'Security',
           points: [1, 2, 3, 4, 5],
           weight: 10
         },
         {
-          name: 'Customer Effect',
+          name: 'customerEffect',
+          title: 'Customer Effect',
           points: [1, 2, 3, 4, 5],
           weight: 10
         },
         {
-          name: 'Development Ease',
+          name: 'developmentEase',
+          title: 'Development Ease',
           points: [1, 2, 3, 4, 5],
           weight: 20
         },
         {
-          name: 'StoryPoint',
+          name: 'storyPoint',
+          title: 'StoryPoint',
           points: [1, 2, 3, 4, 5],
           weight: 0
         }

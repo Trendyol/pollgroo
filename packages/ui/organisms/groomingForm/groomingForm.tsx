@@ -4,14 +4,15 @@ import { GroomingTaskCard, LabeledScoringButtons } from '../../organisms';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { Button } from '../../atoms';
 
 export const GroomingForm = () => {
   const { groomingData } = useGrooming();
-  const { metrics } = groomingData;
+  const { metrics, isStarted } = groomingData;
 
   const validationSchema = yup.object().shape({
     ...metrics.reduce((fields: { [key: string]: yup.StringSchema }, metric) => {
-      fields[metric.name] = yup.string().required(`${metric.name} is required`);
+      fields[metric.name] = yup.string().required(`${metric.title} is required`);
       return fields;
     }, {}),
   });
@@ -31,6 +32,10 @@ export const GroomingForm = () => {
     console.log(data);
   };
 
+  if(!isStarted) {
+    return null;
+  }
+
   return (
     <>
       <GroomingTaskCard
@@ -49,7 +54,8 @@ export const GroomingForm = () => {
             control={control}
             render={() => (
               <LabeledScoringButtons
-                label={metric.name}
+                label={metric.title}
+                name={metric.name}
                 scores={metric.points}
                 error={!!errors[metric.name]}
                 errorMessage={errors[metric.name]?.message?.toString()}
@@ -60,7 +66,7 @@ export const GroomingForm = () => {
             )}
           />
         ))}
-        <button type="submit">Submit</button>
+        <Button type="submit" variant='primary' fluid className='h-10'>Save</Button>
       </form>
     </>
   );

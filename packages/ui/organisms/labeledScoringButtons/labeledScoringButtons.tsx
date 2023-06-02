@@ -11,6 +11,7 @@ export interface IProps {
   getValues?: UseFormGetValues<FieldValues>;
   setValue?: UseFormSetValue<FieldValues>;
   triggerValidation?: UseFormTrigger<FieldValues>;
+  name: string;
 }
 
 export const LabeledScoringButtons = ({
@@ -21,6 +22,7 @@ export const LabeledScoringButtons = ({
   getValues,
   setValue,
   triggerValidation,
+  name
 }: IProps) => {
   const [selectedScore, setSelectedScore] = useState(getValues ? getValues(label) : 0);
 
@@ -28,7 +30,7 @@ export const LabeledScoringButtons = ({
     const newValue = selectedScore === score ? 0 : score;
     setSelectedScore(newValue);
     if (setValue) {
-      setValue(label, newValue);
+      setValue(name, newValue);
     }
     if (error && triggerValidation) {
       triggerValidation();
