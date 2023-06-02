@@ -19,6 +19,7 @@ export const SelectGroomingTasks = () => {
     removeGroomingTask,
     groomingData,
     setShowAddTaskToGameModal,
+    isSelectSelected,
   } = useGrooming();
 
   const handleBackToGroomingClick = () => {
@@ -33,9 +34,11 @@ export const SelectGroomingTasks = () => {
     const fetchTeamTasks = async () => {
       await getGroomingTeamTasks();
     };
-    fetchTeamTasks();
+    if (isSelectSelected) {
+      fetchTeamTasks();
+    }
     window.scrollTo(0, 0);
-  }, [getGroomingTeamTasks]);
+  }, [getGroomingTeamTasks, isSelectSelected]);
 
   const formatTasksWithOrder = (tasksToFormat: GroomingTask[]) => {
     return tasksToFormat.map((destinationTask: GroomingTask, index: number) => {
@@ -91,6 +94,10 @@ export const SelectGroomingTasks = () => {
     },
     [updateGroomingTasks, setTasks, setTeamTasks, tasks, teamTasks, removeGroomingTask]
   );
+
+  if (!isSelectSelected) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-y-10">

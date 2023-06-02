@@ -6,7 +6,12 @@ import { useGrooming } from 'contexts';
 import { GroomingTask } from '../../interfaces';
 
 export const GroomingTasks = () => {
-  const { tasks, setIsSelectSelected } = useGrooming();
+  const { tasks, setIsSelectSelected, isSelectSelected, groomingData } = useGrooming();
+  const { isStarted } = groomingData;
+
+  if (isStarted || isSelectSelected) {
+    return null;
+  }
 
   const handleSelectClick = () => {
     setIsSelectSelected(true);

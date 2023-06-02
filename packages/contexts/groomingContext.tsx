@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useCallback, useMemo, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useCallback, useMemo, useState, ReactNode, useRef } from 'react';
 import axios from 'axios';
 import { useApp } from './appContext';
 
@@ -22,6 +22,8 @@ type GroomingContextValuesType = {
   teamTasks: TeamTask[],
   setTeamTasks: Function;
   updateGroomingTasks: Function;
+  voteData: VoteData;
+  setVoteData: Function;
 };
 
 interface EditTaskPayload {
@@ -47,8 +49,14 @@ interface GroomingData {
   };
   createdAt: string;
   updatedAt: string;
-  infoText: string;
-  buttonText: string;
+  metrics: Metric[];
+}
+
+interface Metric {
+  _id: string;
+  name: string;
+  points: number[];
+  weight: number;
 }
 
 interface GroomingTask {
@@ -75,6 +83,10 @@ interface TeamTask {
   _id: string;
 }
 
+interface VoteData {
+  [key: string]: number;
+}
+
 const GroomingContext = createContext({} as GroomingContextValuesType);
 
 export const GroomingContextProvider: React.FC<{ children: ReactNode; data: GroomingData }> = ({ children, data }) => {
@@ -86,6 +98,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
   const [showEditGroomingTaskModal, setShowEditGroomingTaskModal] = useState(false);
   const [selectedTaskToEdit, setSelectedTaskToEdit] = useState({} as EditTaskPayload);
   const [isSelectSelected, setIsSelectSelected] = useState(false);
+  const [voteData, setVoteData] = useState({} as VoteData);
 
   const addTaskToTheGrooming = useCallback(
     async (title: string, description: string, gameId: string) => {
@@ -185,7 +198,9 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       getGroomingTeamTasks,
       teamTasks,
       setTeamTasks,
-      updateGroomingTasks
+      updateGroomingTasks,
+      voteData,
+      setVoteData
     }),
     [
       groomingData,
@@ -206,7 +221,9 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       getGroomingTeamTasks,
       teamTasks,
       setTeamTasks,
-      updateGroomingTasks
+      updateGroomingTasks,
+      voteData,
+      setVoteData
     ]
   );
   return <GroomingContext.Provider value={values}>{children}</GroomingContext.Provider>;
