@@ -26,7 +26,8 @@ export const Navigation = ({ logoUrl }: IProps) => {
     'fixed z-40 top-0 flex flex-col justify-center w-full h-screen bg-lightblue gap-y-10 transition-all duration-500 lg:transition-none lg:duration-0',
     'lg:flex lg:px-4 lg:gap-0 lg:py-16 lg:relative lg:translate-y-0 lg:justify-start'
   );
-  const navElementClass = 'text-center text-darkgray py-4 hover:lg:bg-blue lg:rounded-lg lg:cursor-pointer';
+  const navElementClass = 'text-center text-darkgray hover:lg:bg-blue lg:rounded-lg lg:cursor-pointer';
+  const navLinkElementClass = 'w-full h-full block py-4';
 
   const toggleMenu = () => {
     setShow(!show);
@@ -69,7 +70,7 @@ export const Navigation = ({ logoUrl }: IProps) => {
               })}
               key={item.id}
             >
-              <Link href={item.href}>{item.text}</Link>
+              <Link href={item.href} className={navLinkElementClass}>{item.text}</Link>
             </li>
           ))}
         </ul>
