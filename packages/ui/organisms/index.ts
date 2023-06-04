@@ -30,3 +30,5 @@ export { LabeledScoringButtons } from './labeledScoringButtons';
 export { AlertPopup } from './alertPopup';
 export { DialogPopup } from './dialogPopup';
 export { GroomingForm } from './groomingForm';
+export { ParticipantsContainer } from './participantsContainer';
+export { MetricsFilter } from './metricsFilter';

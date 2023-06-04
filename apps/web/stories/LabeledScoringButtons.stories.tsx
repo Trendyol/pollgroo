@@ -9,13 +9,7 @@ export default {
 
 const Template: ComponentStory<typeof LabeledScoringButtons> = (args) => <LabeledScoringButtons {...args} />;
 
-const scores = [
-	{ id: 1, value: "1" }, 
-	{ id: 2, value: "2" }, 
-	{ id: 3, value: "3" },
-	{ id: 4, value: "4" },
-	{ id: 5, value: "5" }
-]
+const scores = [1, 2, 3, 4, 5]
 
 export const Default = Template.bind({});
 Default.args = {

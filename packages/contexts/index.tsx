@@ -5,3 +5,4 @@ export * from './gameContext';
 export * from './groomingContext';
 export * from './teamsContext';
 export * from './teamContext';
+export * from './socketContext';

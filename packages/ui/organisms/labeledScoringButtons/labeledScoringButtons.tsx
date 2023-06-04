@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScoringButton } from '../../molecules/scoring-button';
 import { Typography } from '../../../ui/atoms/typography';
 import { FieldValues, UseFormGetValues, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
@@ -8,8 +8,8 @@ export interface IProps {
   label: string;
   scores: number[];
   errorMessage?: string;
-  getValues?: UseFormGetValues<FieldValues>;
-  setValue?: UseFormSetValue<FieldValues>;
+  getValues: UseFormGetValues<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
   triggerValidation?: UseFormTrigger<FieldValues>;
   name: string;
 }
@@ -22,20 +22,23 @@ export const LabeledScoringButtons = ({
   getValues,
   setValue,
   triggerValidation,
-  name
+  name,
 }: IProps) => {
-  const [selectedScore, setSelectedScore] = useState(getValues ? getValues(label) : 0);
-
   const handleClick = (score: number) => {
-    const newValue = selectedScore === score ? 0 : score;
-    setSelectedScore(newValue);
-    if (setValue) {
-      setValue(name, newValue);
-    }
+    setValue(name, score);
     if (error && triggerValidation) {
       triggerValidation();
     }
   };
+
+  useEffect(() => {
+    const userVote = localStorage.getItem('userVote');
+    if (userVote) {
+      const parsedUserVote = JSON.parse(userVote);
+      const storedValue = parsedUserVote[name];
+      setValue(name, storedValue);
+    }
+  }, [name, setValue]);
 
   return (
     <div className="flex flex-col justify-center items-center gap-2.5">
@@ -44,7 +47,7 @@ export const LabeledScoringButtons = ({
       </Typography>
       <div className="flex flex-row gap-2.5">
         {scores.map((score, index) => (
-          <ScoringButton key={index} selected={selectedScore === score} onClick={() => handleClick(score)}>
+          <ScoringButton key={index} selected={getValues()[name] === score} onClick={() => handleClick(score)}>
             {score.toString()}
           </ScoringButton>
         ))}

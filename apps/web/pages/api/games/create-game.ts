@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import connectToDatabase from '@/lib/db';
 import Game from '../models/game';
 import Team from '../models/team';
 import { withAuth } from '@/lib/authMiddleware';
+import { ExtendedNextApiRequest } from '../interfaces';
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       await connectToDatabase();
@@ -13,7 +14,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       const newGame = new Game({
         title,
-        team: teamId
+        team: teamId,
+        gameMaster: req.userId
       });
 
       await Team.findByIdAndUpdate(

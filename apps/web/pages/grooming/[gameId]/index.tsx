@@ -3,7 +3,7 @@ import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { getHostUrl } from '../../../helpers/getHostUrl';
 import { GroomingPage } from 'ui';
-import { GroomingContextProvider } from 'contexts';
+import { GroomingContextProvider, SocketProvider } from 'contexts';
 import Head from 'next/head';
 import { GroomingData } from '@/types/common';
 
@@ -21,7 +21,9 @@ export default function Grooming({ data }: IProps) {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <GroomingContextProvider data={data}>
-        <GroomingPage logoUrl="/logo/pollgroo3.svg" />
+        <SocketProvider>
+          <GroomingPage logoUrl="/logo/pollgroo3.svg" />
+        </SocketProvider>
       </GroomingContextProvider>
     </>
   );

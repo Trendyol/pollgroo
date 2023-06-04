@@ -21,7 +21,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           model: 'Task',
         })
         .populate('team')
-        .lean()
+        .lean();
 
       if (!game) {
         return res.status(404).json({ message: 'Game not found' });
@@ -34,6 +34,10 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         game.infoText = "Players waiting you to start the game...";
         game.buttonText = "Start"
       }
+
+      game.isGameMaster = req.userId === game.gameMaster;
+
+      console.log(game.gameMaster, req.userId, game.gameMaster === req.userId, "nere bura")
 
       res.status(200).json(game);
     } catch (error) {

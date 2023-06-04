@@ -43,6 +43,7 @@
   "dependencies": {
     "@tabler/icons-react": "^2.11.0",
     "classnames": "2.3.2",
-    "react-beautiful-dnd": "^13.1.1"
+    "react-beautiful-dnd": "^13.1.1",
+    "socket.io-client": "^4.6.1"
   }
 }

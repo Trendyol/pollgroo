@@ -24,6 +24,8 @@ type GroomingContextValuesType = {
   updateGroomingTasks: Function;
   voteData: VoteData;
   setVoteData: Function;
+  participants: Participant[]
+  setParticipants: Function
 };
 
 interface EditTaskPayload {
@@ -50,6 +52,7 @@ interface GroomingData {
   createdAt: string;
   updatedAt: string;
   metrics: Metric[];
+  isGameMaster: boolean;
 }
 
 interface Metric {
@@ -84,6 +87,21 @@ interface TeamTask {
   _id: string;
 }
 
+interface Participant {
+  fullname: string;
+  email: string;
+  id: string;
+  profileCircleBackgroundColor: string;
+  profileCircleTextColor: string;
+  profileCircleText: string;
+  groomingId: string;
+  formData: FormData;
+}
+
+interface FormData {
+  [key: string]: string;
+}
+
 interface VoteData {
   [key: string]: number;
 }
@@ -100,6 +118,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
   const [selectedTaskToEdit, setSelectedTaskToEdit] = useState({} as EditTaskPayload);
   const [isSelectSelected, setIsSelectSelected] = useState(false);
   const [voteData, setVoteData] = useState({} as VoteData);
+  const [participants, setParticipants] = useState([] as Participant[]);
 
   const addTaskToTheGrooming = useCallback(
     async (title: string, description: string, gameId: string) => {
@@ -201,7 +220,9 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       setTeamTasks,
       updateGroomingTasks,
       voteData,
-      setVoteData
+      setVoteData,
+      participants,
+      setParticipants
     }),
     [
       groomingData,
@@ -224,7 +245,9 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       setTeamTasks,
       updateGroomingTasks,
       voteData,
-      setVoteData
+      setVoteData,
+      participants,
+      setParticipants
     ]
   );
   return <GroomingContext.Provider value={values}>{children}</GroomingContext.Provider>;

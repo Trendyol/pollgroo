@@ -1,20 +1,20 @@
 import React from 'react';
-import { UserData } from '../../interfaces';
+import { Participant, UserData } from '../../interfaces';
 import { ProfileCircle } from '../../molecules';
 import { Typography } from '../../atoms';
 
 interface IProps {
   totalMembersNumber: number;
-  badgeMembers: UserData[];
+  badgeMembers: UserData[] | Participant[];
 }
 
 export const ProfileCirclesBox = ({ totalMembersNumber, badgeMembers }: IProps) => {
   return (
     <div className="flex items-center gap-x-2">
       <div className="relative flex gap-x-2 w-fit">
-        {badgeMembers?.map((badgeMember: UserData, index: number) => (
+        {badgeMembers?.slice(0, 3).map((badgeMember: UserData | Participant, index: number) => (
           <ProfileCircle
-            key={badgeMember._id}
+            key={JSON.stringify(badgeMember)}
             profileCircleBackgroundColor={badgeMember.profileCircleBackgroundColor}
             profileCircleText={badgeMember.profileCircleText}
             profileCircleTextColor={badgeMember.profileCircleTextColor}

@@ -1,14 +1,16 @@
-import React from 'react';
-import { useGrooming } from 'contexts';
+import React, { useEffect, useState } from 'react';
+import { useGrooming, useSocket } from 'contexts';
 import { GroomingTaskCard, LabeledScoringButtons } from '../../organisms';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Button } from '../../atoms';
 
-export const GroomingForm = () => {
-  const { groomingData } = useGrooming();
+export const GroomingForm = ({ userId }: { userId?: string }) => {
+  const [taskNumber, setTaskNumber] = useState(0);
+  const { groomingData, setParticipants } = useGrooming();
   const { metrics, isStarted } = groomingData;
+  const socket = useSocket();
 
   const validationSchema = yup.object().shape({
     ...metrics.reduce((fields: { [key: string]: yup.StringSchema }, metric) => {
@@ -24,26 +26,42 @@ export const GroomingForm = () => {
     setValue,
     getValues,
     trigger,
+    reset
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const onSubmit = (data: any) => {
     console.log(data);
+    socket.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
+    localStorage.setItem('userVote', JSON.stringify(getValues()));
   };
 
-  if(!isStarted) {
+  useEffect(() => {
+    socket.on('changeTask', (data) => {
+      setTaskNumber(data.taskNumber);
+      localStorage.removeItem('userVote');
+      reset();
+      setParticipants(data.allUsers)
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket, reset, setParticipants]);
+
+  if (!isStarted) {
     return null;
   }
 
   return (
     <>
       <GroomingTaskCard
-        key={groomingData.tasks[0].detail?._id}
-        title={groomingData.tasks[0].detail?.title}
-        description={groomingData.tasks[0].detail?.description}
-        taskId={groomingData.tasks[0].detail?._id}
-        gameId={groomingData.tasks[0].detail?.gameId}
+        key={groomingData.tasks[taskNumber].detail?._id}
+        title={groomingData.tasks[taskNumber].detail?.title}
+        description={groomingData.tasks[taskNumber].detail?.description}
+        taskId={groomingData.tasks[taskNumber].detail?._id}
+        gameId={groomingData.tasks[taskNumber].detail?.gameId}
         disableEdit
       />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
@@ -66,7 +84,9 @@ export const GroomingForm = () => {
             )}
           />
         ))}
-        <Button type="submit" variant='primary' fluid className='h-10'>Save</Button>
+        <Button type="submit" variant="primary" fluid className="h-10">
+          Save
+        </Button>
       </form>
     </>
   );

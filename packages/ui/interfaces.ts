@@ -39,15 +39,7 @@ export interface TeamData {
 }
 
 export interface ExtendedSession extends Session {
-  user: {
-    fullname: string;
-    email: string;
-    id: string;
-    profileCircleBackgroundColor: string;
-    profileCircleTextColor: string;
-    profileCircleText: string;
-    userType: "default" | "admin";
-  };
+  user: IUser
 }
 
 export interface Task {
@@ -72,4 +64,31 @@ export interface GroomingTask {
   };
   order: number;
   _id: string;
+}
+
+export interface IUser {
+  fullname: string;
+  email: string;
+  id: string;
+  profileCircleBackgroundColor: string;
+  profileCircleTextColor: string;
+  profileCircleText: string;
+  userType: "default" | "admin";
+}
+
+export interface Participant extends IUser {
+  groomingId: string;
+  formData: FormData;
+}
+
+export interface Metric {
+  _id: string;
+  name: string;
+  title: string
+  points: number[];
+  weight: number;
+}
+
+interface FormData {
+  [key: string]: string;
 }
