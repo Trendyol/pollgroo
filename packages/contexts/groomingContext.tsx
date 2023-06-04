@@ -96,6 +96,7 @@ interface Participant {
   profileCircleText: string;
   groomingId: string;
   formData: FormData;
+  userType: "default" | "admin";
 }
 
 interface FormData {
