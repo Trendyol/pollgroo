@@ -21,6 +21,7 @@ let groomings = {};
 let connectedUsers = {};
 
 const calculateMetricAverages = (groomingId, metrics) => {
+  let missingVotes = 0;
   const averages = {};
   const weightedAverages = [];
   const participantData = groomings[groomingId];
@@ -30,8 +31,12 @@ const calculateMetricAverages = (groomingId, metrics) => {
     const formData = participantData[i].formData;
     const keys = Object.keys(formData);
 
-    for (let j = 0; j < keys.length; j++) {
-      const key = keys[j];
+    if(!Object.keys(formData).length){
+      missingVotes++;
+    }
+
+    for (const element of keys) {
+      const key = element;
       if (!averages.hasOwnProperty(key)) {
         averages[key] = 0;
       }
@@ -42,7 +47,7 @@ const calculateMetricAverages = (groomingId, metrics) => {
 
   for (const key in averages) {
     if (averages.hasOwnProperty(key)) {
-      averages[key] /= numObjects;
+      averages[key] /= ( numObjects - missingVotes );
       const weight = metrics.find((metric) => metric.name === key).weight;
       const weightedAverage = (averages[key] * weight) / 100;
       weightedAverages.push(weightedAverage);

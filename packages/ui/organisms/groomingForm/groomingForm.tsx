@@ -7,10 +7,10 @@ import * as yup from 'yup';
 import { Button } from '../../atoms';
 
 export const GroomingForm = ({ userId }: { userId?: string }) => {
-  const { groomingData, setParticipants, isGameStarted, currentTaskNumber, setCurrentTaskNumber, taskResult } =
+  const { groomingData, setParticipants, isGameStarted, currentTaskNumber, setCurrentTaskNumber, taskResult, tasks } =
     useGrooming();
   const { metrics } = groomingData;
-  const currentTask = groomingData.tasks[currentTaskNumber]?.detail;
+  const currentTask = tasks[currentTaskNumber]?.detail;
   const socket = useSocket();
 
   const validationSchema = yup.object().shape({

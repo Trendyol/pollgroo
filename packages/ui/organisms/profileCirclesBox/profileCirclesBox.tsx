@@ -25,7 +25,7 @@ export const ProfileCirclesBox = ({ totalMembersNumber, badgeMembers }: IProps) 
         ))}
       </div>
       <Typography element="span" color="gray" weight="medium" size="xs">
-        {totalMembersNumber}
+        {totalMembersNumber || "connecting..."}
       </Typography>
     </div>
   );

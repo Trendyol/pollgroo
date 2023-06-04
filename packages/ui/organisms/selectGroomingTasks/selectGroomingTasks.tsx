@@ -20,6 +20,7 @@ export const SelectGroomingTasks = () => {
     groomingData,
     setShowAddTaskToGameModal,
     isSelectSelected,
+    isGameStarted
   } = useGrooming();
 
   const handleBackToGroomingClick = () => {
@@ -95,7 +96,7 @@ export const SelectGroomingTasks = () => {
     [updateGroomingTasks, setTasks, setTeamTasks, tasks, teamTasks, removeGroomingTask]
   );
 
-  if (!isSelectSelected) {
+  if (!isSelectSelected || isGameStarted) {
     return null;
   }
 
