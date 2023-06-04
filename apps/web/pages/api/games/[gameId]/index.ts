@@ -37,8 +37,6 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
 
       game.isGameMaster = req.userId === game.gameMaster;
 
-      console.log(game.gameMaster, req.userId, game.gameMaster === req.userId, "nere bura")
-
       res.status(200).json(game);
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
