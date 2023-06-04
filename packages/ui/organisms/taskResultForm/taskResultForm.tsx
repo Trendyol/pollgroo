@@ -1,25 +1,13 @@
 import React, { useEffect } from 'react';
-import { useGrooming, useSocket } from 'contexts';
+import { useGrooming } from 'contexts';
 import { GroomingTaskCard } from '../groomingTaskCard';
 import { Typography } from '../../atoms';
 import { Metric } from '../../interfaces';
 
 export const TaskResultForm = () => {
-  const { getCurrentTaskNumber, tasks, currentTaskNumber, isGameStarted, setTaskResult, taskResult, groomingData } =
+  const { getCurrentTaskNumber, tasks, currentTaskNumber, isGameStarted, taskResult, groomingData } =
     useGrooming();
   const currentTask = tasks[currentTaskNumber]?.detail;
-  const socket = useSocket();
-
-  useEffect(() => {
-    socket.on('calculateTaskResult', (data) => {
-      setTaskResult(data);
-      localStorage.setItem('taskResult', JSON.stringify(data));
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [socket, setTaskResult, taskResult]);
 
   useEffect(() => {
     const fetchCurrentTaskNumber = async () => {

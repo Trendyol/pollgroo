@@ -64,10 +64,15 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       });
     }
 
+    socket.on('calculateTaskResult', (data) => {
+      setTaskResult(data);
+      localStorage.setItem('taskResult', JSON.stringify(data));
+    });
+
     return () => {
       socket.disconnect();
     };
-  }, [groomingData._id, socket, extendedSession, setParticipants, setIsGameStarted]);
+  }, [groomingData._id, socket, extendedSession, setParticipants, setIsGameStarted, setTaskResult]);
 
   useEffect(() => {
     const storedTaskResult = localStorage.getItem('taskResult');
@@ -82,7 +87,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       const handleTaskChange = async () => {
         const newNumber = currentTaskNumber + 1;
         await changeCurrentTaskNumber(newNumber);
-      }
+      };
       handleTaskChange();
     }
   };
