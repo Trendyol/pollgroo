@@ -22,6 +22,7 @@ export interface ITeam {
 
 export interface ExtendedNextApiRequest extends NextApiRequest {
   userId?: string | null;
+  userType?: "default" | "admin" | null;
 }
 
 export interface ExtendedSession extends Session {
@@ -31,6 +32,7 @@ export interface ExtendedSession extends Session {
     image?: string | null;
     teams?: ITeam[] | null;
     id?: string | null;
+    userType?: "default" | "admin" | null;
   };
 }
 

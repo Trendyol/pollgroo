@@ -32,6 +32,8 @@ export interface GroomingData {
   };
   createdAt: string;
   updatedAt: string;
+  infoText: string;
+  buttonText: string;
 }
 
 interface Task {

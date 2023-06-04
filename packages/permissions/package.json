@@ -1,0 +1,7 @@
+{
+  "name": "permissions",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./index.ts",
+  "license": "MIT"
+}

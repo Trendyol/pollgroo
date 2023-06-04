@@ -46,6 +46,7 @@ export interface ExtendedSession extends Session {
     profileCircleBackgroundColor: string;
     profileCircleTextColor: string;
     profileCircleText: string;
+    userType: "default" | "admin";
   };
 }
 

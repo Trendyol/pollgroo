@@ -18,11 +18,16 @@ export const withAuthGameAndTeamMember =
       }
 
       const userId = session.user.id;
+      const userType = session.user.userType;
+
       const game = await Game.findById(gameId).populate('team');
 
       if (!game.team.members.includes(userId)) {
         return res.status(403).json({ message: 'You are not a member of this team' });
       }
+
+      req.userType = userType;
+      req.userId = userId;
 
       return handler(req, res);
     } catch (error) {

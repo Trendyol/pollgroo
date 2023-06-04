@@ -30,8 +30,14 @@ const UserSchema = new Schema(
     },
     profileCircleText: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
+    userType: {
+      type: String,
+      enum: ['admin', 'default'],
+      default: 'default',
+      required: true,
+    },
   },
   { versionKey: false }
 );
