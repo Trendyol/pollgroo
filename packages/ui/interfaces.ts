@@ -90,5 +90,5 @@ export interface Metric {
 }
 
 interface FormData {
-  [key: string]: string;
+  [key: string]: number;
 }

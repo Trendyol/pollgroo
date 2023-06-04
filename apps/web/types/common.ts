@@ -34,6 +34,7 @@ export interface GroomingData {
   updatedAt: string;
   metrics: Metric[];
   isGameMaster: boolean;
+  currentTaskNumber: number;
 }
 
 interface Task {

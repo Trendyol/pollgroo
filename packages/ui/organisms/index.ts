@@ -32,3 +32,4 @@ export { DialogPopup } from './dialogPopup';
 export { GroomingForm } from './groomingForm';
 export { ParticipantsContainer } from './participantsContainer';
 export { MetricsFilter } from './metricsFilter';
+export { TaskResultForm } from './taskResultForm';

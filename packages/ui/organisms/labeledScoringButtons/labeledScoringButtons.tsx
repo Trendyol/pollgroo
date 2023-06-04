@@ -48,7 +48,7 @@ export const LabeledScoringButtons = ({
       <div className="flex flex-row gap-2.5">
         {scores.map((score, index) => (
           <ScoringButton key={index} selected={getValues()[name] === score} onClick={() => handleClick(score)}>
-            {score.toString()}
+            {score}
           </ScoringButton>
         ))}
       </div>

@@ -10,6 +10,10 @@ const GameSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isFinished: {
+      type: Boolean,
+      default: false,
+    },
     tasks: [
       {
         detail: { type: Schema.Types.ObjectId, ref: 'Task' },
@@ -93,8 +97,13 @@ const GameSchema = new Schema(
     },
     gameMaster: {
       type: String,
-      required: true,
+      required: true
     },
+    currentTaskNumber: {
+      type: Number,
+      required: true,
+      default: 0
+    }
   },
   { versionKey: false, timestamps: true }
 );

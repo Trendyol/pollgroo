@@ -5,10 +5,10 @@ import translate from 'translations';
 import { IconClock } from '@tabler/icons-react';
 
 export const GroomingWaitingInfo = () => {
-  const { groomingData, isSelectSelected } = useGrooming();
-  const { team, isStarted } = groomingData;
+  const { groomingData, isSelectSelected, isGameStarted } = useGrooming();
+  const { team, isGameMaster } = groomingData;
 
-  if (isStarted || isSelectSelected) {
+  if (isGameStarted || isSelectSelected) {
     return null;
   }
 
@@ -22,7 +22,7 @@ export const GroomingWaitingInfo = () => {
         {translate('GAME_NOT_STARTED')}
       </Typography>
       <Typography className="text-center" element="p" color="silver" size="md">
-        {translate('PLAYERS_WAITING_INFO_TEXT')}
+        {isGameMaster ? translate('PLAYERS_WAITING_INFO_TEXT') : translate('ADMIN_WAITING_INFO_TEXT')}
       </Typography>
     </div>
   );

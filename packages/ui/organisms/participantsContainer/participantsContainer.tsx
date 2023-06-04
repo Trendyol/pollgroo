@@ -7,7 +7,7 @@ import translate from 'translations';
 import { MetricsFilter } from '../metricsFilter';
 
 export const ParticipantsContainer = () => {
-  const { participants, setParticipants, groomingData } = useGrooming();
+  const { participants, setParticipants, groomingData, isGameStarted } = useGrooming();
   const [metric, setMetric] = useState(groomingData.metrics[0].name);
   const socket = useSocket();
 
@@ -29,14 +29,25 @@ export const ParticipantsContainer = () => {
     };
   }, [socket, setParticipants]);
 
+  console.log(participants, "nedir");
+
+  if(!participants){
+    return null;
+  }
+
   return (
     <>
       <Typography element="h5" color="black" size="md" weight="semibold">
         {translate('PARTICIPANTS')}
       </Typography>
-      <MetricsFilter metrics={groomingData.metrics} onChange={setMetric} selected={metric} />
+      <MetricsFilter
+        metrics={groomingData.metrics}
+        onChange={setMetric}
+        selected={metric}
+        visible={isGameStarted}
+      />
       <ul className="flex flex-col gap-y-3">
-        {participants.map((participant: Participant) => (
+        {participants?.map((participant: Participant) => (
           <li key={participant.id}>
             <div className="flex items-center gap-x-3">
               <ProfileCircle
@@ -48,7 +59,7 @@ export const ParticipantsContainer = () => {
                 {participant.fullname}
               </Typography>
             </div>
-            {participant.formData[metric] && groomingData.isStarted && <div>{participant.formData[metric]}</div>}
+            {participant.formData[metric] && isGameStarted && <div>{participant.formData[metric]}</div>}
           </li>
         ))}
       </ul>

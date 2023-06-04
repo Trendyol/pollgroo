@@ -20,6 +20,40 @@ const io = socketIO(server, {
 let groomings = {};
 let connectedUsers = {};
 
+const calculateMetricAverages = (groomingId, metrics) => {
+  const averages = {};
+  const weightedAverages = [];
+  const participantData = groomings[groomingId];
+  const numObjects = participantData.length;
+
+  for (let i = 0; i < numObjects; i++) {
+    const formData = participantData[i].formData;
+    const keys = Object.keys(formData);
+
+    for (let j = 0; j < keys.length; j++) {
+      const key = keys[j];
+      if (!averages.hasOwnProperty(key)) {
+        averages[key] = 0;
+      }
+
+      averages[key] += Number(formData[key]);
+    }
+  }
+
+  for (const key in averages) {
+    if (averages.hasOwnProperty(key)) {
+      averages[key] /= numObjects;
+      const weight = metrics.find((metric) => metric.name === key).weight;
+      const weightedAverage = (averages[key] * weight) / 100;
+      weightedAverages.push(weightedAverage);
+    }
+  }
+
+  const score = weightedAverages.reduce((acc, curr) => acc + curr, 0) * 25 - 25;
+
+  return { averages, score };
+};
+
 // Handle incoming socket connections
 io.on('connection', (socket) => {
   console.log('New client connected');
@@ -54,7 +88,6 @@ io.on('connection', (socket) => {
 
   socket.on('userVote', (data) => {
     const { groomingId, formData, userId } = data;
-    console.log(data);
 
     const voter = groomings[groomingId]?.find((user) => user.id === userId);
     const voterIndex = groomings[groomingId]?.findIndex((user) => user.id === userId);
@@ -62,6 +95,19 @@ io.on('connection', (socket) => {
     groomings[groomingId].splice(voterIndex, 1, voter);
 
     io.to(groomingId).emit('userVote', groomings[groomingId]);
+  });
+
+  socket.on('calculateTaskResult', (data) => {
+    const { groomingId, metrics, currentTaskNumber } = data;
+    const result = calculateMetricAverages(groomingId, metrics);
+    result.currentTaskNumber = currentTaskNumber;
+
+    io.to(groomingId).emit('calculateTaskResult', result);
+  });
+
+  socket.on('startGame', (data) => {
+    const { groomingId, isGameStarted } = data;
+    io.to(groomingId).emit('startGame', isGameStarted);
   });
 
   socket.on('disconnect', () => {

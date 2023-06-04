@@ -5,7 +5,7 @@ import { Typography } from '../../atoms/typography';
 import { ScoringButtonVariant } from './enums';
 
 export interface IProps {
-  children: string | JSX.Element;
+  children: string | number | JSX.Element;
 	selected?: boolean;
   onClick?: () => void;
   className?: string;

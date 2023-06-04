@@ -6,9 +6,13 @@ interface IProps {
   metrics: Metric[];
   onChange: (value: string) => void;
   selected: string;
+  visible: boolean;
 }
 
-export const MetricsFilter = ({ metrics, onChange, selected }: IProps) => {
+export const MetricsFilter = ({ metrics, onChange, selected, visible }: IProps) => {
+  if (!visible) {
+    return null;
+  }
   return (
     <div>
       {metrics.map((metric: Metric) => (

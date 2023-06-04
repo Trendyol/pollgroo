@@ -5,7 +5,7 @@ interface SocketContextProps {
   children: ReactNode;
 }
 
-const defaultSocket = io("http://localhost:5000", { autoConnect: false });
+const defaultSocket = io("https://pollgroo-server.onrender.com", { autoConnect: false });
 
 export const SocketContext = createContext<Socket>(defaultSocket);
 

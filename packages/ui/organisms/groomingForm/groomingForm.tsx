@@ -7,9 +7,10 @@ import * as yup from 'yup';
 import { Button } from '../../atoms';
 
 export const GroomingForm = ({ userId }: { userId?: string }) => {
-  const [taskNumber, setTaskNumber] = useState(0);
-  const { groomingData, setParticipants } = useGrooming();
-  const { metrics, isStarted } = groomingData;
+  const { groomingData, setParticipants, isGameStarted, currentTaskNumber, setCurrentTaskNumber, taskResult } =
+    useGrooming();
+  const { metrics } = groomingData;
+  const currentTask = groomingData.tasks[currentTaskNumber]?.detail;
   const socket = useSocket();
 
   const validationSchema = yup.object().shape({
@@ -26,7 +27,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
     setValue,
     getValues,
     trigger,
-    reset
+    reset,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
@@ -39,29 +40,29 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
 
   useEffect(() => {
     socket.on('changeTask', (data) => {
-      setTaskNumber(data.taskNumber);
+      setCurrentTaskNumber(data.taskNumber);
       localStorage.removeItem('userVote');
       reset();
-      setParticipants(data.allUsers)
+      setParticipants(data.allUsers);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [socket, reset, setParticipants]);
+  }, [socket, reset, setParticipants, setCurrentTaskNumber]);
 
-  if (!isStarted) {
+  if (!isGameStarted || taskResult.currentTaskNumber === currentTaskNumber) {
     return null;
   }
 
   return (
     <>
       <GroomingTaskCard
-        key={groomingData.tasks[taskNumber].detail?._id}
-        title={groomingData.tasks[taskNumber].detail?.title}
-        description={groomingData.tasks[taskNumber].detail?.description}
-        taskId={groomingData.tasks[taskNumber].detail?._id}
-        gameId={groomingData.tasks[taskNumber].detail?.gameId}
+        key={currentTask?._id}
+        title={currentTask?.title}
+        description={currentTask?.description}
+        taskId={currentTask?._id}
+        gameId={currentTask?.gameId}
         disableEdit
       />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
