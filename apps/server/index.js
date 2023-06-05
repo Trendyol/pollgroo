@@ -5,8 +5,8 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-const server = app.listen(5000, () => {
-  console.log('Server is running on port 5000');
+const server = app.listen(5005, () => {
+  console.log('Server is running on port 5005');
 });
 
 const io = socketIO(server, {
