@@ -1,0 +1,1 @@
+export { useLockedBody } from './lockedBodyHook';
