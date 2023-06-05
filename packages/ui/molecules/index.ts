@@ -7,3 +7,4 @@ export { Popup } from './popup';
 export { ProfileCircle } from './profileCircle';
 export { Loader } from './loader';
 export { EmptyPageWarningBox } from './emptyPageWarningBox';
+export { Toaster } from './toaster';
