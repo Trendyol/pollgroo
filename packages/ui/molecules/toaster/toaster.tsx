@@ -10,10 +10,11 @@ export interface IProps {
   text: string;
   variant?: keyof typeof ToasterVariant;
   className?: string;
+  autoClose?: number;
   onClose?: (value: boolean) => void;
 }
 
-export const Toaster = ({ show, text, variant = 'success', className, onClose }: IProps) => {
+export const Toaster = ({ show, text, variant = 'success', className, autoClose = 7000, onClose }: IProps) => {
   const handleClose = React.useCallback(() => !!onClose && onClose(false), [onClose]);
   const nodeRef = React.useRef(null);
   const toasterClasses = classNames('lg:w-3/12 grid grid-flow-col justify-between items-center rounded-lg gap-x-2.5 p-3.5', className, {
@@ -42,6 +43,18 @@ export const Toaster = ({ show, text, variant = 'success', className, onClose }:
       </span>
     );
   }
+
+  React.useEffect(() => {
+    if (!autoClose) {
+      return;
+    }
+
+    let timer = setTimeout(() => {
+      onClose && onClose(false);
+    }, autoClose);
+
+    return () => clearTimeout(timer);
+  }, [autoClose]);
 
   return (
     <CSSTransition
