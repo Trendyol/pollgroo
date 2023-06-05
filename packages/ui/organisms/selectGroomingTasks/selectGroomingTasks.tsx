@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { Button, Typography } from '../../atoms';
-import { useGrooming } from 'contexts';
+import { useGrooming, useSocket } from 'contexts';
 import { IconChevronLeft, IconDragDrop } from '@tabler/icons-react';
 import { GroomingTask, Task } from '../../interfaces';
 import { GroomingTaskCard } from '../groomingTaskCard';
@@ -22,6 +22,7 @@ export const SelectGroomingTasks = () => {
     isSelectSelected,
     isGameStarted
   } = useGrooming();
+  const socket = useSocket();
 
   const handleBackToGroomingClick = () => {
     setIsSelectSelected(false);
@@ -59,6 +60,7 @@ export const SelectGroomingTasks = () => {
         const [removedTask] = updatedTasks.splice(result.source.index, 1);
         updatedTasks.splice(result.destination.index, 0, removedTask);
         setTasks(updatedTasks);
+        socket.emit('taskSelection', {groomingId: groomingData._id ,tasks: updatedTasks})
         const updatedTasksWithOrder = formatTasksWithOrder(updatedTasks);
         await updateGroomingTasks(updatedTasksWithOrder);
       }
@@ -78,6 +80,7 @@ export const SelectGroomingTasks = () => {
         const updatedOrderDestinationTasks = formatTasksWithOrder(destinationTasks);
         setTeamTasks(sourceTasks);
         setTasks(destinationTasks);
+        socket.emit('taskSelection', {groomingId: groomingData._id ,tasks: destinationTasks})
         await updateGroomingTasks(updatedOrderDestinationTasks, movedTask._id);
       }
 
@@ -90,10 +93,11 @@ export const SelectGroomingTasks = () => {
         destinationTasks.splice(result.destination.index, 0, modifiedMovedTask as Task);
         setTasks(sourceTasks);
         setTeamTasks(destinationTasks);
+        socket.emit('taskSelection', {groomingId: groomingData._id ,tasks: destinationTasks})
         await removeGroomingTask(modifiedMovedTask._id);
       }
     },
-    [updateGroomingTasks, setTasks, setTeamTasks, tasks, teamTasks, removeGroomingTask]
+    [updateGroomingTasks, setTasks, setTeamTasks, tasks, teamTasks, removeGroomingTask, socket, groomingData._id]
   );
 
   if (!isSelectSelected || isGameStarted) {

@@ -30,12 +30,14 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     currentTaskNumber,
     setTaskResult,
     changeCurrentTaskNumber,
+    tasks,
+    setTasks
   } = useGrooming();
   const { showLoader } = useApp();
   const socket = useSocket();
   const { data: session } = useSession();
   const extendedSession = session as ExtendedSession;
-  const isLastQuestion = groomingData.tasks.length - 1 === currentTaskNumber;
+  const isLastQuestion = tasks.length - 1 === currentTaskNumber;
 
   useEffect(() => {
     if (!extendedSession || !extendedSession.user) {
@@ -69,10 +71,14 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       localStorage.setItem('taskResult', JSON.stringify(data));
     });
 
+    socket.on('taskSelection', (data) => {
+      setTasks(data);
+    })
+
     return () => {
       socket.disconnect();
     };
-  }, [groomingData._id, socket, extendedSession, setParticipants, setIsGameStarted, setTaskResult]);
+  }, [groomingData._id, socket, extendedSession, setParticipants, setIsGameStarted, setTaskResult, setTasks]);
 
   useEffect(() => {
     const storedTaskResult = localStorage.getItem('taskResult');

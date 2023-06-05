@@ -115,6 +115,12 @@ io.on('connection', (socket) => {
     io.to(groomingId).emit('startGame', isGameStarted);
   });
 
+  socket.on("taskSelection", (data) => {
+    const { groomingId, tasks } = data;
+
+    io.to(groomingId).emit('taskSelection', tasks);
+  })
+
   socket.on('disconnect', () => {
     const disconnectedUserGroomingId = connectedUsers[socket.id]?.groomingId;
     const userIndex = groomings[disconnectedUserGroomingId]?.findIndex(
