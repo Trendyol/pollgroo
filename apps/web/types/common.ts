@@ -32,8 +32,9 @@ export interface GroomingData {
   };
   createdAt: string;
   updatedAt: string;
-  infoText: string;
-  buttonText: string;
+  metrics: Metric[];
+  isGameMaster: boolean;
+  currentTaskNumber: number;
 }
 
 interface Task {
@@ -81,4 +82,12 @@ export interface TeamData {
   updatedAt: string;
   totalMembers: number;
   badgeMembers: UserData[];
+}
+
+interface Metric {
+  _id: string;
+  name: string;
+  points: number[];
+  weight: number;
+  title: string;
 }

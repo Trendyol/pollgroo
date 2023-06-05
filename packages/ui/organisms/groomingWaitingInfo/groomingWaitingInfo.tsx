@@ -5,8 +5,12 @@ import translate from 'translations';
 import { IconClock } from '@tabler/icons-react';
 
 export const GroomingWaitingInfo = () => {
-  const { groomingData } = useGrooming();
-  const { team } = groomingData;
+  const { groomingData, isSelectSelected, isGameStarted } = useGrooming();
+  const { team, isGameMaster } = groomingData;
+
+  if (isGameStarted || isSelectSelected) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center py-7 gap-y-5">
@@ -18,7 +22,7 @@ export const GroomingWaitingInfo = () => {
         {translate('GAME_NOT_STARTED')}
       </Typography>
       <Typography className="text-center" element="p" color="silver" size="md">
-        {groomingData.infoText}
+        {isGameMaster ? translate('PLAYERS_WAITING_INFO_TEXT') : translate('ADMIN_WAITING_INFO_TEXT')}
       </Typography>
     </div>
   );

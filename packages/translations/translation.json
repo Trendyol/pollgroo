@@ -23,12 +23,14 @@
     "CREATE_PLUS": "Create +",
     "GAME_NOT_STARTED": "Game Not Started",
     "PLAYERS_WAITING_INFO_TEXT": "Players waiting you to start the game...",
+    "ADMIN_WAITING_INFO_TEXT": "Waiting admin to start the game...",
     "GROOMING_TASKS": "Grooming Tasks",
     "ADD": "Add",
     "SELECT": "Select",
     "SAVE": "Save",
     "START": "Start",
     "JOIN": "Join",
+    "SHOW": "Show",
     "TEAM_MEMBERS": "Team Members:",
     "BACKLOG": "Backlog",
     "DELETE": "Delete",
@@ -36,6 +38,7 @@
     "LOGOUT": "Logout",
     "DASHBOARD_WARNING_TEXT": "You don't have any upcoming game",
     "BACK_TO_GROOMING": "back to grooming",
-    "REORDER_WARNING": "(You can't reorder team tasks, grooming tasks only feature for now.)"
+    "REORDER_WARNING": "(You can't reorder team tasks, grooming tasks only feature for now.)",
+    "PARTICIPANTS": "Participants"
   }
 }

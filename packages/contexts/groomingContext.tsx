@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useCallback, useMemo, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useCallback, useMemo, useState, ReactNode, useRef } from 'react';
 import axios from 'axios';
 import { useApp } from './appContext';
 
 type GroomingContextValuesType = {
   groomingData: GroomingData;
   tasks: GroomingTask[];
-  setTasks: Function
+  setTasks: Function;
   showAddTaskToGameModal: boolean;
   setShowAddTaskToGameModal: (value: boolean) => void;
   addTaskToTheGrooming: (title: string, description: string, gameId: string) => void;
@@ -18,10 +18,21 @@ type GroomingContextValuesType = {
   removeGroomingTask: (value?: string) => void;
   isSelectSelected: boolean;
   setIsSelectSelected: (value: boolean) => void;
-  getGroomingTeamTasks: () => void,
-  teamTasks: TeamTask[],
+  getGroomingTeamTasks: () => void;
+  teamTasks: TeamTask[];
   setTeamTasks: Function;
   updateGroomingTasks: Function;
+  participants: Participant[];
+  setParticipants: Function;
+  isGameStarted: boolean;
+  setIsGameStarted: Function;
+  startGrooming: Function;
+  currentTaskNumber: number;
+  setCurrentTaskNumber: Function;
+  changeCurrentTaskNumber: Function;
+  getCurrentTaskNumber: Function;
+  taskResult: TaskResult;
+  setTaskResult: Function;
 };
 
 interface EditTaskPayload {
@@ -35,7 +46,7 @@ interface GroomingData {
   _id: string;
   title: string;
   isStarted: boolean;
-  tasks: GroomingTask[]
+  tasks: GroomingTask[];
   team: {
     _id: string;
     name: string;
@@ -47,8 +58,17 @@ interface GroomingData {
   };
   createdAt: string;
   updatedAt: string;
-  infoText: string;
-  buttonText: string;
+  metrics: Metric[];
+  isGameMaster: boolean;
+  currentTaskNumber: number;
+}
+
+interface Metric {
+  _id: string;
+  name: string;
+  points: number[];
+  weight: number;
+  title: string;
 }
 
 interface GroomingTask {
@@ -75,6 +95,28 @@ interface TeamTask {
   _id: string;
 }
 
+interface Participant {
+  fullname: string;
+  email: string;
+  id: string;
+  profileCircleBackgroundColor: string;
+  profileCircleTextColor: string;
+  profileCircleText: string;
+  groomingId: string;
+  formData: FormData;
+  userType: 'default' | 'admin';
+}
+
+interface FormData {
+  [key: string]: number;
+}
+
+interface TaskResult {
+  averages: FormData;
+  score: number;
+  currentTaskNumber: number;
+}
+
 const GroomingContext = createContext({} as GroomingContextValuesType);
 
 export const GroomingContextProvider: React.FC<{ children: ReactNode; data: GroomingData }> = ({ children, data }) => {
@@ -86,6 +128,10 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
   const [showEditGroomingTaskModal, setShowEditGroomingTaskModal] = useState(false);
   const [selectedTaskToEdit, setSelectedTaskToEdit] = useState({} as EditTaskPayload);
   const [isSelectSelected, setIsSelectSelected] = useState(false);
+  const [participants, setParticipants] = useState([] as Participant[]);
+  const [isGameStarted, setIsGameStarted] = useState(data.isStarted);
+  const [taskResult, setTaskResult] = useState({} as TaskResult);
+  const [currentTaskNumber, setCurrentTaskNumber] = useState(data.currentTaskNumber);
 
   const addTaskToTheGrooming = useCallback(
     async (title: string, description: string, gameId: string) => {
@@ -93,7 +139,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
         await axios.post(`/api/games/${gameId}/tasks`, {
           title,
           description,
-          order: groomingData.tasks.length
+          order: groomingData.tasks.length,
         });
       } catch (err) {
         setShowLoader(false);
@@ -102,17 +148,14 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
     [setShowLoader, groomingData?.tasks?.length]
   );
 
-  const getGroomingTasks = useCallback(
-    async () => {
-      try {
-        const res = await axios.get(`/api/games/${groomingData._id}/tasks`);
-        setTasks(res.data);
-      } catch (err) {
-        setShowLoader(false);
-      }
-    },
-    [setShowLoader, groomingData._id]
-  );
+  const getGroomingTasks = useCallback(async () => {
+    try {
+      const res = await axios.get(`/api/games/${groomingData._id}/tasks`);
+      setTasks(res.data);
+    } catch (err) {
+      setShowLoader(false);
+    }
+  }, [setShowLoader, groomingData._id]);
 
   const editGroomingTask = useCallback(
     async (title: string, description: string) => {
@@ -141,29 +184,52 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
     [selectedTaskToEdit, setShowLoader, groomingData._id]
   );
 
-  const getGroomingTeamTasks = useCallback(
-    async () => {
+  const getGroomingTeamTasks = useCallback(async () => {
+    try {
+      setShowLoader(true);
+      const res = await axios.get(`/api/teams/${groomingData.team._id}/tasks`);
+      setTeamTasks(res.data.tasks);
+    } catch (err) {
+      setShowLoader(false);
+    } finally {
+      setShowLoader(false);
+    }
+  }, [setShowLoader, groomingData?.team?._id]);
+
+  const updateGroomingTasks = useCallback(
+    async (groomingTasks: GroomingTask[], taskId?: number) => {
       try {
-        setShowLoader(true);
-        const res = await axios.get(`/api/teams/${groomingData.team._id}/tasks`);
-        setTeamTasks(res.data.tasks);
-      } catch (err) {
-        setShowLoader(false);
-      } finally {
-        setShowLoader(false);
-      }
+        await axios.patch(`/api/games/${groomingData._id}/select`, {
+          groomingTasks,
+          taskId,
+        });
+      } catch (err) {}
     },
-    [setShowLoader, groomingData?.team?._id]
+    [groomingData._id]
   );
 
-  const updateGroomingTasks = useCallback(async (groomingTasks: GroomingTask[], taskId?: number) => {
+  const startGrooming = useCallback(async () => {
     try {
-      await axios.patch(`/api/games/${groomingData._id}/select`, {
-        groomingTasks,
-        taskId
+      await axios.patch(`/api/games/${groomingData._id}/status`, {
+        isStarted: true,
       });
     } catch (err) {}
-  },[groomingData._id]);
+  }, [groomingData._id]);
+
+  const changeCurrentTaskNumber = useCallback(async (newTaskNumber: number) => {
+    try {
+      await axios.patch(`/api/games/${groomingData._id}/status`, {
+        currentTaskNumber: newTaskNumber,
+      });
+    } catch (err) {}
+  }, [groomingData._id]);
+
+  const getCurrentTaskNumber = useCallback(async () => {
+    try {
+      const res: { data: { currentTaskNumber: number } } = await axios.get(`/api/games/${groomingData._id}/status`);
+      setCurrentTaskNumber(res.data.currentTaskNumber);
+    } catch (err) {}
+  }, [groomingData._id]);
 
   const values = useMemo(
     () => ({
@@ -185,7 +251,18 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       getGroomingTeamTasks,
       teamTasks,
       setTeamTasks,
-      updateGroomingTasks
+      updateGroomingTasks,
+      participants,
+      setParticipants,
+      isGameStarted,
+      setIsGameStarted,
+      startGrooming,
+      taskResult,
+      setTaskResult,
+      currentTaskNumber,
+      setCurrentTaskNumber,
+      changeCurrentTaskNumber,
+      getCurrentTaskNumber,
     }),
     [
       groomingData,
@@ -206,7 +283,18 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       getGroomingTeamTasks,
       teamTasks,
       setTeamTasks,
-      updateGroomingTasks
+      updateGroomingTasks,
+      participants,
+      setParticipants,
+      isGameStarted,
+      setIsGameStarted,
+      startGrooming,
+      taskResult,
+      setTaskResult,
+      currentTaskNumber,
+      setCurrentTaskNumber,
+      changeCurrentTaskNumber,
+      getCurrentTaskNumber
     ]
   );
   return <GroomingContext.Provider value={values}>{children}</GroomingContext.Provider>;
