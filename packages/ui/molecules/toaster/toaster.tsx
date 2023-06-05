@@ -16,10 +16,10 @@ export interface IProps {
 export const Toaster = ({ show, text, variant = 'success', className, onClose }: IProps) => {
   const handleClose = React.useCallback(() => !!onClose && onClose(false), [onClose]);
   const nodeRef = React.useRef(null);
-  const toasterClasses = classNames('lg:w-4/12 grid grid-flow-col justify-between items-center rounded-lg gap-x-2.5 p-3.5', className, {
-    "bg-green/50": variant === ToasterVariant.success,
-    "bg-red/50": variant === ToasterVariant.error,
-    "bg-yellow/50": variant === ToasterVariant.warning,
+  const toasterClasses = classNames('lg:w-3/12 grid grid-flow-col justify-between items-center rounded-lg gap-x-2.5 p-3.5', className, {
+    "bg-lightgreen": variant === ToasterVariant.success,
+    "bg-lightred": variant === ToasterVariant.error,
+    "bg-lightyellow": variant === ToasterVariant.warning,
   });
 
   const renderIcon = () => {
