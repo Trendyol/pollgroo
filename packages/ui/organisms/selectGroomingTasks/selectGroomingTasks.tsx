@@ -93,7 +93,7 @@ export const SelectGroomingTasks = () => {
         destinationTasks.splice(result.destination.index, 0, modifiedMovedTask as Task);
         setTasks(sourceTasks);
         setTeamTasks(destinationTasks);
-        socket.emit('taskSelection', {groomingId: groomingData._id ,tasks: destinationTasks})
+        socket.emit('taskSelection', {groomingId: groomingData._id ,tasks: sourceTasks})
         await removeGroomingTask(modifiedMovedTask._id);
       }
     },
