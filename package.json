@@ -2,6 +2,9 @@
   "name": "pollgroo",
   "version": "0.0.1",
   "private": true,
+  "contributors": [
+    "Armagan Dalkiran"
+  ],
   "scripts": {
     "build": "turbo run build",
     "clean": "turbo run clean",
