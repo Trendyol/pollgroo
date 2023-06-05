@@ -1,7 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { AlertPopup, Button } from 'ui';
-import { AlertPopupType } from '@/../../packages/ui/organisms/alertPopup/alertPopup';
 
 export default {
   title: 'UI/AlertPopup',
@@ -13,7 +12,7 @@ const Template: ComponentStory<typeof AlertPopup> = (args) => <AlertPopup {...ar
 export const Default = Template.bind({});
 Default.args = {
   show: true,
-  type: AlertPopupType.Success,
+  type: "success",
   title: "Success",
   text: "Lorem ipsum lorem ipsum",
   onClose: () => { },
@@ -22,7 +21,7 @@ Default.args = {
 export const ErrorAlertPopup = Template.bind({});
 ErrorAlertPopup.args = {
   show: true,
-  type: AlertPopupType.Error,
+  type: "error",
   title: "Error",
   text: "Lorem ipsum lorem ipsum",
   onClose: () => { },
@@ -31,7 +30,7 @@ ErrorAlertPopup.args = {
 export const ErrorAlertPopupWithButton = Template.bind({});
 ErrorAlertPopupWithButton.args = {
   show: true,
-  type: AlertPopupType.Error,
+  type: "error",
   title: "Error",
   text: "Lorem ipsum lorem ipsum",
   children: <Button className="h-11 text-white font-bold" type="submit" fluid>

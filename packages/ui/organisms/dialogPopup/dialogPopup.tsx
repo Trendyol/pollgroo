@@ -16,7 +16,7 @@ export const DialogPopup = ({ show, title, text, renderIcon, children, onClose }
     <Popup show={show} onClose={onClose}>
       <div className="flex flex-col items-center gap-y-5 pt-2" data-testid="dialog-popup">
         <span className="block w-14 h-14 lg:w-20 lg:h-20 flex items-center justify-center rounded-full bg-lightgray">
-          {renderIcon}
+          <>{renderIcon}</>
         </span>
         <Typography element="h5" size="xl" weight="bold" color="black" className="text-center">
           {title}
@@ -24,7 +24,7 @@ export const DialogPopup = ({ show, title, text, renderIcon, children, onClose }
         <Typography element="p" size="md" color="silver" className="text-center">
           {text}
         </Typography>
-        {children}
+        <>{children}</>
       </div>
     </Popup>
   );

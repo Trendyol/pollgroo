@@ -1,1 +1,1 @@
-export { AlertPopup, AlertPopupType } from "./alertPopup";
+export { AlertPopup } from "./alertPopup";

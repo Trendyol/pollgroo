@@ -3,7 +3,7 @@ import { IconX } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Typography } from '../../atoms';
-import { useLockedBody } from '../../../hooks';
+import { useLockedBody } from 'hooks';
 
 export interface IProp {
   onClose: (value: boolean) => void;
@@ -71,7 +71,7 @@ export const Popup = ({ show, onClose, title, children, showCloseButton = true }
         <div className={popupClass} onClick={onPopupClick}>
           {renderHeader()}
           <div data-testid="popup-body">
-            {children}
+            <>{children}</>
           </div>
         </div>
       </div>
