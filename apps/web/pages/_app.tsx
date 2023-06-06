@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <SessionProvider session={pageProps.session} refetchInterval={600} refetchOnWindowFocus={false}>
+    <SessionProvider session={pageProps.session}>
       <AppContextProvider>
         <style jsx global>{`
           html {
