@@ -33,7 +33,6 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
     socket.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
     localStorage.setItem('userVote', JSON.stringify(getValues()));
   };

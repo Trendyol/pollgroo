@@ -31,7 +31,7 @@ const calculateMetricAverages = (groomingId, metrics) => {
     const formData = participantData[i].formData;
     const keys = Object.keys(formData);
 
-    if(!Object.keys(formData).length){
+    if (!Object.keys(formData).length) {
       missingVotes++;
     }
 
@@ -47,7 +47,7 @@ const calculateMetricAverages = (groomingId, metrics) => {
 
   for (const key in averages) {
     if (averages.hasOwnProperty(key)) {
-      averages[key] /= ( numObjects - missingVotes );
+      averages[key] /= numObjects - missingVotes;
       const weight = metrics.find((metric) => metric.name === key).weight;
       const weightedAverage = (averages[key] * weight) / 100;
       weightedAverages.push(weightedAverage);
@@ -61,17 +61,31 @@ const calculateMetricAverages = (groomingId, metrics) => {
 
 // Handle incoming socket connections
 io.on('connection', (socket) => {
-  console.log('New client connected');
 
   socket.on('joinRoom', (groomingId, user) => {
-    console.log(`Client joined game room: ${groomingId}${user}`);
-    console.log(user.fullname);
 
     if (!groomings[groomingId]) {
       groomings[groomingId] = [];
     }
 
     connectedUsers[socket.id] = { ...user, groomingId, formData: {} };
+
+    groomings[groomingId].forEach((participant) => {
+      // Remove previous instances of the same user from other tabs
+      if (
+        participant.fullname === user.fullname &&
+        participant.email === user.email
+      ) {
+        const socketIdToRemove = Object.keys(connectedUsers).find(
+          (id) => connectedUsers[id].fullname === user.fullname && connectedUsers[id].email === user.email
+        );
+        if (socketIdToRemove) {
+          const userToRemoveIndex = groomings[groomingId].findIndex((participant) => participant.id === user.id);
+          groomings[groomingId].splice(userToRemoveIndex, 1);
+          delete connectedUsers[socketIdToRemove];
+        }
+      }
+    });
 
     groomings[groomingId].push(connectedUsers[socket.id]);
 
@@ -115,7 +129,7 @@ io.on('connection', (socket) => {
     io.to(groomingId).emit('startGame', isGameStarted);
   });
 
-  socket.on("taskSelection", (data) => {
+  socket.on('taskSelection', (data) => {
     const { groomingId, tasks } = data;
 
     io.to(groomingId).emit('taskSelection', tasks);
