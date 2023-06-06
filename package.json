@@ -12,7 +12,8 @@
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "e2e": "turbo run e2e",
-    "e2e:headless": "turbo run e2e:headless"
+    "e2e:headless": "turbo run e2e:headless",
+    "zero-to-hero": "pnpm i && cd packages/ui && pnpm i && cd ../../apps/web && pnpm i && cd ../../ && pnpm run dev"
   },
   "devDependencies": {
     "dotenv-cli": "latest",
