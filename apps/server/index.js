@@ -73,8 +73,8 @@ io.on('connection', (socket) => {
     groomings[groomingId].forEach((participant) => {
       // Remove previous instances of the same user from other tabs
       if (
-        participant.fullname === user.fullname &&
-        participant.email === user.email
+        participant?.fullname === user.fullname &&
+        participant?.email === user.email
       ) {
         const socketIdToRemove = Object.keys(connectedUsers).find(
           (id) => connectedUsers[id].fullname === user.fullname && connectedUsers[id].email === user.email
