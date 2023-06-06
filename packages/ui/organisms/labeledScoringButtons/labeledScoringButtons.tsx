@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ScoringButton } from '../../molecules/scoring-button';
+import { ScoringButtonVariant } from '../../molecules/scoring-button/enums';
 import { Typography } from '../../../ui/atoms/typography';
 import { FieldValues, UseFormGetValues, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
+
 
 export interface IProps {
   error?: boolean;
@@ -24,6 +26,13 @@ export const LabeledScoringButtons = ({
   triggerValidation,
   name,
 }: IProps) => {
+  useEffect(() => {
+    const storedValue = getUserVoteFromLocalStorage();
+    if (storedValue) {
+      setValue(name, storedValue);
+    }
+  }, [name, setValue]);
+
   const handleClick = (score: number) => {
     setValue(name, score);
     if (error && triggerValidation) {
@@ -31,14 +40,35 @@ export const LabeledScoringButtons = ({
     }
   };
 
-  useEffect(() => {
+  const getUserVoteFromLocalStorage = () => {
     const userVote = localStorage.getItem('userVote');
     if (userVote) {
       const parsedUserVote = JSON.parse(userVote);
-      const storedValue = parsedUserVote[name];
-      setValue(name, storedValue);
+      return parsedUserVote[name];
     }
-  }, [name, setValue]);
+    return null;
+  }
+
+  const renderScoringButtons = () => {
+    return scores.map((score) => {
+      const buttonIsSelected = getValues()[name] === score;
+      let variant = "secondary";
+
+      if (buttonIsSelected) {
+        if (getUserVoteFromLocalStorage() === score && !!getUserVoteFromLocalStorage()) {
+          variant = "success";
+        } else if (getUserVoteFromLocalStorage() !== score || !getUserVoteFromLocalStorage()) {
+          variant = "primary";
+        }
+      }
+
+      return (
+        <ScoringButton key={`${name}-scoring-button-${score}`} variant={variant as keyof typeof ScoringButtonVariant} onClick={() => handleClick(score)}>
+          {score}
+        </ScoringButton>
+      )
+    });
+  }
 
   return (
     <div className="flex flex-col justify-center items-center gap-2.5">
@@ -46,11 +76,7 @@ export const LabeledScoringButtons = ({
         {label}
       </Typography>
       <div className="flex flex-row gap-2.5">
-        {scores.map((score, index) => (
-          <ScoringButton key={index} selected={getValues()[name] === score} onClick={() => handleClick(score)}>
-            {score}
-          </ScoringButton>
-        ))}
+        {renderScoringButtons()}
       </div>
       {error && (
         <Typography

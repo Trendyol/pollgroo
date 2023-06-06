@@ -4,9 +4,13 @@ import { GroomingTaskCard, LabeledScoringButtons } from '../../organisms';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useApp } from 'contexts';
 import { Button } from '../../atoms';
+import { isDeepEqual } from 'helpers';
 
 export const GroomingForm = ({ userId }: { userId?: string }) => {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const { setToasterContent } = useApp();
   const { groomingData, setParticipants, isGameStarted, currentTaskNumber, setCurrentTaskNumber, taskResult, tasks } =
     useGrooming();
   const { metrics } = groomingData;
@@ -28,15 +32,11 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
     getValues,
     trigger,
     reset,
+    watch
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-
-  const onSubmit = (data: any) => {
-    console.log(data);
-    socket.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
-    localStorage.setItem('userVote', JSON.stringify(getValues()));
-  };
+  const lastScores = watch();
 
   useEffect(() => {
     socket.on('changeTask', (data) => {
@@ -50,6 +50,35 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
       socket.disconnect();
     };
   }, [socket, reset, setParticipants, setCurrentTaskNumber]);
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    socket.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
+    localStorage.setItem('userVote', JSON.stringify(getValues()));
+    setToasterContent({
+      show: true,
+      variant: "success",
+      text: "Voted successfully!"
+    })
+  };
+
+  const getUserVoteFromLocalStorage = () => {
+    const userVote = localStorage.getItem('userVote');
+    if (userVote) {
+      return JSON.parse(userVote);
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    const userVoteFromLocalStorage = getUserVoteFromLocalStorage();
+
+    if ((!!userVoteFromLocalStorage && isDeepEqual(lastScores, userVoteFromLocalStorage)) || (Object.values(lastScores).some(score => score === undefined) && !userVoteFromLocalStorage)) {
+      setIsButtonDisabled(true);
+    } else {
+      setIsButtonDisabled(false);
+    }
+  }, [lastScores, getUserVoteFromLocalStorage]);
 
   if (!isGameStarted || taskResult.currentTaskNumber === currentTaskNumber) {
     return null;
@@ -85,7 +114,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
             )}
           />
         ))}
-        <Button type="submit" variant="primary" fluid className="h-10">
+        <Button type="submit" variant="primary" className="h-10" disabled={isButtonDisabled} fluid>
           Save
         </Button>
       </form>

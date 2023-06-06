@@ -6,15 +6,13 @@ import { ScoringButtonVariant } from './enums';
 
 export interface IProps {
   children: string | number | JSX.Element;
-	selected?: boolean;
   onClick?: () => void;
   className?: string;
+  variant?: keyof typeof ScoringButtonVariant;
 }
 
-export const ScoringButton = ({children, selected = false, onClick, className}: IProps) => {
+export const ScoringButton = ({children, variant = "secondary", onClick, className}: IProps) => {
 	const size = 'w-10 lg:w-14 h-10 lg:h-14 rounded-full border-2';
-	const variant = selected ? 'primary' : 'secondary';
-
 	const classes = classNames(ScoringButtonVariant[variant], size, className);
 
   return (

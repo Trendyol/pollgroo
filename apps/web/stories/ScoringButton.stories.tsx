@@ -18,6 +18,6 @@ DefaultScoringButton.args = {
 export const SelectedScoringButton = Template.bind({});
 SelectedScoringButton.args = {
   children: '1',
-	selected: true,
+  variant: "primary",
 	onClick: () => alert('Hello Selected Scoring Button!')
 };

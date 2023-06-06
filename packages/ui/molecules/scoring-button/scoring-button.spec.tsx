@@ -38,13 +38,22 @@ describe('ScoringButton', () => {
 
   it('should render the scoring button is selected', () => {
     const point = '1';
-    const selected = true;
 
-    render(<ScoringButton onClick={onClickHandler} selected={selected}>{point}</ScoringButton>);
+    render(<ScoringButton onClick={onClickHandler} variant="primary">{point}</ScoringButton>);
 
     const scoringButton = screen.getByRole('button');
 
     expect(scoringButton).toBeInTheDocument();
     expect(scoringButton).toHaveClass('bg-backgroundprimary');
+  });
+  it('should render the scoring button is success', () => {
+    const point = '1';
+
+    render(<ScoringButton onClick={onClickHandler} variant="success">{point}</ScoringButton>);
+
+    const scoringButton = screen.getByRole('button');
+
+    expect(scoringButton).toBeInTheDocument();
+    expect(scoringButton).toHaveClass('bg-green/50');
   });
 });
