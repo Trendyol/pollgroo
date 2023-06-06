@@ -31,7 +31,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     setTaskResult,
     changeCurrentTaskNumber,
     tasks,
-    setTasks
+    setTasks,
   } = useGrooming();
   const { showLoader } = useApp();
   const socket = useSocket();
@@ -73,7 +73,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
 
     socket.on('taskSelection', (data) => {
       setTasks(data);
-    })
+    });
 
     return () => {
       socket.disconnect();
