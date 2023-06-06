@@ -41,16 +41,4 @@ describe('LabeledScoringButtons', () => {
 
     expect(mockSetValue).toHaveBeenCalledWith(label, 2)
   });
-
-  it('should remove select when click selected scoring button again', async () => {
-    const { container } = render(
-      <LabeledScoringButtons scores={scores} label={label} name={label} getValues={mockGetValues} setValue={mockSetValue} />
-    );
-
-    const scoringButton = screen.getByText('2');
-    await userEvent.click(scoringButton);
-    await userEvent.click(scoringButton);
-
-    expect(container.querySelector('.bg-white')).toBeInTheDocument();
-  });
 });

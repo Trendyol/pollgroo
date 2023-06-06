@@ -64,6 +64,7 @@ importers:
       dotenv-cli: latest
       eslint: 7.32.0
       eslint-config-custom: workspace:*
+      helpers: workspace:*
       hooks: workspace:*
       jest: ^29.3.1
       jest-presets: workspace:*
@@ -120,6 +121,7 @@ importers:
       dotenv-cli: 7.2.1
       eslint: 7.32.0
       eslint-config-custom: link:../../packages/eslint-config-custom
+      helpers: link:../../packages/helpers
       hooks: link:../../packages/hooks
       jest: 29.3.1_@types+node@17.0.45
       jest-presets: link:../../packages/jest-presets
@@ -144,6 +146,9 @@ importers:
       eslint-config-next: 13.1.2_7uibuqfxkfaozanbtbziikiqje
       eslint-config-prettier: 8.6.0_eslint@8.32.0
       eslint-config-turbo: 1.10.1_eslint@8.32.0
+
+  packages/helpers:
+    specifiers: {}
 
   packages/hooks:
     specifiers: {}
@@ -187,6 +192,7 @@ importers:
       contexts: workspace:*
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
+      helpers: workspace:*
       hooks: workspace:*
       jest: ^29.3.1
       jest-presets: workspace:*
@@ -224,6 +230,7 @@ importers:
       contexts: link:../contexts
       eslint: 7.32.0
       eslint-config-custom: link:../eslint-config-custom
+      helpers: link:../helpers
       hooks: link:../hooks
       jest: 29.3.1
       jest-presets: link:../jest-presets

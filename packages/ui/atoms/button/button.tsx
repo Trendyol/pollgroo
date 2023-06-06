@@ -9,13 +9,14 @@ export interface IProps {
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   fluid?: boolean;
+  disabled?: boolean;
 }
 
-export const Button = ({ children, type, variant = 'primary', className, onClick, fluid = false }: IProps) => {
-  const buttonClasses = classNames(ButtonVariant[variant], 'rounded-lg', { 'w-full': fluid }, className);
+export const Button = ({ children, type, variant = 'primary', className, onClick, fluid = false, disabled = false }: IProps) => {
+  const buttonClasses = classNames(ButtonVariant[variant], 'rounded-lg disabled:opacity-30', { 'w-full': fluid }, className);
 
   return (
-    <button className={buttonClasses} type={type || "button"} onClick={onClick}>
+    <button className={buttonClasses} type={type || "button"} onClick={onClick} disabled={disabled}>
       <>{children}</>
     </button>
   );
