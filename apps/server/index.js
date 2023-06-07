@@ -31,7 +31,7 @@ const calculateMetricAverages = (groomingId, metrics) => {
     const formData = participantData[i].formData;
     const keys = Object.keys(formData);
 
-    if(!Object.keys(formData).length){
+    if (!Object.keys(formData).length) {
       missingVotes++;
     }
 
@@ -47,7 +47,7 @@ const calculateMetricAverages = (groomingId, metrics) => {
 
   for (const key in averages) {
     if (averages.hasOwnProperty(key)) {
-      averages[key] /= ( numObjects - missingVotes );
+      averages[key] /= numObjects - missingVotes;
       const weight = metrics.find((metric) => metric.name === key).weight;
       const weightedAverage = (averages[key] * weight) / 100;
       weightedAverages.push(weightedAverage);
@@ -61,23 +61,32 @@ const calculateMetricAverages = (groomingId, metrics) => {
 
 // Handle incoming socket connections
 io.on('connection', (socket) => {
-  console.log('New client connected');
 
   socket.on('joinRoom', (groomingId, user) => {
     console.log(`Client joined game room: ${groomingId}${user}`);
-    console.log(user.fullname);
 
     if (!groomings[groomingId]) {
       groomings[groomingId] = [];
     }
 
-    connectedUsers[socket.id] = { ...user, groomingId, formData: {} };
+    connectedUsers[user.id] = { ...user, groomingId, formData: {} };
 
-    groomings[groomingId].push(connectedUsers[socket.id]);
+    if (!connectedUsers[user.id].socketIds) {
+      connectedUsers[user.id].socketIds = [];
+    }
+
+    if (!connectedUsers[user.id].socketIds.includes(socket.id)) {
+      connectedUsers[user.id].socketIds.push(socket.id);
+    }
+
+    const isUserExist = groomings[groomingId].some((participant) => participant.id === user.id);
+    if (!isUserExist) {
+      groomings[groomingId].push(connectedUsers[user.id]);
+    }
 
     socket.join(groomingId);
 
-    io.to(groomingId).emit('userJoined', { joinedUser: user, allUsers: groomings[groomingId] });
+    io.to(groomingId).emit('userJoined', { joinedUser: connectedUsers[user.id], allUsers: groomings[groomingId] });
   });
 
   socket.on('changeTask', (data) => {
@@ -115,22 +124,33 @@ io.on('connection', (socket) => {
     io.to(groomingId).emit('startGame', isGameStarted);
   });
 
-  socket.on("taskSelection", (data) => {
+  socket.on('taskSelection', (data) => {
     const { groomingId, tasks } = data;
 
     io.to(groomingId).emit('taskSelection', tasks);
-  })
+  });
 
   socket.on('disconnect', () => {
-    const disconnectedUserGroomingId = connectedUsers[socket.id]?.groomingId;
-    const userIndex = groomings[disconnectedUserGroomingId]?.findIndex(
-      (participant) => participant.id === connectedUsers[socket.id]?.id
+    const disconnectedSocketId = socket.id;
+    const disconnectedUser = Object.values(connectedUsers).find((user) =>
+      user.socketIds.includes(disconnectedSocketId)
     );
-    groomings[disconnectedUserGroomingId]?.splice(userIndex, 1);
-    io.to(disconnectedUserGroomingId).emit('disconnectedUser', {
-      disconnectedUser: connectedUsers[socket.id],
-      allUsers: groomings[disconnectedUserGroomingId],
-    });
-    delete connectedUsers[socket.id];
+
+    const disconnectedSocketIdIndex = disconnectedUser?.socketIds.findIndex(
+      (socketId) => socketId === disconnectedSocketId
+    );
+    disconnectedUser?.socketIds.splice(disconnectedSocketIdIndex, 1);
+
+    if (disconnectedUser?.socketIds.length === 0) {
+      const disconnectedUserIndex = groomings[disconnectedUser.groomingId].findIndex(
+        (participant) => participant.id === disconnectedUser.id
+      );
+      groomings[disconnectedUser.groomingId].splice(disconnectedUserIndex, 1);
+      delete connectedUsers[disconnectedUser.id];
+      io.to(disconnectedUser.groomingId).emit('disconnectedUser', {
+        disconnectedUser: connectedUsers[disconnectedUser.id],
+        allUsers: groomings[disconnectedUser.groomingId],
+      });
+    }
   });
 });

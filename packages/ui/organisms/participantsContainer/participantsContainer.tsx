@@ -14,7 +14,6 @@ export const ParticipantsContainer = () => {
   useEffect(() => {
     socket.on('userJoined', ({ joinedUser, allUsers }: { joinedUser: Participant; allUsers: Participant[] }) => {
       setParticipants(allUsers);
-      console.log('User Joined:', joinedUser);
     });
 
     socket.on(
