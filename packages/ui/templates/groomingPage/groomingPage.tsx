@@ -81,7 +81,6 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     }
 
     socket.on('calculateTaskResult', (data) => {
-      console.log(data);
       setTaskResult(data);
       localStorage.setItem('taskResult', JSON.stringify(data));
     });
