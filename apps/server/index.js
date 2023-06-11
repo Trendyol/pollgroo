@@ -23,7 +23,8 @@ let connectedUsers = {};
 const calculateMetricAverages = (groomingId, metrics) => {
   let missingVotes = 0;
   const averages = {};
-  const weightedAverages = [];
+  // const weightedAverages = [];
+  const excelAverages = [];
   const participantData = groomings[groomingId];
   const numObjects = participantData?.length;
 
@@ -49,25 +50,34 @@ const calculateMetricAverages = (groomingId, metrics) => {
     if (averages.hasOwnProperty(key)) {
       averages[key] /= numObjects - missingVotes;
       const weight = metrics.find((metric) => metric.name === key).weight;
-      const weightedAverage = Number(((averages[key] * weight) / 100).toFixed(2));
-      weightedAverages.push(weightedAverage);
+      // const weightedAverage = Number(((averages[key] * weight) / 100).toFixed(2));
+      // weightedAverages.push(weightedAverage);
+      if(weight){
+        excelAverages.push(Number(averages[key].toFixed(2)))
+      }
     }
   }
 
-  const score = (weightedAverages.reduce((acc, curr) => acc + curr, 0) * 25 - 25).toFixed(2);
+  // const score = (weightedAverages.reduce((acc, curr) => acc + curr, 0) * 25 - 25).toFixed(2);
+  const score = (excelAverages.reduce((acc, curr) => acc + curr, 0) / excelAverages.length * 25 - 25).toFixed(2);
 
   return { averages, score };
 };
 
 const calculateScore = (metrics, averages) => {
-  const weightedAverages = [];
+  const excelAverages = [];
+  // const weightedAverages = [];
   for (const key in averages) {
     const weight = metrics.find((metric) => metric.name === key).weight;
-    const weightedAverage = Number(((averages[key] * weight) / 100).toFixed(2));
-    weightedAverages.push(weightedAverage);
+    // const weightedAverage = Number(((averages[key] * weight) / 100).toFixed(2));
+    // weightedAverages.push(weightedAverage);
+    if(weight){
+      excelAverages.push(Number(averages[key].toFixed(2)))
+    }
   }
 
-  const score = (weightedAverages.reduce((acc, curr) => acc + curr, 0) * 25 - 25).toFixed(2);
+  // const score = (weightedAverages.reduce((acc, curr) => acc + curr, 0) * 25 - 25).toFixed(2);
+  const score = (excelAverages.reduce((acc, curr) => acc + curr, 0) / excelAverages.length * 25 - 25).toFixed(2);
 
   return score;
 };
@@ -104,7 +114,7 @@ io.on('connection', (socket) => {
   socket.on('changeTask', (data) => {
     const { groomingId, taskNumber } = data;
 
-    groomings[groomingId] = groomings[groomingId].map((grooming) => {
+    groomings[groomingId] = groomings[groomingId]?.map((grooming) => {
       grooming.formData = {};
       return grooming;
     });

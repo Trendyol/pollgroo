@@ -119,7 +119,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     const storedTaskResult = localStorage.getItem('taskResult');
     if (storedTaskResult) {
       const parsedTaskResult = JSON.parse(storedTaskResult);
-      if (parsedTaskResult.taskId === currentTask.detail._id) {
+      if (parsedTaskResult.taskId === currentTask?.detail._id) {
         setTaskResult(JSON.parse(storedTaskResult));
       }
     }

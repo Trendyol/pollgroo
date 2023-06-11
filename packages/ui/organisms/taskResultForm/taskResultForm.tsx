@@ -29,6 +29,8 @@ export const TaskResultForm = () => {
     ...groomingData.metrics.reduce((fields: { [key: string]: yup.NumberSchema }, metric) => {
       fields[metric.name] = yup
         .number()
+        .min(0, "Minimum value you can enter is 0")
+        .max(5, "Maximum value you can enter is 5")
         .transform((value, originalValue) => {
           if (typeof originalValue === 'string') {
             const convertedValue = originalValue.replace(',', '.');
@@ -45,7 +47,8 @@ export const TaskResultForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
@@ -85,6 +88,14 @@ export const TaskResultForm = () => {
     });
   };
 
+  useEffect(() => {
+    if (taskResult.averages) {
+      Object.keys(taskResult.averages).forEach((key) => {
+        setValue(key, taskResult.averages[key]);
+      });
+    }
+  }, [taskResult.averages, setValue]);
+
   if (!isGameStarted || taskResult.currentTaskNumber !== currentTaskNumber) {
     return null;
   }
@@ -123,10 +134,11 @@ export const TaskResultForm = () => {
               <Controller
                 name={key}
                 control={control}
+                defaultValue={taskResult.averages[key]}
                 render={({ field }) => (
                   <Input
                     name={key}
-                    value={taskResult.averages[key]}
+                    value={field.value}
                     onChange={field.onChange}
                     error={!!errors[key]?.message}
                     errorMessage={errors[key]?.message?.toString()}
