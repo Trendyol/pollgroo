@@ -4,6 +4,7 @@ import Task from '../../models/task';
 import Game from '../../models/game';
 import Team from '../../models/team';
 import { withAuth } from '@/lib/authMiddleware';
+import { ITask } from '../../interfaces';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { taskId } = req.query;
@@ -11,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'DELETE') {
     try {
       await connectToDatabase();
-      const deletedTask = await Task.findByIdAndDelete(taskId);
+      const deletedTask: ITask | null = await Task.findByIdAndDelete(taskId);
 
       if (!deletedTask) {
         return res.status(404).json({ message: 'Task not found' });
@@ -25,7 +26,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       console.error(err);
       return res.status(500).json({ message: 'Internal server error' });
     }
-  } else if (req.method === "PATCH") {
+  } else if (req.method === 'PATCH') {
     try {
       await connectToDatabase();
       const updatedTask = await Task.findByIdAndUpdate(taskId, req.body, { new: true });

@@ -12,11 +12,9 @@ export interface IProps {
 
 export const GameCard = ({ teamName, gameTitle, gameId, isDone }: IProps) => {
   const router = useRouter();
-  // if game finished isDone value will be returned true, show "result" wording on primary button instead view
-  // also hide edit button
-  // handle click
-  const handleViewClick = () => {
-    router.push(`/grooming/${gameId}`);
+
+  const handleClick = () => {
+    isDone ? router.push(`/grooming/${gameId}/result`) : router.push(`/grooming/${gameId}`);
   };
 
   return (
@@ -28,11 +26,8 @@ export const GameCard = ({ teamName, gameTitle, gameId, isDone }: IProps) => {
         {gameTitle}
       </Typography>
       <div className="flex items-center gap-x-3">
-        <Button className="h-8 py-1 px-4" variant="primary" onClick={handleViewClick}>
-          {translate('VIEW')}
-        </Button>
-        <Button className="h-8 py-1 px-4" variant="secondary">
-          {translate('EDIT')}
+        <Button className="h-8 py-1 px-4" variant="primary" onClick={handleClick}>
+          {isDone ? translate('GAME_CARD_RESULT_TEXT') : translate('VIEW')}
         </Button>
       </div>
     </div>

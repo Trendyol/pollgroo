@@ -17,7 +17,7 @@ export const Popup = ({ show, onClose, title, children, showCloseButton = true }
   const [_, setLocked] = useLockedBody();
   const overlayClass = 'flex items-center justify-center fixed inset-0 bg-black/50 z-[90]';
   const headerClass = classNames('flex items-center justify-end gap-x-1', { 'justify-between': !!title });
-  const popupClass = 'bg-white z-[100] p-6 rounded-lg lg:w-1/3';
+  const popupClass = 'bg-white z-[100] p-6 rounded-lg w-10/12 lg:w-1/3';
   const closeIconClass = 'text-gray lg:cursor-pointer';
   const nodeRef = useRef(null);
 

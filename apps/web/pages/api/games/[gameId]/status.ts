@@ -13,7 +13,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await connectToDatabase();
 
-      const { isStarted, currentTaskNumber } = req.body;
+      const { isStarted, currentTaskNumber, isFinished } = req.body;
 
       if (isStarted && typeof isStarted !== 'boolean') {
         return res.status(400).json({ message: 'Invalid request body' });
@@ -23,6 +23,10 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
 
       if (isStarted) {
         game = await Game.findByIdAndUpdate(gameId, { isStarted }, { new: true }).lean();
+      }
+
+      if (isFinished) {
+        game = await Game.findByIdAndUpdate(gameId, { isFinished }, { new: true }).lean();
       }
 
       if (currentTaskNumber) {

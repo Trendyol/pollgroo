@@ -35,6 +35,7 @@ export interface GroomingData {
   metrics: Metric[];
   isGameMaster: boolean;
   currentTaskNumber: number;
+  isFinished: boolean;
 }
 
 interface Task {
@@ -90,4 +91,10 @@ interface Metric {
   points: number[];
   weight: number;
   title: string;
+}
+
+export interface GroomingResultData {
+  title: string;
+  isGameMaster: boolean;
+  tasks: GroomingTask[];
 }
