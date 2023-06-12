@@ -41,7 +41,7 @@ export const ParticipantsContainer = () => {
         return METRIC_POINT_TEXT_COLORS[participantPoint as keyof typeof METRIC_POINT_TEXT_COLORS]
     }
   }
-
+  
   return (
     <>
       <Typography element="h5" color="black" size="md" weight="semibold">
@@ -63,7 +63,7 @@ export const ParticipantsContainer = () => {
             </div>
             {!!participant.formData[metric] && isGameStarted && taskResult.currentTaskNumber === currentTaskNumber && (
               <div
-                className={`${metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.BG)} ${participant.formData[metric] !== 3 ? "bg-opacity-20" : ""} rounded-full h-7 w-7 flex items-center justify-center`}
+                className={`${metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.BG)} ${Number(participant.formData[metric]) !== 3 ? "bg-opacity-20" : ""} rounded-full h-7 w-7 flex items-center justify-center`}
               >
                 <Typography element="span" className={metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.TEXT)} size="xs" weight="bold">
                   {participant.formData[metric]}
