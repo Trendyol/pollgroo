@@ -1,7 +1,8 @@
-import { Typography } from '@/../../packages/ui';
+import { Typography } from 'ui';
 import translate from 'translations';
 import Image from 'next/image';
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -18,6 +19,8 @@ export default function HomePage() {
           <Typography size="xxs" color="lightgray" element="p">
             {translate('LANDING_DESCRIPTION')}
           </Typography>
+          <Typography size="xs" color="lightgray" element="p">{translate('BETA_AVAILABLE_TEXT')}</Typography>
+          <Link href='/login' className='bg-primary text-white py-2 px-3 rounded-lg'>{translate("EXPLORE")}</Link>
         </div>
       </main>
     </>
