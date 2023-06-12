@@ -21,7 +21,8 @@ export enum TextColor {
   gray = 'text-gray',
   black = 'text-black',
   white = 'text-white',
-  textgray = "text-textgray"
+  textgray = "text-textgray",
+  green = "text-green"
 }
 
 export enum TextWeight {
