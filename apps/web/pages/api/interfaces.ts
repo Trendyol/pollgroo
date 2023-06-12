@@ -7,9 +7,9 @@ export interface IUser {
   email: string;
   password: string;
   teams: ITeam[];
-  profileCircleBackgroundColor?: string,
-  profileCircleTextColor?: string,
-  profileCircleText?: string
+  profileCircleBackgroundColor?: string;
+  profileCircleTextColor?: string;
+  profileCircleText?: string;
 }
 
 export interface ITeam {
@@ -22,7 +22,7 @@ export interface ITeam {
 
 export interface ExtendedNextApiRequest extends NextApiRequest {
   userId?: string | null;
-  userType?: "default" | "admin" | null;
+  userType?: 'default' | 'admin' | null;
 }
 
 export interface ExtendedSession extends Session {
@@ -32,7 +32,7 @@ export interface ExtendedSession extends Session {
     image?: string | null;
     teams?: ITeam[] | null;
     id?: string | null;
-    userType?: "default" | "admin" | null;
+    userType?: 'default' | 'admin' | null;
   };
 }
 
@@ -47,5 +47,15 @@ export interface IGroomingTask {
     _id: string;
   };
   order: number;
+  _id: string;
+}
+
+export interface ITask {
+  description: string;
+  gameId: string;
+  teamId: string;
+  metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
+  score: number;
+  title: string;
   _id: string;
 }

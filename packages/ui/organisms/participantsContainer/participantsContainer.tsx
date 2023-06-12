@@ -47,7 +47,12 @@ export const ParticipantsContainer = () => {
       <Typography element="h5" color="black" size="md" weight="semibold">
         {translate('PARTICIPANTS')}
       </Typography>
-      <MetricsFilter metrics={groomingData.metrics} onChange={setMetric} selected={metric} visible={isGameStarted} />
+      <MetricsFilter
+        metrics={groomingData.metrics}
+        onChange={setMetric}
+        selected={metric}
+        visible={isGameStarted && currentTaskNumber === taskResult.currentTaskNumber}
+      />
       <ul className="flex flex-col gap-y-3">
         {participants?.map((participant: Participant) => (
           <li key={participant.id} className="flex justify-between items-center">

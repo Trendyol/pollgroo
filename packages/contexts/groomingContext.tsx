@@ -9,7 +9,7 @@ type GroomingContextValuesType = {
   showAddTaskToGameModal: boolean;
   setShowAddTaskToGameModal: (value: boolean) => void;
   addTaskToTheGrooming: (title: string, description: string, gameId: string) => void;
-  getGroomingTasks: () => void;
+  getGroomingTasks: Function;
   showEditGroomingTaskModal: boolean;
   setShowEditGroomingTaskModal: (value: boolean) => void;
   selectedTaskToEdit: EditTaskPayload;
@@ -33,6 +33,8 @@ type GroomingContextValuesType = {
   getCurrentTaskNumber: Function;
   taskResult: TaskResult;
   setTaskResult: Function;
+  finishGrooming: Function;
+  updateGroomingTaskScore: Function;
 };
 
 interface EditTaskPayload {
@@ -46,6 +48,7 @@ interface GroomingData {
   _id: string;
   title: string;
   isStarted: boolean;
+  isFinished: boolean;
   tasks: GroomingTask[];
   team: {
     _id: string;
@@ -115,6 +118,7 @@ interface TaskResult {
   averages: FormData;
   score: number;
   currentTaskNumber: number;
+  taskId: string;
 }
 
 const GroomingContext = createContext({} as GroomingContextValuesType);
@@ -152,6 +156,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
     try {
       const res = await axios.get(`/api/games/${groomingData._id}/tasks`);
       setTasks(res.data);
+      return res.data;
     } catch (err) {
       setShowLoader(false);
     }
@@ -216,13 +221,24 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
     } catch (err) {}
   }, [groomingData._id]);
 
-  const changeCurrentTaskNumber = useCallback(async (newTaskNumber: number) => {
+  const finishGrooming = useCallback(async () => {
     try {
       await axios.patch(`/api/games/${groomingData._id}/status`, {
-        currentTaskNumber: newTaskNumber,
+        isFinished: true,
       });
     } catch (err) {}
   }, [groomingData._id]);
+
+  const changeCurrentTaskNumber = useCallback(
+    async (newTaskNumber: number) => {
+      try {
+        await axios.patch(`/api/games/${groomingData._id}/status`, {
+          currentTaskNumber: newTaskNumber,
+        });
+      } catch (err) {}
+    },
+    [groomingData._id]
+  );
 
   const getCurrentTaskNumber = useCallback(async () => {
     try {
@@ -230,6 +246,19 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       setCurrentTaskNumber(res.data.currentTaskNumber);
     } catch (err) {}
   }, [groomingData._id]);
+
+  const updateGroomingTaskScore = useCallback(
+    async (score: number) => {
+      try {
+        await axios.patch(`/api/tasks/${tasks[currentTaskNumber].detail._id}`, {
+          score,
+        });
+      } catch (err) {
+        setShowLoader(false);
+      }
+    },
+    [setShowLoader, tasks, currentTaskNumber]
+  );
 
   const values = useMemo(
     () => ({
@@ -263,6 +292,8 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       setCurrentTaskNumber,
       changeCurrentTaskNumber,
       getCurrentTaskNumber,
+      finishGrooming,
+      updateGroomingTaskScore,
     }),
     [
       groomingData,
@@ -294,7 +325,9 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       currentTaskNumber,
       setCurrentTaskNumber,
       changeCurrentTaskNumber,
-      getCurrentTaskNumber
+      getCurrentTaskNumber,
+      finishGrooming,
+      updateGroomingTaskScore,
     ]
   );
   return <GroomingContext.Provider value={values}>{children}</GroomingContext.Provider>;

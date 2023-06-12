@@ -5,7 +5,7 @@ import { Button } from '../../atoms';
 import { LabeledInput } from '../../molecules';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useApp, useGrooming } from 'contexts';
+import { useApp, useGrooming, useSocket } from 'contexts';
 
 interface FormValues {
   taskTitle: string;
@@ -15,9 +15,10 @@ interface FormValues {
 type InputName = 'taskTitle' | 'taskDescription';
 
 export const AddTaskToGroomingForm = () => {
-  const { groomingData, addTaskToTheGrooming, getGroomingTasks, setShowAddTaskToGameModal } = useGrooming()
-  const { setShowLoader } = useApp()
+  const { groomingData, addTaskToTheGrooming, getGroomingTasks, setShowAddTaskToGameModal } = useGrooming();
+  const { setShowLoader } = useApp();
   const gameId = groomingData._id;
+  const socket = useSocket();
 
   const schema = yup.object().shape({
     taskTitle: yup.string().required(),
@@ -38,7 +39,8 @@ export const AddTaskToGroomingForm = () => {
     setShowLoader(true);
     setShowAddTaskToGameModal(false);
     await addTaskToTheGrooming(data.taskTitle, data.taskDescription, gameId);
-    await getGroomingTasks();
+    const newTasks = await getGroomingTasks();
+    socket.emit('taskSelection', { groomingId: groomingData._id, tasks: newTasks });
     setShowLoader(false);
   };
 

@@ -39,6 +39,15 @@
     "DASHBOARD_WARNING_TEXT": "You don't have any upcoming game",
     "BACK_TO_GROOMING": "back to grooming",
     "REORDER_WARNING": "(You can't reorder team tasks, grooming tasks only feature for now.)",
-    "PARTICIPANTS": "Participants"
+    "PARTICIPANTS": "Participants",
+    "GROOMING_COMPLETED": "Grooming Completed",
+    "GROOMING_COMPLETED_DESCRIPTION": "{0} summary listed below",
+    "NEXT": "Next",
+    "FINISH_GAME": "Finish Game",
+    "SKIP": "Skip",
+    "CANCEL": "Cancel",
+    "DO_YOU_WANT_TO_SKIP_TITLE": "Do you want to skip ?",
+    "DO_YOU_WANT_TO_SKIP_TEXT": "You didn't show the results if you skip, you won't be able to go back and task will removed from the game.",
+    "GAME_CARD_RESULT_TEXT": "Result"
   }
 }

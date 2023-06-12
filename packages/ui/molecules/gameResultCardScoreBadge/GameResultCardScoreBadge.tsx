@@ -10,7 +10,7 @@ export const GameResultCardScoreBadge = ({ score }: IProps) => {
     <div className="inline-block bg-orange font-semibold rounded-[10px] px-[10px] py-[5px]">
       <Typography
         element="div"
-        size="xs"
+        size="xxs"
         color="white"
         weight="semibold"
         className="text-[14px] sm:text-[16px] leading-[20px] sm:leading-[24px]"

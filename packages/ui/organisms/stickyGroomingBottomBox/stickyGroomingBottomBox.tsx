@@ -9,7 +9,9 @@ interface IProps {
 }
 
 export const StickyGroomingBottomBox = ({ visible }: IProps) => {
-  const { participants, startGrooming, setIsGameStarted, isGameStarted, groomingData, currentTaskNumber } = useGrooming();
+  const { participants, startGrooming, setIsGameStarted, isGameStarted, groomingData, currentTaskNumber, tasks } =
+    useGrooming();
+  const currentTask = tasks[currentTaskNumber];
   const socket = useSocket();
 
   if (!visible) {
@@ -24,7 +26,12 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
   };
 
   const handleShowTaskResult = () => {
-    socket.emit('calculateTaskResult', { groomingId: groomingData._id, metrics: groomingData.metrics, currentTaskNumber });
+    socket.emit('calculateTaskResult', {
+      groomingId: groomingData._id,
+      metrics: groomingData.metrics,
+      currentTaskNumber,
+      taskId: currentTask.detail._id
+    });
   };
 
   return (

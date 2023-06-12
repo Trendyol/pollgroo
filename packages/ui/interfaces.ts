@@ -39,7 +39,7 @@ export interface TeamData {
 }
 
 export interface ExtendedSession extends Session {
-  user: IUser
+  user: IUser;
 }
 
 export interface Task {
@@ -73,7 +73,7 @@ export interface IUser {
   profileCircleBackgroundColor: string;
   profileCircleTextColor: string;
   profileCircleText: string;
-  userType: "default" | "admin";
+  userType: 'default' | 'admin';
 }
 
 export interface Participant extends IUser {
@@ -84,11 +84,39 @@ export interface Participant extends IUser {
 export interface Metric {
   _id: string;
   name: string;
-  title: string
+  title: string;
   points: number[];
   weight: number;
 }
 
 interface FormData {
   [key: string]: number;
+}
+
+export interface GroomingData {
+  _id: string;
+  title: string;
+  isStarted: boolean;
+  tasks: GroomingTask[];
+  team: {
+    _id: string;
+    name: string;
+    members: string[];
+    tasks: string[];
+    games: string[];
+    createdAt: string;
+    updatedAt: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  metrics: Metric[];
+  isGameMaster: boolean;
+  currentTaskNumber: number;
+  isFinished: boolean;
+}
+
+export interface GroomingResultData {
+  title: string;
+  isGameMaster: boolean;
+  tasks: GroomingTask[];
 }
