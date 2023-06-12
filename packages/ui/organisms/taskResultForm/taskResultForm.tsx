@@ -29,8 +29,8 @@ export const TaskResultForm = () => {
     ...groomingData.metrics.reduce((fields: { [key: string]: yup.NumberSchema }, metric) => {
       fields[metric.name] = yup
         .number()
-        .min(0, "Minimum value you can enter is 0")
-        .max(5, "Maximum value you can enter is 5")
+        .min(0, 'Minimum value you can enter is 0')
+        .max(5, 'Maximum value you can enter is 5')
         .transform((value, originalValue) => {
           if (typeof originalValue === 'string') {
             const convertedValue = originalValue.replace(',', '.');
@@ -150,9 +150,11 @@ export const TaskResultForm = () => {
             </li>
           ))}
         </ul>
-        <Button variant="primary" className="p-2 mt-1" type="submit">
-          Apply
-        </Button>
+        {groomingData.isGameMaster && (
+          <Button variant="primary" className="p-2 mt-1" type="submit">
+            Apply
+          </Button>
+        )}
       </form>
     </>
   );
