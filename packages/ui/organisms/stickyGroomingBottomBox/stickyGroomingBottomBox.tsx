@@ -21,7 +21,7 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
   } = useGrooming();
   const currentTask = tasks[currentTaskNumber];
   const socket = useSocket();
-  const isShowButtonDisabled = Boolean(Object.keys(taskResult).length);
+  const isShowButtonDisabled = taskResult.currentTaskNumber === currentTaskNumber;
 
   if (!visible) {
     return null;
