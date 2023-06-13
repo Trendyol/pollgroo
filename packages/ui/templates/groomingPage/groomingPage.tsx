@@ -136,6 +136,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       await changeCurrentTaskNumber(newNumber);
     };
     handleTaskChange();
+    setTaskResult({});
   };
 
   const handleFinishGrooming = () => {

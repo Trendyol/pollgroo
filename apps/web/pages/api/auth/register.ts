@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      return res.status(409).json({ error: 'User Already exists' });
+      return res.status(409).json({ error: 'User already exists' });
     }
 
     if (password.length < 8) return res.status(409).json({ error: 'Password should be more than 8 characters long' });

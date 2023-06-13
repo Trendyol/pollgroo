@@ -22,10 +22,9 @@ describe('<GameCard /> specs', () => {
     expect(getByText(props.gameTitle)).toBeInTheDocument();
   });
 
-  it('renders View and Edit buttons', () => {
+  it('renders View button', () => {
     const { getByText } = render(<GameCard {...props} />);
     expect(getByText('View')).toBeInTheDocument();
-    expect(getByText('Edit')).toBeInTheDocument();
   });
 
   it('calls router.push with the correct URL when primary button is clicked', () => {

@@ -33,5 +33,8 @@ export const getProfileCircleText = (fullname: string) => {
   const nameArray = fullname.split(' ');
   const [firstname, lastname] = nameArray;
 
-  return `${firstname[0].toUpperCase()}${lastname[0].toUpperCase()}`;
+  if (lastname) {
+    return `${firstname[0].toUpperCase()}${lastname[0].toUpperCase()}`;
+  }
+  return `${firstname[0].toUpperCase()}${firstname[1].toUpperCase()}`;
 };
