@@ -120,4 +120,5 @@ export interface GroomingResultData {
   title: string;
   isGameMaster: boolean;
   tasks: GroomingTask[];
+  storyPoint: number;
 }

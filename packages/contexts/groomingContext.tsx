@@ -83,6 +83,7 @@ interface GroomingTask {
     score: number;
     title: string;
     _id: string;
+    storyPoint: number;
   };
   order: number;
   _id: string;

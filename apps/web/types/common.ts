@@ -55,6 +55,7 @@ interface GroomingTask {
     teamId: string;
     metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
     score: number;
+    storyPoint: number;
     title: string;
     _id: string;
   };
@@ -97,4 +98,5 @@ export interface GroomingResultData {
   title: string;
   isGameMaster: boolean;
   tasks: GroomingTask[];
+  storyPoint: number;
 }
