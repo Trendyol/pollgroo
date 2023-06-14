@@ -11,6 +11,7 @@ module.exports = {
         primary: '#0066FF',
         hoveredprimary: '#005ce6',
         secondary: '#1D2939',
+        extralightgray: '#F2F4F7',
         lightgray: '#D0D5DD',
         textgray: '#475467',
         bordergray: '#EAECF0',
