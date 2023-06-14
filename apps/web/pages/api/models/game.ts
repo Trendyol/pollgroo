@@ -71,7 +71,7 @@ const GameSchema = new Schema(
         {
           name: 'storyPoint',
           title: 'StoryPoint',
-          points: [1, 2, 3, 4, 5],
+          points: [1, 2, 3, 5, 8],
           weight: 0,
         },
       ],
