@@ -59,6 +59,7 @@ export interface GroomingTask {
     teamId: string;
     metrics: { maxPoint: number; minPoint: number; name: string; _id: string }[];
     score: number;
+    storyPoint: number;
     title: string;
     _id: string;
   };

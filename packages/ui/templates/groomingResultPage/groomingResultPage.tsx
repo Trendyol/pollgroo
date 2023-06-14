@@ -31,11 +31,12 @@ export const GroomingResultPage = ({ logoUrl, groomingDetail }: IProps) => {
           <div className='grid lg:grid-cols-2 w-full gap-6 mt-10'>
             {groomingDetail.tasks.map((task, index) => (
               <GameResultCard
-              key={task.detail._id}
+                key={task.detail._id}
                 text={task.detail.title}
                 order={index + 1}
                 total={groomingDetail.tasks.length}
                 score={task.detail.score}
+                storyPoint={task.detail.storyPoint}
               />
             ))}
           </div>

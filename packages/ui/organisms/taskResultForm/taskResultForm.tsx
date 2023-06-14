@@ -62,7 +62,7 @@ export const TaskResultForm = () => {
 
   useEffect(() => {
     if (isGameStarted && groomingData.isGameMaster && taskResult.currentTaskNumber === currentTaskNumber) {
-      updateGroomingTaskScore(taskResult.score);
+      updateGroomingTaskScore(taskResult.score, taskResult.averages?.storyPoint);
     }
   }, [
     updateGroomingTaskScore,
@@ -71,6 +71,7 @@ export const TaskResultForm = () => {
     isGameStarted,
     taskResult.currentTaskNumber,
     taskResult.score,
+    taskResult.averages?.storyPoint
   ]);
 
   const renderMetricTitle = (key: string) => {

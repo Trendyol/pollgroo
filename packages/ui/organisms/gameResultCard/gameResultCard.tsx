@@ -8,9 +8,10 @@ export interface IProps {
   total: number;
   score: number;
   text: string;
+  storyPoint: number;
 }
 
-export const GameResultCard = ({ order, total, score, text }: IProps) => {
+export const GameResultCard = ({ order, total, score, text, storyPoint }: IProps) => {
   return (
     <div className="flex flex-col items-start bg-lightblue rounded-[20px] px-5 py-2.5 w-full gap-y-4">
       <Typography element="span" size="xxs" color="labelgray">
@@ -19,7 +20,10 @@ export const GameResultCard = ({ order, total, score, text }: IProps) => {
       <Typography element="span" size="xs" color="darkgray" weight="semibold">
         {text}
       </Typography>
-      <GameResultCardScoreBadge score={score} />
+      <div className="flex gap-x-2">
+        <GameResultCardScoreBadge label="Score" score={score} />
+        {!!storyPoint && <GameResultCardScoreBadge label="Story Point" score={storyPoint} />}
+      </div>
     </div>
   );
 };
