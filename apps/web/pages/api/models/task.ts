@@ -31,6 +31,11 @@ const TaskSchema = new Schema(
       required: false,
       default: 0,
     },
+    storyPoint: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
     gameId: {
       type: Schema.Types.ObjectId,
       required: false,

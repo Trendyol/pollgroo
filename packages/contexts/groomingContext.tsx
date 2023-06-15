@@ -83,6 +83,7 @@ interface GroomingTask {
     score: number;
     title: string;
     _id: string;
+    storyPoint: number;
   };
   order: number;
   _id: string;
@@ -248,10 +249,11 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
   }, [groomingData._id]);
 
   const updateGroomingTaskScore = useCallback(
-    async (score: number) => {
+    async (score: number, storyPoint: number) => {
       try {
         await axios.patch(`/api/tasks/${tasks[currentTaskNumber].detail._id}`, {
           score,
+          storyPoint
         });
       } catch (err) {
         setShowLoader(false);

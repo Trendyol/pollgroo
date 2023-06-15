@@ -11,8 +11,8 @@ export enum HeaderText {
 }
 
 export enum DescriptionText {
-  login = 'Login your account and join planned pokers.',
-  register = 'Create an account and join planning pokers.',
+  login = 'Login your account and join planned groomings.',
+  register = 'Create an account and join planning groomings.',
   forgotPassword = 'Recover your missed password. You will take an email with instructions on how to reset your password.',
 }
 

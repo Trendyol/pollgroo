@@ -5,7 +5,7 @@ import { ButtonText, DescriptionText, FooterText, HeaderText, LinkPage, LinkText
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import translate from "translations";
+import translate from 'translations';
 
 interface FormValues {
   fullname?: string;
@@ -22,8 +22,20 @@ export interface IProps {
 
 export const AuthForm = ({ type, onSubmit }: IProps) => {
   const schema = yup.object().shape({
-    email: yup.string().email().required(),
-    ...(type === 'login' || type === 'register' ? { password: yup.string().required() } : {}),
+    email: yup
+      .string()
+      .email()
+      .required()
+      .matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'invalid email address'),
+    ...(type === 'login' || type === 'register'
+      ? {
+          password: yup
+            .string()
+            .min(8, "password can't be less than 8 characters")
+            .max(30, "password can't be more than 30 characters")
+            .required(),
+        }
+      : {}),
     ...(type === 'register' ? { fullname: yup.string().required() } : {}),
   });
 
@@ -99,7 +111,7 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
 
   return (
     <section id="authForm" className="h-full p-4 flex flex-col justify-between lg:flex-1">
-      <form className="flex flex-col h-full items-center gap-y-8" onSubmit={handleSubmit(submitHandler)}> 
+      <form className="flex flex-col h-full items-center gap-y-8" onSubmit={handleSubmit(submitHandler)}>
         <div className="w-full">
           <Typography className="font-bold text-black" element="h4" size="xxxl">
             {HeaderText[type]}
@@ -123,7 +135,7 @@ export const AuthForm = ({ type, onSubmit }: IProps) => {
       </Typography>
       {type === 'login' && (
         <Link className="text-center" href="/forgot-password" color="primary">
-          {translate("FORGOT_YOUR_PASSWORD")}
+          {translate('FORGOT_YOUR_PASSWORD')}
         </Link>
       )}
     </section>

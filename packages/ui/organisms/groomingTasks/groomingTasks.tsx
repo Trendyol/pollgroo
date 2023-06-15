@@ -22,9 +22,11 @@ export const GroomingTasks = () => {
         {translate('GROOMING_TASKS')}
       </Typography>
       <div className="flex justify-end gap-x-1">
-        <Button variant="text" onClick={handleSelectClick}>
-          {translate('SELECT')}
-        </Button>
+        {groomingData.isGameMaster && (
+          <Button variant="text" onClick={handleSelectClick}>
+            {translate('SELECT')}
+          </Button>
+        )}
       </div>
       <div className="flex flex-col gap-5 lg:grid lg:grid-cols-3">
         {tasks?.map((task: GroomingTask) => (
@@ -34,6 +36,7 @@ export const GroomingTasks = () => {
             description={task.detail?.description}
             taskId={task.detail?._id}
             gameId={task.detail?.gameId}
+            disableEdit={!groomingData.isGameMaster}
           />
         ))}
       </div>

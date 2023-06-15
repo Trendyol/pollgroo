@@ -57,7 +57,7 @@ describe('<AuthForm /> specs', () => {
     const submitButton = screen.getByText('Register');
     fireEvent.click(submitButton);
 
-    await waitFor(() => expect(screen.getByText('password is a required field')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("password can't be less than 8 characters")).toBeInTheDocument());
   });
 
   it('submits form with email when type is "login" and email is filled in', async () => {
@@ -104,7 +104,7 @@ describe('<AuthForm /> specs', () => {
     const submitButton = screen.getByText('Login');
     fireEvent.click(submitButton);
 
-    await waitFor(() => expect(screen.getByText('password is a required field')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("password can't be less than 8 characters")).toBeInTheDocument());
   });
 
   it('submits form with email when type is "forgotPassword" and email is filled in', async () => {
@@ -142,7 +142,7 @@ describe('<AuthForm /> specs', () => {
     await act(async () => {
       emailInput.focus();
       emailInput.blur();
-    })
+    });
 
     await waitFor(() =>
       expect(

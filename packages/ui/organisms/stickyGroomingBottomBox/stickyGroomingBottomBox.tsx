@@ -9,10 +9,19 @@ interface IProps {
 }
 
 export const StickyGroomingBottomBox = ({ visible }: IProps) => {
-  const { participants, startGrooming, setIsGameStarted, isGameStarted, groomingData, currentTaskNumber, tasks } =
-    useGrooming();
+  const {
+    participants,
+    startGrooming,
+    setIsGameStarted,
+    isGameStarted,
+    groomingData,
+    currentTaskNumber,
+    tasks,
+    taskResult,
+  } = useGrooming();
   const currentTask = tasks[currentTaskNumber];
   const socket = useSocket();
+  const isShowButtonDisabled = taskResult.currentTaskNumber === currentTaskNumber;
 
   if (!visible) {
     return null;
@@ -30,7 +39,7 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
       groomingId: groomingData._id,
       metrics: groomingData.metrics,
       currentTaskNumber,
-      taskId: currentTask.detail._id
+      taskId: currentTask.detail._id,
     });
   };
 
@@ -44,7 +53,12 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
               {translate('START')}
             </Button>
           ) : (
-            <Button variant="primary" className="px-10 py-3" onClick={handleShowTaskResult}>
+            <Button
+              variant="primary"
+              className={`px-10 py-3 ${isShowButtonDisabled ? 'opacity-25' : ''}`}
+              onClick={handleShowTaskResult}
+              disabled={isShowButtonDisabled}
+            >
               {translate('SHOW')}
             </Button>
           )}
