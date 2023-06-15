@@ -21,6 +21,7 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
   const handleGroomingStart = () => {
     startGrooming().then(() => {
       setIsGameStarted(true);
+      sessionStorage.removeItem('userVote');
       socket.emit('startGame', { groomingId: groomingData._id, isGameStarted: true });
     });
   };

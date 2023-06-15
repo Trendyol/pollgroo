@@ -70,7 +70,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       setIsGameStarted(data);
     });
 
-    const userVote = localStorage.getItem('userVote');
+    const userVote = sessionStorage.getItem('userVote');
 
     if (userVote) {
       socket.emit('userVote', {
@@ -82,7 +82,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
 
     socket.on('calculateTaskResult', (data) => {
       setTaskResult(data);
-      localStorage.setItem('taskResult', JSON.stringify(data));
+      sessionStorage.setItem('taskResult', JSON.stringify(data));
     });
 
     socket.on('updateTaskResult', (data) => {

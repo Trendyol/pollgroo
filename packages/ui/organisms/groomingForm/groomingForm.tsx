@@ -41,7 +41,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
   useEffect(() => {
     socket.on('changeTask', (data) => {
       setCurrentTaskNumber(data.taskNumber);
-      localStorage.removeItem('userVote');
+      sessionStorage.removeItem('userVote');
       reset();
       setParticipants(data.allUsers);
     });
@@ -53,7 +53,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
 
   const onSubmit = (data: any) => {
     socket.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
-    localStorage.setItem('userVote', JSON.stringify(getValues()));
+    sessionStorage.setItem('userVote', JSON.stringify(getValues()));
     setToasterContent({
       show: true,
       variant: "success",
@@ -61,8 +61,8 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
     })
   };
 
-  const getUserVoteFromLocalStorage = () => {
-    const userVote = localStorage.getItem('userVote');
+  const getUserVoteFromSessionStorage = () => {
+    const userVote = sessionStorage.getItem('userVote');
     if (userVote) {
       return JSON.parse(userVote);
     }
@@ -70,14 +70,14 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
   };
 
   useEffect(() => {
-    const userVoteFromLocalStorage = getUserVoteFromLocalStorage();
+    const userVoteFromSessionStorage = getUserVoteFromSessionStorage();
 
-    if ((!!userVoteFromLocalStorage && isDeepEqual(lastScores, userVoteFromLocalStorage)) || (Object.values(lastScores).some(score => score === undefined) && !userVoteFromLocalStorage)) {
+    if ((!!userVoteFromSessionStorage && isDeepEqual(lastScores, userVoteFromSessionStorage)) || (Object.values(lastScores).some(score => score === undefined) && !userVoteFromSessionStorage)) {
       setIsButtonDisabled(true);
     } else {
       setIsButtonDisabled(false);
     }
-  }, [lastScores, getUserVoteFromLocalStorage]);
+  }, [lastScores, getUserVoteFromSessionStorage]);
 
   if (!isGameStarted || taskResult.currentTaskNumber === currentTaskNumber) {
     return null;

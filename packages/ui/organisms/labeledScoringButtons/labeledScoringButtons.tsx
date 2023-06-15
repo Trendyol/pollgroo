@@ -27,7 +27,7 @@ export const LabeledScoringButtons = ({
   name,
 }: IProps) => {
   useEffect(() => {
-    const storedValue = getUserVoteFromLocalStorage();
+    const storedValue = getUserVoteFromSessionStorage();
     if (storedValue) {
       setValue(name, storedValue);
     }
@@ -40,8 +40,8 @@ export const LabeledScoringButtons = ({
     }
   };
 
-  const getUserVoteFromLocalStorage = () => {
-    const userVote = localStorage.getItem('userVote');
+  const getUserVoteFromSessionStorage = () => {
+    const userVote = sessionStorage.getItem('userVote');
     if (userVote) {
       const parsedUserVote = JSON.parse(userVote);
       return parsedUserVote[name];
@@ -55,9 +55,9 @@ export const LabeledScoringButtons = ({
       let variant = "secondary";
 
       if (buttonIsSelected) {
-        if (getUserVoteFromLocalStorage() === score && !!getUserVoteFromLocalStorage()) {
+        if (getUserVoteFromSessionStorage() === score && !!getUserVoteFromSessionStorage()) {
           variant = "success";
-        } else if (getUserVoteFromLocalStorage() !== score || !getUserVoteFromLocalStorage()) {
+        } else if (getUserVoteFromSessionStorage() !== score || !getUserVoteFromSessionStorage()) {
           variant = "primary";
         }
       }
