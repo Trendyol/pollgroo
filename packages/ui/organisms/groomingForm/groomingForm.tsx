@@ -32,33 +32,29 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
     getValues,
     trigger,
     reset,
-    watch
+    watch,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
   const lastScores = watch();
 
   useEffect(() => {
-    socket.on('changeTask', (data) => {
+    socket?.on('changeTask', (data) => {
       setCurrentTaskNumber(data.taskNumber);
       localStorage.removeItem('userVote');
       reset();
       setParticipants(data.allUsers);
     });
-
-    return () => {
-      socket.disconnect();
-    };
   }, [socket, reset, setParticipants, setCurrentTaskNumber]);
 
   const onSubmit = (data: any) => {
-    socket.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
+    socket?.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
     localStorage.setItem('userVote', JSON.stringify(getValues()));
     setToasterContent({
       show: true,
-      variant: "success",
-      text: "Voted successfully!"
-    })
+      variant: 'success',
+      text: 'Voted successfully!',
+    });
   };
 
   const getUserVoteFromLocalStorage = () => {
@@ -72,7 +68,10 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
   useEffect(() => {
     const userVoteFromLocalStorage = getUserVoteFromLocalStorage();
 
-    if ((!!userVoteFromLocalStorage && isDeepEqual(lastScores, userVoteFromLocalStorage)) || (Object.values(lastScores).some(score => score === undefined) && !userVoteFromLocalStorage)) {
+    if (
+      (!!userVoteFromLocalStorage && isDeepEqual(lastScores, userVoteFromLocalStorage)) ||
+      (Object.values(lastScores).some((score) => score === undefined) && !userVoteFromLocalStorage)
+    ) {
       setIsButtonDisabled(true);
     } else {
       setIsButtonDisabled(false);

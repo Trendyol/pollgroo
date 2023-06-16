@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationLayout } from '../../layouts';
 import { useApp, useGrooming, useSocket } from 'contexts';
 import {
@@ -48,58 +48,76 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   const isLastQuestion = tasks.length - 1 === currentTaskNumber;
   const currentTask = tasks[currentTaskNumber];
 
+  const handleUserVote = useCallback(
+    (data: Participant) => {
+      setParticipants(data);
+    },
+    [setParticipants]
+  );
+
+  const handleStartGame = useCallback(
+    (data: boolean) => {
+      setIsGameStarted(data);
+    },
+    [setIsGameStarted]
+  );
+
+  const handleCalculateTaskResult = useCallback(
+    (data: any) => {
+      setTaskResult(data);
+      localStorage.setItem('taskResult', JSON.stringify(data));
+    },
+    [setTaskResult]
+  );
+
+  const handleUpdateTaskResult = useCallback(
+    (data: any) => {
+      setTaskResult(data);
+      localStorage.setItem('taskResult', JSON.stringify(data));
+    },
+    [setTaskResult]
+  );
+
+  const handleTaskSelection = useCallback(
+    (data: any) => {
+      setTasks(data);
+    },
+    [setTasks]
+  );
+
+  const handleFinishGroomingRedirection = useCallback(() => {
+    router.push(`/grooming/${groomingData._id}/result`);
+  }, [router, groomingData._id]);
+
   useEffect(() => {
     if (groomingData.isFinished) {
       router.push(`/grooming/${groomingData._id}/result`);
-    }
-    if (!extendedSession || !extendedSession.user || groomingData.isFinished) {
       return;
     }
 
-    if (!socket.connected) {
-      socket.connect();
-
-      socket.emit('joinRoom', groomingData._id, extendedSession.user);
-    }
-
-    socket.on('userVote', (data: Participant) => {
-      setParticipants(data);
-    });
-
-    socket.on('startGame', (data: boolean) => {
-      setIsGameStarted(data);
-    });
+    socket?.on('userVote', handleUserVote);
+    socket?.on('startGame', handleStartGame);
+    socket?.on('calculateTaskResult', handleCalculateTaskResult);
+    socket?.on('updateTaskResult', handleUpdateTaskResult);
+    socket?.on('taskSelection', handleTaskSelection);
+    socket?.on('finishGrooming', handleFinishGroomingRedirection);
 
     const userVote = localStorage.getItem('userVote');
-
     if (userVote) {
-      socket.emit('userVote', {
+      socket?.emit('userVote', {
         groomingId: groomingData._id,
         formData: JSON.parse(userVote),
         userId: extendedSession.user.id,
       });
     }
 
-    socket.on('calculateTaskResult', (data) => {
-      setTaskResult(data);
-      localStorage.setItem('taskResult', JSON.stringify(data));
-    });
-
-    socket.on('updateTaskResult', (data) => {
-      setTaskResult(data);
-      localStorage.setItem('taskResult', JSON.stringify(data));
-    });
-
-    socket.on('taskSelection', (data) => {
-      setTasks(data);
-    });
-
-    socket.on('finishGrooming', () => {
-      router.push(`/grooming/${groomingData._id}/result`);
-    });
-
     return () => {
-      socket.disconnect();
+      socket?.off('userVote', handleUserVote);
+      socket?.off('startGame', handleStartGame);
+      socket?.off('calculateTaskResult', handleCalculateTaskResult);
+      socket?.off('updateTaskResult', handleUpdateTaskResult);
+      socket?.off('taskSelection', handleTaskSelection);
+      socket?.off('finishGrooming', handleFinishGroomingRedirection);
     };
   }, [
     groomingData._id,
@@ -113,6 +131,12 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     groomingData.isFinished,
     router,
     updateGroomingTaskScore,
+    handleUserVote,
+    handleStartGame,
+    handleCalculateTaskResult,
+    handleUpdateTaskResult,
+    handleTaskSelection,
+    handleFinishGroomingRedirection,
   ]);
 
   useEffect(() => {
@@ -130,7 +154,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       setShowNextTaskErrorPopup(true);
       return;
     }
-    socket.emit('changeTask', { groomingId: groomingData._id, taskNumber: currentTaskNumber + 1 });
+    socket?.emit('changeTask', { groomingId: groomingData._id, taskNumber: currentTaskNumber + 1 });
     const handleTaskChange = async () => {
       const newNumber = currentTaskNumber + 1;
       await changeCurrentTaskNumber(newNumber);
@@ -141,7 +165,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   const handleFinishGrooming = () => {
     finishGrooming().then(() => {
       router.push(`/grooming/${groomingData._id}/result`);
-      socket.emit('finishGrooming', groomingData._id);
+      socket?.emit('finishGrooming', groomingData._id);
     });
   };
 

@@ -27,10 +27,14 @@ export const TaskResultForm = () => {
 
   const validationSchema = yup.object().shape({
     ...groomingData.metrics.reduce((fields: { [key: string]: yup.NumberSchema }, metric) => {
+      console.log(metric.name);
       fields[metric.name] = yup
         .number()
         .min(0, 'Minimum value you can enter is 0')
-        .max(5, 'Maximum value you can enter is 5')
+        .max(
+          metric.name === 'storyPoint' ? 8 : 5,
+          `Maximum value you can enter is ${metric.name === 'storyPoint' ? 8 : 5}`
+        )
         .transform((value, originalValue) => {
           if (typeof originalValue === 'string') {
             const convertedValue = originalValue.replace(',', '.');
@@ -71,7 +75,7 @@ export const TaskResultForm = () => {
     isGameStarted,
     taskResult.currentTaskNumber,
     taskResult.score,
-    taskResult.averages?.storyPoint
+    taskResult.averages?.storyPoint,
   ]);
 
   const renderMetricTitle = (key: string) => {
@@ -79,7 +83,7 @@ export const TaskResultForm = () => {
   };
 
   const submitHandler = (data: FormData) => {
-    socket.emit('updateTaskResult', {
+    socket?.emit('updateTaskResult', {
       taskResult: {
         ...taskResult,
         averages: data,

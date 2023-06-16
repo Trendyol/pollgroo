@@ -6,6 +6,7 @@ import { ProfileCircle, Loader } from '../../molecules';
 import translate from 'translations';
 import { MetricsFilter } from '../metricsFilter';
 import { METRIC_POINT_BG_COLORS, METRIC_POINT_COLOR_TYPES, METRIC_POINT_TEXT_COLORS } from './constants';
+import { IconCoffee } from '@tabler/icons-react';
 
 export const ParticipantsContainer = () => {
   const { participants, setParticipants, groomingData, isGameStarted, taskResult, currentTaskNumber } = useGrooming();
@@ -14,20 +15,17 @@ export const ParticipantsContainer = () => {
   const socket = useSocket();
 
   useEffect(() => {
-    socket.on('userJoined', ({ joinedUser, allUsers }: { joinedUser: Participant; allUsers: Participant[] }) => {
+    socket?.on('userJoined', ({ joinedUser, allUsers }: { joinedUser: Participant; allUsers: Participant[] }) => {
+      console.log(allUsers);
       setParticipants(allUsers);
     });
 
-    socket.on(
+    socket?.on(
       'disconnectedUser',
       ({ disconnectedUser, allUsers }: { disconnectedUser: Participant; allUsers: Participant[] }) => {
         setParticipants(allUsers);
       }
     );
-
-    return () => {
-      socket.disconnect();
-    };
   }, [socket, setParticipants]);
 
   useEffect(() => {
@@ -65,9 +63,12 @@ export const ParticipantsContainer = () => {
         selected={metric}
         visible={isGameStarted && currentTaskNumber === taskResult.currentTaskNumber}
       />
-      <ul className="flex flex-col gap-y-3">
+      <ul className="flex flex-col">
         {participants?.map((participant: Participant) => (
-          <li key={participant.id} className="flex justify-between items-center">
+          <li
+            key={participant.id}
+            className="flex justify-between items-center border-b-2 border-bordergray last:border-b-0 py-2"
+          >
             <div className="flex items-center gap-x-3">
               <ProfileCircle
                 profileCircleBackgroundColor={participant.profileCircleBackgroundColor}
@@ -97,7 +98,14 @@ export const ParticipantsContainer = () => {
             {!!participant.formData[metric] && isGameStarted && taskResult.currentTaskNumber !== currentTaskNumber && (
               <div className="text-gray">voted</div>
             )}
-            {!participant.formData[metric] && isGameStarted && <div className="text-gray">waiting..</div>}
+            {!participant.formData[metric] && isGameStarted && taskResult.currentTaskNumber !== currentTaskNumber && (
+              <div className="text-gray">waiting..</div>
+            )}
+            {!participant.formData[metric] && isGameStarted && taskResult.currentTaskNumber === currentTaskNumber && (
+              <div className="text-gray">
+                <IconCoffee />
+              </div>
+            )}
           </li>
         ))}
       </ul>
