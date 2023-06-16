@@ -27,7 +27,6 @@ export const TaskResultForm = () => {
 
   const validationSchema = yup.object().shape({
     ...groomingData.metrics.reduce((fields: { [key: string]: yup.NumberSchema }, metric) => {
-      console.log(metric.name);
       fields[metric.name] = yup
         .number()
         .min(0, 'Minimum value you can enter is 0')
