@@ -250,10 +250,13 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
 
   const updateGroomingTaskScore = useCallback(
     async (score: number, storyPoint: number) => {
+      if (!score || !storyPoint) {
+        return;
+      }
       try {
         await axios.patch(`/api/tasks/${tasks[currentTaskNumber].detail._id}`, {
           score,
-          storyPoint
+          storyPoint,
         });
       } catch (err) {
         setShowLoader(false);

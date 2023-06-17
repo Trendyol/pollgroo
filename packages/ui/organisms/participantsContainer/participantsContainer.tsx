@@ -8,7 +8,11 @@ import { MetricsFilter } from '../metricsFilter';
 import { METRIC_POINT_BG_COLORS, METRIC_POINT_COLOR_TYPES, METRIC_POINT_TEXT_COLORS } from './constants';
 import { IconCoffee } from '@tabler/icons-react';
 
-export const ParticipantsContainer = () => {
+interface IProps {
+  userId: string;
+}
+
+export const ParticipantsContainer = ({ userId }: IProps) => {
   const { participants, setParticipants, groomingData, isGameStarted, taskResult, currentTaskNumber } = useGrooming();
   const { showLoader, setShowLoader } = useApp();
   const [metric, setMetric] = useState(groomingData.metrics[0].name);
@@ -74,8 +78,13 @@ export const ParticipantsContainer = () => {
                 profileCircleText={participant.profileCircleText}
                 profileCircleTextColor={participant.profileCircleTextColor}
               />
-              <Typography element="span" color="black" size="xs" weight="medium">
+              <Typography className='flex gap-x-2 items-center' element="p" color="black" size="xs" weight="medium">
                 {participant.fullname}
+                {participant.id === userId && (
+                  <Typography element="span" color="gray" size="xs">
+                    {translate("YOU")}
+                  </Typography>
+                )}
               </Typography>
             </div>
             {!!participant.formData[metric] && isGameStarted && taskResult.currentTaskNumber === currentTaskNumber && (

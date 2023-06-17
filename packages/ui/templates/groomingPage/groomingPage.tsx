@@ -191,7 +191,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
         <GroomingTasks />
         <GroomingForm userId={extendedSession?.user.id} />
         <TaskResultForm />
-        <ParticipantsContainer />
+        <ParticipantsContainer userId={extendedSession?.user.id} />
       </div>
       <AddTaskToGroomingModal />
       <EditGroomingTaskModal />

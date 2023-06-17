@@ -20,6 +20,8 @@ export const TeamTasksBoard = () => {
             taskId={task._id}
             description={task.description}
             teamId={task.teamId}
+            score={task.score}
+            storyPoint={task.storyPoint}
           />
         ))}
       </div>
