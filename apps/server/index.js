@@ -19,46 +19,55 @@ const io = socketIO(server, {
 
 let groomings = {};
 let connectedUsers = {};
+let groomingTaskResult = {};
 
 const calculateMetricAverages = (groomingId, metrics) => {
-  let missingVotes = 0;
   const averages = {};
-  // const weightedAverages = [];
   const excelAverages = [];
   const participantData = groomings[groomingId];
   const numObjects = participantData?.length;
+  let notUsedVotes = 0;
 
   for (let i = 0; i < numObjects; i++) {
     const formData = participantData[i].formData;
     const keys = Object.keys(formData);
 
-    if (!Object.keys(formData).length) {
-      missingVotes++;
+    if(!keys.length){
+      notUsedVotes++;
     }
 
-    for (const element of keys) {
-      const key = element;
+    for (const key of keys) {
       if (!averages.hasOwnProperty(key)) {
-        averages[key] = 0;
+        averages[key] = {
+          total: 0,
+          missingVotes: 0,
+        };
       }
 
-      averages[key] += Number(formData[key]);
+      averages[key].total += Number(formData[key]);
+
+      if (!formData[key] || formData[key] === "0") {
+        averages[key].missingVotes++;
+      }
     }
   }
 
   for (const key in averages) {
     if (averages.hasOwnProperty(key)) {
-      averages[key] /= numObjects - missingVotes;
+      const { total, missingVotes } = averages[key];
+      const numVotes = numObjects - missingVotes - notUsedVotes;
+
+      const average = numVotes ? total / numVotes : 0;
+
+      averages[key] = key === 'storyPoint' ? roundFibonacci(average).toFixed(2) : average.toFixed(2);
+
       const weight = metrics.find((metric) => metric.name === key).weight;
-      // const weightedAverage = Number(((averages[key] * weight) / 100).toFixed(2));
-      // weightedAverages.push(weightedAverage);
       if (weight) {
-        excelAverages.push(Number(averages[key].toFixed(2)));
+        excelAverages.push(Number(averages[key]));
       }
     }
   }
 
-  // const score = (weightedAverages.reduce((acc, curr) => acc + curr, 0) * 25 - 25).toFixed(2);
   const score = ((excelAverages.reduce((acc, curr) => acc + curr, 0) / excelAverages.length) * 25 - 25).toFixed(2);
 
   return { averages, score };
@@ -72,7 +81,7 @@ const calculateScore = (metrics, averages) => {
     // const weightedAverage = Number(((averages[key] * weight) / 100).toFixed(2));
     // weightedAverages.push(weightedAverage);
     if (weight) {
-      excelAverages.push(Number(averages[key].toFixed(2)));
+      excelAverages.push(Number(averages[key]));
     }
   }
 
@@ -80,6 +89,25 @@ const calculateScore = (metrics, averages) => {
   const score = ((excelAverages.reduce((acc, curr) => acc + curr, 0) / excelAverages.length) * 25 - 25).toFixed(2);
 
   return score;
+};
+
+const roundFibonacci = (average) => {
+  let roundedAverage = Math.round(average);
+  let fibonacciNumber = 0;
+  let nextFibonacciNumber = 1;
+
+  while (nextFibonacciNumber <= roundedAverage) {
+    const temp = nextFibonacciNumber;
+    nextFibonacciNumber = fibonacciNumber + nextFibonacciNumber;
+    fibonacciNumber = temp;
+  }
+
+  // Check which Fibonacci number is closer to the rounded average
+  if (Math.abs(fibonacciNumber - roundedAverage) <= Math.abs(nextFibonacciNumber - roundedAverage)) {
+    return fibonacciNumber;
+  } else {
+    return nextFibonacciNumber;
+  }
 };
 
 // Handle incoming socket connections
@@ -110,7 +138,7 @@ io.on('connection', (socket) => {
   }
 
   socket.join(groomingId);
-  io.to(groomingId).emit('userJoined', { joinedUser: connectedUsers[user.id], allUsers: groomings[groomingId] });
+  io.to(groomingId).emit('userJoined', { joinedUser: connectedUsers[user.id], allUsers: groomings[groomingId], taskResult: groomingTaskResult[groomingId] });
 
   socket.on('changeTask', (data) => {
     const { groomingId, taskNumber } = data;
@@ -140,6 +168,7 @@ io.on('connection', (socket) => {
     result.currentTaskNumber = currentTaskNumber;
     result.taskId = taskId;
 
+    groomingTaskResult[groomingId] = result;
     io.to(groomingId).emit('calculateTaskResult', result);
   });
 
@@ -150,6 +179,8 @@ io.on('connection', (socket) => {
       ...taskResult,
       score: newScore,
     };
+
+    groomingTaskResult[groomingId] = result;
     io.to(groomingId).emit('updateTaskResult', result);
   });
 

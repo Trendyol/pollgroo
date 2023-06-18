@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import connectToDatabase from '@/lib/db';
 import Team from '../../models/team';
-import { ExtendedNextApiRequest, ITeam, IUser } from '../../interfaces';
+import { ExtendedNextApiRequest, ITask } from '../../interfaces';
 import { withAuthAndTeamMember } from '@/lib/authAndTeamMemberMiddleware';
 import Game from '../../models/game';
 import Task from '../../models/task';
@@ -23,7 +23,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       }
 
       const sortedTasks = team.tasks
-        .reduce((acc, task) => {
+        .reduce((acc: ITask[], task:ITask) => {
           if (!task.score) {
             acc.push(task); // Add tasks with score > 0 to the end
           } else {
@@ -31,7 +31,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           }
           return acc;
         }, [])
-        .sort((a, b) => {
+        .sort((a:ITask, b:ITask) => {
           if (a.score > b.score) {
             return -1; // Sort tasks with bigger score first
           } else if (a.score < b.score) {

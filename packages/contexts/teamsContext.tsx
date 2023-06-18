@@ -49,6 +49,7 @@ interface Task {
   score: number;
   title: string;
   _id: string;
+  storyPoint: number;
 }
 
 const TeamsContext = createContext({} as TeamsContextValuesType);

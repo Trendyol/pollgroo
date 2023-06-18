@@ -83,6 +83,13 @@ export interface Participant extends IUser {
   formData: FormData;
 }
 
+export interface TaskResult {
+  averages: FormData;
+  score: number;
+  currentTaskNumber: number;
+  taskId: string;
+}
+
 export interface Metric {
   _id: string;
   name: string;

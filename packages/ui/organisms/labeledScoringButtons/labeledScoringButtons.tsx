@@ -14,6 +14,7 @@ export interface IProps {
   setValue: UseFormSetValue<FieldValues>;
   triggerValidation?: UseFormTrigger<FieldValues>;
   name: string;
+  currentTaskId: string;
 }
 
 export const LabeledScoringButtons = ({
@@ -25,6 +26,7 @@ export const LabeledScoringButtons = ({
   setValue,
   triggerValidation,
   name,
+  currentTaskId
 }: IProps) => {
   useEffect(() => {
     const storedValue = getUserVoteFromLocalStorage();
@@ -44,7 +46,8 @@ export const LabeledScoringButtons = ({
     const userVote = localStorage.getItem('userVote');
     if (userVote) {
       const parsedUserVote = JSON.parse(userVote);
-      return parsedUserVote[name];
+      if(parsedUserVote.taskId === currentTaskId)
+      return parsedUserVote.votes[name];
     }
     return null;
   }
@@ -64,7 +67,7 @@ export const LabeledScoringButtons = ({
 
       return (
         <ScoringButton key={`${name}-scoring-button-${score}`} variant={variant as keyof typeof ScoringButtonVariant} onClick={() => handleClick(score)}>
-          {score}
+          {score === 0 ? "?" : score}
         </ScoringButton>
       )
     });

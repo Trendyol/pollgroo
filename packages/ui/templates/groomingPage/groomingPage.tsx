@@ -19,6 +19,7 @@ import { useSession } from 'next-auth/react';
 import { Button } from '../../atoms';
 import { useRouter } from 'next/router';
 import translate from 'translations';
+import { IconChevronLeft } from '@tabler/icons-react';
 
 export interface IProps {
   logoUrl: string;
@@ -40,6 +41,8 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     finishGrooming,
     updateGroomingTaskScore,
     taskResult,
+    setIsEditMetricPointClicked,
+    isEditMetricPointClicked,
   } = useGrooming();
   const { showLoader } = useApp();
   const socket = useSocket();
@@ -58,16 +61,26 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   const handleStartGame = useCallback(
     (data: boolean) => {
       setIsGameStarted(data);
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     },
     [setIsGameStarted]
   );
 
   const handleCalculateTaskResult = useCallback(
     (data: any) => {
+      if (!isEditMetricPointClicked && data.taskId !== taskResult.taskId) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }
       setTaskResult(data);
       localStorage.setItem('taskResult', JSON.stringify(data));
     },
-    [setTaskResult]
+    [setTaskResult, isEditMetricPointClicked, taskResult.taskId]
   );
 
   const handleUpdateTaskResult = useCallback(
@@ -104,11 +117,14 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
 
     const userVote = localStorage.getItem('userVote');
     if (userVote) {
-      socket?.emit('userVote', {
-        groomingId: groomingData._id,
-        formData: JSON.parse(userVote),
-        userId: extendedSession.user.id,
-      });
+      const parsedUserVote = JSON.parse(userVote);
+      if (parsedUserVote.taskId === currentTask?.detail._id) {
+        socket?.emit('userVote', {
+          groomingId: groomingData._id,
+          formData: JSON.parse(userVote).votes,
+          userId: extendedSession.user.id,
+        });
+      }
     }
 
     return () => {
@@ -137,6 +153,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     handleUpdateTaskResult,
     handleTaskSelection,
     handleFinishGroomingRedirection,
+    currentTask?.detail._id,
   ]);
 
   useEffect(() => {
@@ -162,11 +179,19 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     handleTaskChange();
   };
 
+  const handleSkip = () => {
+    setShowNextTaskErrorPopup(true);
+  };
+
   const handleFinishGrooming = () => {
     finishGrooming().then(() => {
       router.push(`/grooming/${groomingData._id}/result`);
       socket?.emit('finishGrooming', groomingData._id);
     });
+  };
+
+  const handleBackToTaskResultClick = () => {
+    setIsEditMetricPointClicked(false);
   };
 
   if (groomingData.isFinished) {
@@ -176,13 +201,26 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   return (
     <NavigationLayout logoUrl={logoUrl} subNavigationText={groomingData.title}>
       <div className="py-5 px-5 flex flex-col gap-y-5 lg:pt-10 lg:gap-y-10 lg:px-20">
-        {isGameStarted && groomingData.isGameMaster && !isLastQuestion && (
-          <Button onClick={changeTask} variant="text" className="ml-auto">
-            {translate('NEXT')}
+        {isEditMetricPointClicked && (
+          <Button variant="blackText" onClick={handleBackToTaskResultClick} className="text-left">
+            <div className="flex gap-x-2">
+              <IconChevronLeft />
+              <span>{translate('BACK_TO_TASK_RESULT')}</span>
+            </div>
           </Button>
         )}
+        {isGameStarted && groomingData.isGameMaster && !isLastQuestion && (
+          <div className="ml-auto flex gap-x-3 w-full">
+            <Button onClick={handleSkip} variant="secondary" className="py-2 px-5" fluid>
+              {translate('SKIP')}
+            </Button>
+            <Button onClick={changeTask} variant="primary" className="py-2 px-5" fluid>
+              {translate('NEXT')}
+            </Button>
+          </div>
+        )}
         {isGameStarted && groomingData.isGameMaster && isLastQuestion && (
-          <Button onClick={handleFinishGrooming} variant="text" className="text-right">
+          <Button onClick={handleFinishGrooming} variant="primary" className="py-2 px-5" fluid>
             {translate('FINISH_GAME')}
           </Button>
         )}

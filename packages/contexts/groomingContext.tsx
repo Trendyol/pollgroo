@@ -35,6 +35,8 @@ type GroomingContextValuesType = {
   setTaskResult: Function;
   finishGrooming: Function;
   updateGroomingTaskScore: Function;
+  isEditMetricPointClicked: boolean;
+  setIsEditMetricPointClicked: Function;
 };
 
 interface EditTaskPayload {
@@ -97,6 +99,7 @@ interface TeamTask {
   score: number;
   title: string;
   _id: string;
+  storyPoint: number;
 }
 
 interface Participant {
@@ -137,6 +140,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
   const [isGameStarted, setIsGameStarted] = useState(data.isStarted);
   const [taskResult, setTaskResult] = useState({} as TaskResult);
   const [currentTaskNumber, setCurrentTaskNumber] = useState(data.currentTaskNumber);
+  const [isEditMetricPointClicked, setIsEditMetricPointClicked] = useState(false);
 
   const addTaskToTheGrooming = useCallback(
     async (title: string, description: string, gameId: string) => {
@@ -299,6 +303,8 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       getCurrentTaskNumber,
       finishGrooming,
       updateGroomingTaskScore,
+      isEditMetricPointClicked, 
+      setIsEditMetricPointClicked
     }),
     [
       groomingData,
@@ -333,6 +339,8 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       getCurrentTaskNumber,
       finishGrooming,
       updateGroomingTaskScore,
+      isEditMetricPointClicked, 
+      setIsEditMetricPointClicked
     ]
   );
   return <GroomingContext.Provider value={values}>{children}</GroomingContext.Provider>;

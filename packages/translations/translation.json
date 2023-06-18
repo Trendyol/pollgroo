@@ -38,6 +38,7 @@
     "LOGOUT": "Logout",
     "DASHBOARD_WARNING_TEXT": "You don't have any upcoming game",
     "BACK_TO_GROOMING": "back to grooming",
+    "BACK_TO_TASK_RESULT": "back to task result",
     "REORDER_WARNING": "(You can't reorder team tasks, grooming tasks only feature for now.)",
     "PARTICIPANTS": "Participants",
     "GROOMING_COMPLETED": "Grooming Completed",
@@ -51,6 +52,7 @@
     "GAME_CARD_RESULT_TEXT": "Result",
     "BETA_AVAILABLE_TEXT": "Version 0.1 is now available !",
     "EXPLORE": "Explore",
-    "YOU": "you"
+    "YOU": "you",
+    "VOTE": "Vote"
   }
 }

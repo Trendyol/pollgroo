@@ -21,6 +21,7 @@ export const TaskResultForm = () => {
     taskResult,
     groomingData,
     updateGroomingTaskScore,
+    isEditMetricPointClicked,
   } = useGrooming();
   const currentTask = tasks[currentTaskNumber]?.detail;
   const socket = useSocket();
@@ -77,10 +78,6 @@ export const TaskResultForm = () => {
     taskResult.averages?.storyPoint,
   ]);
 
-  const renderMetricTitle = (key: string) => {
-    return groomingData.metrics.find((metric: Metric) => metric.name === key)?.title;
-  };
-
   const submitHandler = (data: FormData) => {
     socket?.emit('updateTaskResult', {
       taskResult: {
@@ -100,7 +97,7 @@ export const TaskResultForm = () => {
     }
   }, [taskResult.averages, setValue]);
 
-  if (!isGameStarted || taskResult.currentTaskNumber !== currentTaskNumber) {
+  if (!isGameStarted || taskResult.currentTaskNumber !== currentTaskNumber || isEditMetricPointClicked) {
     return null;
   }
 
@@ -112,6 +109,8 @@ export const TaskResultForm = () => {
         description={currentTask?.description}
         taskId={currentTask?._id}
         gameId={currentTask?.gameId}
+        order={currentTaskNumber + 1}
+        totalTaskNumber={tasks.length}
         disableEdit
       />
       <div className="flex flex-col gap-y-5 items-center justify-center">
@@ -130,22 +129,22 @@ export const TaskResultForm = () => {
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(submitHandler)}>
         <ul>
-          {Object.keys(taskResult.averages).map((key: string) => (
-            <li key={key} className="flex justify-between lg:grid items-center lg:grid-cols-2 mb-6">
+          {groomingData.metrics.map((metric) => (
+            <li key={metric._id} className="flex justify-between lg:grid items-center lg:grid-cols-2 mb-6">
               <Typography element="label" color="primary" weight="bold" size="xxs">
-                {renderMetricTitle(key)}
+                {metric.title}
               </Typography>
               <Controller
-                name={key}
+                name={metric.name}
                 control={control}
-                defaultValue={taskResult.averages[key]}
+                defaultValue={taskResult.averages[metric.name]}
                 render={({ field }) => (
                   <Input
-                    name={key}
+                    name={metric.name}
                     value={field.value}
                     onChange={field.onChange}
-                    error={!!errors[key]?.message}
-                    errorMessage={errors[key]?.message?.toString()}
+                    error={!!errors[metric.name]?.message}
+                    errorMessage={errors[metric.name]?.message?.toString()}
                     disabled={!groomingData.isGameMaster}
                     fluid
                   />
