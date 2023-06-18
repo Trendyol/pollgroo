@@ -41,7 +41,7 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
         taskResult: TaskResult;
       }) => {
         setParticipants(allUsers);
-        if (taskResult) {
+        if (Object.keys(taskResult)) {
           setTaskResult(taskResult);
         }
       }
