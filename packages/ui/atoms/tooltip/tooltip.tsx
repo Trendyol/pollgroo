@@ -12,7 +12,7 @@ export interface IProps {
 // TODO: placement logic
 
 export const Tooltip = ({ renderContent, children, className }: IProps) => {
-  const tooltipClasses = classNames('absolute top-7 left-0 -translate-x-2/4 rounded-lg bg-extralightgray color-textgray p-2 text-xs group-hover:opacity-100 opacity-0 transition-opacity', className);
+  const tooltipClasses = classNames('absolute top-7 left-0 -translate-x-2/4 rounded-lg bg-extralightgray color-textgray p-2 text-xs group-hover:opacity-100 opacity-0 transition-opacity z-50 hidden lg:block', className);
 
   return (
     <div className="relative group cursor-pointer">

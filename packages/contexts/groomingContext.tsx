@@ -74,6 +74,7 @@ interface Metric {
   points: number[];
   weight: number;
   title: string;
+  description: string;
 }
 
 interface GroomingTask {

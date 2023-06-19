@@ -132,6 +132,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
               <LabeledScoringButtons
                 label={metric.title}
                 name={metric.name}
+                description={metric.description}
                 scores={metric.points}
                 error={!!errors[metric.name]}
                 errorMessage={errors[metric.name]?.message?.toString()}
