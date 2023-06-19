@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useApp } from 'contexts';
 import { Button } from '../../atoms';
-import { isDeepEqual } from 'helpers';
+import { isDeepEqual, isObjectEmpty } from 'helpers';
 import translate from 'translations';
 
 export const GroomingForm = ({ userId }: { userId?: string }) => {
@@ -64,7 +64,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
 
   const onSubmit = (data: any) => {
     socket?.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
-    localStorage.setItem('userVote', JSON.stringify({votes: getValues(), taskId: currentTask._id}));
+    localStorage.setItem('userVote', JSON.stringify({ votes: getValues(), taskId: currentTask._id }));
     setToasterContent({
       show: true,
       variant: 'success',
@@ -84,7 +84,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
     const userVote = localStorage.getItem('userVote');
     if (userVote) {
       const parsedUserVote = JSON.parse(userVote);
-      if(parsedUserVote.taskId === currentTask?._id){
+      if (parsedUserVote.taskId === currentTask?._id) {
         return parsedUserVote.votes;
       }
     }
@@ -93,10 +93,10 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
 
   useEffect(() => {
     const userVoteFromLocalStorage = getUserVoteFromLocalStorage();
-
     if (
       (!!userVoteFromLocalStorage && isDeepEqual(lastScores, userVoteFromLocalStorage)) ||
-      (Object.values(lastScores).some((score) => score === undefined) && !userVoteFromLocalStorage)
+      (Object.values(lastScores).some((score) => score === undefined) && !userVoteFromLocalStorage ||
+        isObjectEmpty(lastScores))
     ) {
       setIsButtonDisabled(true);
     } else {
