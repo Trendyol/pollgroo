@@ -41,7 +41,7 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
         taskResult: TaskResult;
       }) => {
         setParticipants(allUsers);
-        if (Object.keys(taskResult)) {
+        if (taskResult && Object.keys(taskResult)) {
           setTaskResult(taskResult);
         }
       }
@@ -154,7 +154,10 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
                 {!participant.formData[metric] &&
                   isGameStarted &&
                   taskResult.currentTaskNumber !== currentTaskNumber && <div className="text-gray">waiting..</div>}
-                {!Number(participant.formData[metric]) &&
+                {Number(participant.formData[metric]) === 0 &&
+                  isGameStarted &&
+                  taskResult.currentTaskNumber === currentTaskNumber && <div className="text-gray">🤔</div>}
+                {participant.formData[metric] === undefined &&
                   isGameStarted &&
                   taskResult.currentTaskNumber === currentTaskNumber && (
                     <div className="text-gray">

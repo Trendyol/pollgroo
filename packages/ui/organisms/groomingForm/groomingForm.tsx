@@ -138,7 +138,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
                 getValues={getValues}
                 setValue={setValue}
                 triggerValidation={trigger}
-                currentTaskId={currentTask._id}
+                currentTaskId={currentTask?._id}
               />
             )}
           />
