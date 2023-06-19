@@ -24,6 +24,7 @@ interface Task {
   score: number;
   title: string;
   _id: string;
+  storyPoint: number;
 }
 interface UserData {
   _id: string;

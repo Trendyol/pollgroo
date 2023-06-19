@@ -30,12 +30,12 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
   const handleGroomingStart = () => {
     startGrooming().then(() => {
       setIsGameStarted(true);
-      socket.emit('startGame', { groomingId: groomingData._id, isGameStarted: true });
+      socket?.emit('startGame', { groomingId: groomingData._id, isGameStarted: true });
     });
   };
 
   const handleShowTaskResult = () => {
-    socket.emit('calculateTaskResult', {
+    socket?.emit('calculateTaskResult', {
       groomingId: groomingData._id,
       metrics: groomingData.metrics,
       currentTaskNumber,

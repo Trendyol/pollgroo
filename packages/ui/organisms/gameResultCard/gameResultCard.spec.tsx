@@ -9,6 +9,7 @@ describe('GameResultCard component', () => {
     total: 5,
     score: 80,
     text: 'Test Result',
+    storyPoint: 8
   };
 
   it('should render the correct task order', () => {

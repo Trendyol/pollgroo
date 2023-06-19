@@ -50,6 +50,7 @@ export interface Task {
   score: number;
   title: string;
   _id: string;
+  storyPoint: number;
 }
 
 export interface GroomingTask {
@@ -80,6 +81,13 @@ export interface IUser {
 export interface Participant extends IUser {
   groomingId: string;
   formData: FormData;
+}
+
+export interface TaskResult {
+  averages: FormData;
+  score: number;
+  currentTaskNumber: number;
+  taskId: string;
 }
 
 export interface Metric {

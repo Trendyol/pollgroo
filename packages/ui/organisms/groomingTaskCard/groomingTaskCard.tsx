@@ -9,9 +9,11 @@ export interface IProps {
   description: string;
   gameId: string;
   disableEdit?: boolean;
+  order?: number;
+  totalTaskNumber?: number;
 }
 
-export const GroomingTaskCard = ({ title, taskId, description, gameId, disableEdit }: IProps) => {
+export const GroomingTaskCard = ({ title, taskId, description, gameId, disableEdit, order, totalTaskNumber }: IProps) => {
   const { setSelectedTaskToEdit, setShowEditGroomingTaskModal } = useGrooming();
 
   const handleClick = () => {
@@ -20,8 +22,11 @@ export const GroomingTaskCard = ({ title, taskId, description, gameId, disableEd
   };
 
   return (
-    <div className="relative bg-lightblue py-2 pl-6 pr-10 rounded-2xl">
-      <Typography element="p" color="textgray" size="xxs" weight="semibold">
+    <div className="relative bg-lightblue py-2 pl-6 pr-10 rounded-2xl flex flex-col gap-y-3">
+      {
+        !!order && !!totalTaskNumber && <Typography element='p' color='silver' size='xxs'>Task: {order} / {totalTaskNumber}</Typography> 
+      }
+      <Typography element="p" color="textgray" size="xs" weight="semibold">
         {title}
       </Typography>
       {!disableEdit && (

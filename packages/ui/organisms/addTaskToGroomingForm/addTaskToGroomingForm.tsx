@@ -40,7 +40,7 @@ export const AddTaskToGroomingForm = () => {
     setShowAddTaskToGameModal(false);
     await addTaskToTheGrooming(data.taskTitle, data.taskDescription, gameId);
     const newTasks = await getGroomingTasks();
-    socket.emit('taskSelection', { groomingId: groomingData._id, tasks: newTasks });
+    socket?.emit('taskSelection', { groomingId: groomingData._id, tasks: newTasks });
     setShowLoader(false);
   };
 

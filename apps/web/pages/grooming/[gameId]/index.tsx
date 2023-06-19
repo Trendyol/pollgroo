@@ -5,13 +5,22 @@ import { getHostUrl } from '../../../helpers/getHostUrl';
 import { GroomingPage } from 'ui';
 import { GroomingContextProvider, SocketProvider } from 'contexts';
 import Head from 'next/head';
-import { GroomingData } from '@/types/common';
+import { GroomingData, SessionUser } from '@/types/common';
+import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 interface IProps {
   data: GroomingData;
 }
 
+interface ExtendedSession extends Session {
+  user: SessionUser;
+}
+
 export default function Grooming({ data }: IProps) {
+  const { data: session } = useSession();
+  const extendedSession = session as ExtendedSession;
+
   return (
     <>
       <Head>
@@ -21,9 +30,11 @@ export default function Grooming({ data }: IProps) {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <GroomingContextProvider data={data}>
-        <SocketProvider>
-          <GroomingPage logoUrl="/logo/pollgroo3.svg" />
-        </SocketProvider>
+        {extendedSession?.user.id && (
+          <SocketProvider data={{user: extendedSession.user, groomingId: data._id}}>
+            <GroomingPage logoUrl="/logo/pollgroo3.svg" />
+          </SocketProvider>
+        )}
       </GroomingContextProvider>
     </>
   );

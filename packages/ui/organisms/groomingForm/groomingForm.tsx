@@ -7,12 +7,22 @@ import * as yup from 'yup';
 import { useApp } from 'contexts';
 import { Button } from '../../atoms';
 import { isDeepEqual } from 'helpers';
+import translate from 'translations';
 
 export const GroomingForm = ({ userId }: { userId?: string }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const { setToasterContent } = useApp();
-  const { groomingData, setParticipants, isGameStarted, currentTaskNumber, setCurrentTaskNumber, taskResult, tasks } =
-    useGrooming();
+  const {
+    groomingData,
+    setParticipants,
+    isGameStarted,
+    currentTaskNumber,
+    setCurrentTaskNumber,
+    taskResult,
+    tasks,
+    isEditMetricPointClicked,
+    setIsEditMetricPointClicked,
+  } = useGrooming();
   const { metrics } = groomingData;
   const currentTask = tasks[currentTaskNumber]?.detail;
   const socket = useSocket();
@@ -32,39 +42,51 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
     getValues,
     trigger,
     reset,
-    watch
+    watch,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
   const lastScores = watch();
 
   useEffect(() => {
-    socket.on('changeTask', (data) => {
+    socket?.on('changeTask', (data) => {
       setCurrentTaskNumber(data.taskNumber);
       localStorage.removeItem('userVote');
       reset();
       setParticipants(data.allUsers);
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      setIsEditMetricPointClicked(false);
     });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [socket, reset, setParticipants, setCurrentTaskNumber]);
+  }, [socket, reset, setParticipants, setCurrentTaskNumber, setIsEditMetricPointClicked]);
 
   const onSubmit = (data: any) => {
-    socket.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
-    localStorage.setItem('userVote', JSON.stringify(getValues()));
+    socket?.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
+    localStorage.setItem('userVote', JSON.stringify({votes: getValues(), taskId: currentTask._id}));
     setToasterContent({
       show: true,
-      variant: "success",
-      text: "Voted successfully!"
-    })
+      variant: 'success',
+      text: 'Voted successfully!',
+    });
+    if (isEditMetricPointClicked) {
+      socket?.emit('calculateTaskResult', {
+        groomingId: groomingData._id,
+        metrics: groomingData.metrics,
+        currentTaskNumber,
+        taskId: currentTask._id,
+      });
+    }
   };
 
   const getUserVoteFromLocalStorage = () => {
     const userVote = localStorage.getItem('userVote');
     if (userVote) {
-      return JSON.parse(userVote);
+      const parsedUserVote = JSON.parse(userVote);
+      if(parsedUserVote.taskId === currentTask?._id){
+        return parsedUserVote.votes;
+      }
     }
     return null;
   };
@@ -72,7 +94,10 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
   useEffect(() => {
     const userVoteFromLocalStorage = getUserVoteFromLocalStorage();
 
-    if ((!!userVoteFromLocalStorage && isDeepEqual(lastScores, userVoteFromLocalStorage)) || (Object.values(lastScores).some(score => score === undefined) && !userVoteFromLocalStorage)) {
+    if (
+      (!!userVoteFromLocalStorage && isDeepEqual(lastScores, userVoteFromLocalStorage)) ||
+      (Object.values(lastScores).some((score) => score === undefined) && !userVoteFromLocalStorage)
+    ) {
       setIsButtonDisabled(true);
     } else {
       setIsButtonDisabled(false);
@@ -80,7 +105,9 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
   }, [lastScores, getUserVoteFromLocalStorage]);
 
   if (!isGameStarted || taskResult.currentTaskNumber === currentTaskNumber) {
-    return null;
+    if (!isEditMetricPointClicked) {
+      return null;
+    }
   }
 
   return (
@@ -91,6 +118,8 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
         description={currentTask?.description}
         taskId={currentTask?._id}
         gameId={currentTask?.gameId}
+        order={currentTaskNumber + 1}
+        totalTaskNumber={tasks.length}
         disableEdit
       />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
@@ -109,13 +138,16 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
                 getValues={getValues}
                 setValue={setValue}
                 triggerValidation={trigger}
+                currentTaskId={currentTask?._id}
               />
             )}
           />
         ))}
-        <Button type="submit" variant="primary" className="h-10" disabled={isButtonDisabled} fluid>
-          Save
-        </Button>
+        <div className="flex items-center gap-x-3">
+          <Button type="submit" variant="primary" className="h-10" disabled={isButtonDisabled} fluid>
+            {translate('VOTE')}
+          </Button>
+        </div>
       </form>
     </>
   );

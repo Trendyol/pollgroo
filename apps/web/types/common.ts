@@ -46,6 +46,7 @@ interface Task {
   score: number;
   title: string;
   _id: string;
+  storyPoint: number;
 }
 
 interface GroomingTask {
@@ -63,7 +64,7 @@ interface GroomingTask {
   _id: string;
 }
 
-interface UserData {
+export interface UserData {
   _id: string;
   fullname: string;
   email: string;
@@ -72,6 +73,18 @@ interface UserData {
   profileCircleBackgroundColor: string;
   profileCircleTextColor: string;
   profileCircleText: string;
+}
+
+export interface SessionUser {
+  id: string;
+  fullname: string;
+  email: string;
+  password: string;
+  teams: TeamData[];
+  profileCircleBackgroundColor: string;
+  profileCircleTextColor: string;
+  profileCircleText: string;
+  userType: "default" | "admin"
 }
 
 export interface TeamData {
