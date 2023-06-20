@@ -1,1 +1,1 @@
-export { isDeepEqual, isObject } from './deepEqualityHelper';
+export { isDeepEqual, isObject, isObjectEmpty } from './deepEqualityHelper';

@@ -22,3 +22,7 @@ export const isDeepEqual = (object1: any, object2: any) => {
 export const isObject = (object: any) => {
 	return object != null && typeof object === "object";
 };
+
+export const isObjectEmpty = (object: any) => {
+	return isObject(object) && Object.keys(object).length === 0;
+};
