@@ -37,7 +37,7 @@ export const LabeledScoringButtons = ({
   const { isMobile } = useMobileDetect();
   useEffect(() => {
     const storedValue = getUserVoteFromLocalStorage();
-    if (storedValue) {
+    if (storedValue || storedValue === 0) {
       setValue(name, storedValue);
     }
   }, [name, setValue]);
@@ -49,7 +49,7 @@ export const LabeledScoringButtons = ({
     }
   };
 
-  const getUserVoteFromLocalStorage = () => {
+  const getUserVoteFromLocalStorage = () => {    
     const userVote = localStorage.getItem('userVote');
     if (userVote) {
       const parsedUserVote = JSON.parse(userVote);
@@ -64,8 +64,8 @@ export const LabeledScoringButtons = ({
       const buttonIsSelected = getValues()[name] === score;
       let variant = "secondary";
 
-      if (buttonIsSelected) {
-        if (getUserVoteFromLocalStorage() === score && !!getUserVoteFromLocalStorage()) {
+      if (buttonIsSelected) { 
+        if (getUserVoteFromLocalStorage() === score && (!!getUserVoteFromLocalStorage() || getUserVoteFromLocalStorage() === 0)) {
           variant = "success";
         } else if (getUserVoteFromLocalStorage() !== score || !getUserVoteFromLocalStorage()) {
           variant = "primary";
