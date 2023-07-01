@@ -91,7 +91,7 @@ export const authOptions: NextAuthOptions = {
 
         const existingUser = await User.findOne({ email: user.email });
 
-        if (existingUser.googleId) {
+        if (existingUser?.googleId) {
           user.id = existingUser._id;
           (user as UserDto).fullname = user.name || '';
           (user as UserDto).userType = existingUser.userType;
