@@ -27,6 +27,7 @@ export interface UserData {
   profileCircleBackgroundColor: string;
   profileCircleTextColor: string;
   profileCircleText: string;
+  image?: string;
 }
 
 export interface TeamData {
@@ -76,6 +77,7 @@ export interface IUser {
   profileCircleTextColor: string;
   profileCircleText: string;
   userType: 'default' | 'admin';
+  image?: string;
 }
 
 export interface Participant extends IUser {

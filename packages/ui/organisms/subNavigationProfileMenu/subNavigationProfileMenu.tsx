@@ -22,6 +22,7 @@ export const SubNavigationProfileMenu = () => {
           profileCircleBackgroundColor={extendedSession.user.profileCircleBackgroundColor}
           profileCircleTextColor={extendedSession.user.profileCircleTextColor}
           profileCircleText={extendedSession.user.profileCircleText}
+          image={extendedSession.user.image}
         />
       </div>
     </>

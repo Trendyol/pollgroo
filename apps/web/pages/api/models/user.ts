@@ -14,9 +14,19 @@ const UserSchema = new Schema(
       minLength: [4, 'Full name should be at least 4 charachters'],
       maxLength: [30, 'Full name should be less than 30 characters'],
     },
+    googleId: {
+      type: String,
+      required: false,
+    },
+    image: {
+      type: String,
+      required: false
+    },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: function (this: any) {
+        return !this.googleId ? [true, 'Password is required'] : false;
+      } as any, // TO DO: avoid any
       select: false,
     },
     teams: [{ type: Schema.Types.ObjectId, ref: 'Team' }],

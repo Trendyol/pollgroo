@@ -6,7 +6,7 @@ import { Typography } from '../../../ui/atoms/typography';
 import { Tooltip } from '../../../ui/atoms/tooltip';
 import { Popup } from '../../../ui/molecules/popup';
 import { IconAlertSmall } from '@tabler/icons-react';
-import { useMobileDetect } from '@/../hooks';
+import { useMobileDetect } from 'hooks';
 
 export interface IProps {
   error?: boolean;
@@ -86,7 +86,7 @@ export const LabeledScoringButtons = ({
     }
 
     const icon = <span className="w-4 h-4 flex justify-center items-center bg-yellow/50 rounded-full pointer group-hover:bg-yellow lg:transition-all duration-300">
-      <IconAlertSmall className="text-white w-5 w-5" />
+      <IconAlertSmall className="text-white w-5" />
     </span>;
 
     if (isMobile) {

@@ -7,7 +7,14 @@
     },
     "web#build": {
       "dependsOn": ["^build"],
-      "env": ["MONGODB_URI", "NEXTAUTH_URL", "NEXTAUTH_SECRET", "NEXT_PUBLIC_SOCKET_SERVER_URL"],
+      "env": [
+        "MONGODB_URI",
+        "NEXTAUTH_URL",
+        "NEXTAUTH_SECRET",
+        "NEXT_PUBLIC_SOCKET_SERVER_URL",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET"
+      ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
