@@ -15,14 +15,14 @@ const Register = () => {
     try {
       const registerRes = await axios.post('api/auth/register', data);
       if (registerRes) {
-        const loginRes = await loginUser(data);
+        const loginRes = await loginUser({ ...data, providerId: 'credentials' });
         if (loginRes?.ok) {
           router.push('/dashboard');
         }
       }
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        setToasterContent({ show: true, variant: 'error', text: err.response?.data.error });
+        setToasterContent({ show: true, variant: 'error', text: err.response?.data.message });
       }
       setShowLoader(false);
     } finally {

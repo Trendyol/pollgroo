@@ -18,6 +18,7 @@ export const ProfileCirclesBox = ({ totalMembersNumber, badgeMembers }: IProps) 
             profileCircleBackgroundColor={badgeMember.profileCircleBackgroundColor}
             profileCircleText={badgeMember.profileCircleText}
             profileCircleTextColor={badgeMember.profileCircleTextColor}
+            image={badgeMember.image}
             className={`${
               index === 1 && totalMembersNumber !== 2 ? 'absolute inset-0 mx-auto' : ''
             } h-8 w-8 text-sm lg:text-base lg:w-10 lg:h-10`}

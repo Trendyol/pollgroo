@@ -10,7 +10,14 @@ describe('LabeledScoringButtons', () => {
 
   it('should renders the labeled scoring buttons', () => {
     render(
-      <LabeledScoringButtons scores={scores} label={label} name={label} getValues={mockGetValues} setValue={mockSetValue} />
+      <LabeledScoringButtons
+        currentTaskId="1"
+        scores={scores}
+        label={label}
+        name={label}
+        getValues={mockGetValues}
+        setValue={mockSetValue}
+      />
     );
 
     const labeledScoringButton = screen.getByText(label);
@@ -20,6 +27,7 @@ describe('LabeledScoringButtons', () => {
   it('should show error message when error prop is true', () => {
     const { container } = render(
       <LabeledScoringButtons
+        currentTaskId="1"
         scores={scores}
         label={label}
         name={label}
@@ -32,13 +40,20 @@ describe('LabeledScoringButtons', () => {
   });
 
   it('should select scoring button when click', async () => {
-    const { container } = render(
-      <LabeledScoringButtons scores={scores} label={label} name={label} getValues={mockGetValues} setValue={mockSetValue} />
+    render(
+      <LabeledScoringButtons
+        currentTaskId="1"
+        scores={scores}
+        label={label}
+        name={label}
+        getValues={mockGetValues}
+        setValue={mockSetValue}
+      />
     );
 
     const scoringButton = screen.getByText('2');
     await userEvent.click(scoringButton);
 
-    expect(mockSetValue).toHaveBeenCalledWith(label, 2)
+    expect(mockSetValue).toHaveBeenCalledWith(label, 2);
   });
 });
