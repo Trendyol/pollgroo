@@ -54,7 +54,7 @@
     "EXPLORE": "Explore",
     "YOU": "you",
     "VOTE": "Vote",
-    "GOOGLE": "Google",
+    "GOOGLE_AUTH_TEXT": "Continue with Google",
     "NEW": "New!",
     "AUTHFORM_OTHER_OPTION_TEXT": "Or with email and password"
   }

@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import translate from 'translations';
-import { IconBrandGoogle } from '@tabler/icons-react';
+import Image from 'next/image';
 
 interface FormValues {
   fullname?: string;
@@ -122,10 +122,17 @@ export const AuthForm = ({ type, onSubmit, onGoogleSubmit }: IProps) => {
           </Typography>
         </div>
         {onGoogleSubmit && (
-          <Button onClick={onGoogleSubmit} variant="secondary" fluid className="relative">
+          <Button onClick={onGoogleSubmit} variant="secondary" fluid className="relative lg:hover:bg-extralightgray">
             <div className="h-11 flex gap-x-2 items-center justify-center">
-              <IconBrandGoogle />
-              {translate('GOOGLE')}
+              <Image
+                src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
+                alt="Google Logo"
+                width={20}
+                height={20}
+              />
+              <Typography element="span" weight="medium" size='xs'>
+                {translate('GOOGLE_AUTH_TEXT')}
+              </Typography>
               <Typography
                 element="span"
                 color="white"

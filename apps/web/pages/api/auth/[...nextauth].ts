@@ -62,7 +62,14 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       id: 'google',
       clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
     }),
   ],
   pages: {
@@ -93,21 +100,22 @@ export const authOptions: NextAuthOptions = {
 
         if (existingUser?.googleId) {
           user.id = existingUser._id;
-          (user as UserDto).fullname = user.name || '';
+          (user as UserDto).fullname = user.name ?? '';
           (user as UserDto).userType = existingUser.userType;
+          await User.updateOne({ email: user.email }, { $set: { image: user.image } });
           return true;
         }
 
         if (existingUser) {
           user.id = existingUser._id;
-          (user as UserDto).fullname = user.name || '';
+          (user as UserDto).fullname = user.name ?? '';
           (user as UserDto).userType = existingUser.userType;
           await User.updateOne({ email: user.email }, { $set: { googleId: user.id, image: user.image } });
         } else {
           try {
             const createdUser = await User.create(userDto);
             user.id = createdUser._id;
-            (user as UserDto).fullname = user.name || '';
+            (user as UserDto).fullname = user.name ?? '';
             (user as UserDto).userType = existingUser.userType;
           } catch (e) {
             console.log(e);
