@@ -18,6 +18,10 @@ interface UserDto {
   googleId?: string;
 }
 
+interface UserFromDb extends UserDto {
+  _id: string;
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -81,6 +85,11 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     signIn: async (params) => {
       const { user, account, profile } = params;
+      const equalizeUserProperties = (userFromDb: UserFromDb) => {
+        (user as UserDto).fullname = user.name || '';
+        user.id = userFromDb._id;
+        (user as UserDto).userType = userFromDb.userType;
+      }
       if (account?.provider === 'google') {
         await connectToMongoDB().catch((err) => {
           throw new Error(err);
@@ -98,25 +107,16 @@ export const authOptions: NextAuthOptions = {
 
         const existingUser = await User.findOne({ email: user.email });
 
-        if (existingUser?.googleId) {
-          user.id = existingUser._id;
-          (user as UserDto).fullname = user.name ?? '';
-          (user as UserDto).userType = existingUser.userType;
-          await User.updateOne({ email: user.email }, { $set: { image: user.image } });
-          return true;
-        }
-
         if (existingUser) {
-          user.id = existingUser._id;
-          (user as UserDto).fullname = user.name ?? '';
-          (user as UserDto).userType = existingUser.userType;
+          equalizeUserProperties(existingUser);
+          if (existingUser?.googleId) {
+            return true;
+          }
           await User.updateOne({ email: user.email }, { $set: { googleId: user.id, image: user.image } });
         } else {
           try {
             const createdUser = await User.create(userDto);
-            user.id = createdUser._id;
-            (user as UserDto).fullname = user.name ?? '';
-            (user as UserDto).userType = existingUser.userType;
+            equalizeUserProperties(createdUser);
           } catch (e) {
             console.log(e);
           }
