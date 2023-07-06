@@ -20,6 +20,11 @@ type TeamContextValuesType = {
   editTeam: (value: string) => void;
   deleteTeam: () => void;
   getTeam: () => void;
+  remainingNewInvitationLinkTime: number;
+  setRemainingNewInvitationLinkTime: (value: number) => void;
+  generateInviteLink: () => void;
+  inviteLink: string;
+  setInviteLink: (value: string) => void;
 };
 
 interface TeamData {
@@ -32,6 +37,10 @@ interface TeamData {
   updatedAt: string;
   badgeMembers: UserData[];
   totalMembers: number;
+  invitationLinkExpirationTime: number;
+  invitationLink: string;
+  isUserAllowedToInvite: boolean;
+  remainingTimeForNewInviteLink: number;
 }
 
 interface UserData {
@@ -77,6 +86,10 @@ export const TeamContextProvider: React.FC<{ children: ReactNode; data: TeamData
   const [showEditTeamTaskModal, setShowEditTeamTaskModal] = useState(false);
   const [showEditTeamModal, setShowEditTeamModal] = useState(false);
   const [selectTeamToEdit, setSelectTeamToEdit] = useState({} as EditTeamPayload);
+  const [remainingNewInvitationLinkTime, setRemainingNewInvitationLinkTime] = useState(
+    data.remainingTimeForNewInviteLink
+  );
+  const [inviteLink, setInviteLink] = useState(data.remainingTimeForNewInviteLink ? data.invitationLink : '');
   const { setShowLoader } = useApp();
 
   const getTeamTasks = useCallback(
@@ -143,6 +156,15 @@ export const TeamContextProvider: React.FC<{ children: ReactNode; data: TeamData
     }
   }, [team, setShowLoader]);
 
+  const generateInviteLink = useCallback(async () => {
+    try {
+      const res = await axios.post(`/api/teams/${team._id}/generate-invite-link`);
+      setRemainingNewInvitationLinkTime(res.data.remainingTime);
+      setInviteLink(res.data.inviteLink);
+      return res;
+    } catch (err) {}
+  }, [team._id]);
+
   const values = useMemo(
     () => ({
       team,
@@ -162,6 +184,11 @@ export const TeamContextProvider: React.FC<{ children: ReactNode; data: TeamData
       selectTeamToEdit,
       setSelectTeamToEdit,
       getTeam,
+      remainingNewInvitationLinkTime,
+      setRemainingNewInvitationLinkTime,
+      generateInviteLink,
+      inviteLink,
+      setInviteLink,
     }),
     [
       team,
@@ -181,6 +208,11 @@ export const TeamContextProvider: React.FC<{ children: ReactNode; data: TeamData
       setSelectTeamToEdit,
       getTeam,
       getTeamTasks,
+      remainingNewInvitationLinkTime,
+      setRemainingNewInvitationLinkTime,
+      generateInviteLink,
+      inviteLink,
+      setInviteLink,
     ]
   );
   return <TeamContext.Provider value={values}>{children}</TeamContext.Provider>;

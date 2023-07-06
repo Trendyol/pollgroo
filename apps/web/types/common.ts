@@ -1,3 +1,5 @@
+import { Session } from "next-auth";
+
 export interface GameCardData {
   _id: string;
   title: string;
@@ -97,6 +99,10 @@ export interface TeamData {
   updatedAt: string;
   totalMembers: number;
   badgeMembers: UserData[];
+  invitationLinkExpirationTime: number;
+  invitationLink: string;
+  isUserAllowedToInvite: boolean;
+  remainingTimeForNewInviteLink: number;
 }
 
 interface Metric {
@@ -113,4 +119,15 @@ export interface GroomingResultData {
   isGameMaster: boolean;
   tasks: GroomingTask[];
   storyPoint: number;
+}
+
+export interface ExtendedSession extends Session {
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    teams?: TeamData[] | null;
+    id?: string | null;
+    userType?: 'default' | 'admin' | null;
+  };
 }
