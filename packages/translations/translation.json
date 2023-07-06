@@ -53,6 +53,9 @@
     "BETA_AVAILABLE_TEXT": "Version 0.1 is now available !",
     "EXPLORE": "Explore",
     "YOU": "you",
-    "VOTE": "Vote"
+    "VOTE": "Vote",
+    "GOOGLE_AUTH_TEXT": "Continue with Google",
+    "NEW": "New!",
+    "AUTHFORM_OTHER_OPTION_TEXT": "Or with email and password"
   }
 }

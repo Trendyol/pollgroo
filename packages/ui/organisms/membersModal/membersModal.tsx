@@ -19,6 +19,7 @@ export const MembersModal = ({ show, setShow, members }: IProps) => {
               profileCircleBackgroundColor={member.profileCircleBackgroundColor}
               profileCircleText={member.profileCircleText}
               profileCircleTextColor={member.profileCircleTextColor}
+              image={member.image}
             />
             <Typography element="p" weight="regular" color="black" size="xs">
               {member.fullname}

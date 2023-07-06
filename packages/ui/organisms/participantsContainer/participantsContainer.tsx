@@ -26,6 +26,9 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
   } = useGrooming();
   const { showLoader, setShowLoader } = useApp();
   const [metric, setMetric] = useState(groomingData.metrics[0].name);
+  const loggedInUserFirstSortedParticipants = React.useMemo(() => {
+    return participants?.sort((a, b) => (a.id === userId ? -1 : b.id === userId ? 1 : 0));
+  }, [participants, userId]);
   const socket = useSocket();
 
   useEffect(() => {
@@ -99,74 +102,70 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
         visible={isGameStarted && currentTaskNumber === taskResult.currentTaskNumber}
       />
       <ul className="flex flex-col">
-        {participants
-          ?.sort((a, b) => (a.id === userId ? -1 : b.id === userId ? 1 : 0))
-          .map((participant: Participant) => (
-            <li
-              key={participant.id}
-              className="flex justify-between items-center border-b-2 border-bordergray last:border-b-0 py-2"
-            >
-              <div className="flex items-center gap-x-3">
-                <ProfileCircle
-                  profileCircleBackgroundColor={participant.profileCircleBackgroundColor}
-                  profileCircleText={participant.profileCircleText}
-                  profileCircleTextColor={participant.profileCircleTextColor}
-                />
-                <Typography className="flex gap-x-2 items-center" element="p" color="black" size="xs" weight="medium">
-                  {participant.fullname}
-                  {participant.id === userId && (
-                    <Typography element="span" color="gray" size="xs">
-                      {translate('YOU')}
-                    </Typography>
-                  )}
-                </Typography>
-              </div>
-              <div className="flex gap-x-2">
-                {!isEditMetricPointClicked &&
-                  participant.id === userId &&
-                  taskResult.currentTaskNumber === currentTaskNumber && (
-                    <IconPencil className="text-gray lg:hover:cursor-pointer" onClick={handleEditPointClick} />
-                  )}
-                {!!Number(participant.formData[metric]) &&
-                  isGameStarted &&
-                  taskResult.currentTaskNumber === currentTaskNumber && (
-                    <div
-                      className={`${metricPointColorHandler(
-                        participant.formData[metric],
-                        METRIC_POINT_COLOR_TYPES.BG
-                      )} ${
-                        Number(participant.formData[metric]) !== 3 ? 'bg-opacity-20' : ''
-                      } rounded-full h-7 w-7 flex items-center justify-center`}
+        {loggedInUserFirstSortedParticipants?.map((participant: Participant) => (
+          <li
+            key={participant.id}
+            className="flex justify-between items-center border-b-2 border-bordergray last:border-b-0 py-2"
+          >
+            <div className="flex items-center gap-x-3">
+              <ProfileCircle
+                profileCircleBackgroundColor={participant.profileCircleBackgroundColor}
+                profileCircleText={participant.profileCircleText}
+                profileCircleTextColor={participant.profileCircleTextColor}
+                image={participant.image}
+              />
+              <Typography className="flex gap-x-2 items-center" element="p" color="black" size="xs" weight="medium">
+                {participant.fullname}
+                {participant.id === userId && (
+                  <Typography element="span" color="gray" size="xs">
+                    {translate('YOU')}
+                  </Typography>
+                )}
+              </Typography>
+            </div>
+            <div className="flex gap-x-2">
+              {!isEditMetricPointClicked &&
+                participant.id === userId &&
+                taskResult.currentTaskNumber === currentTaskNumber && (
+                  <IconPencil className="text-gray lg:hover:cursor-pointer" onClick={handleEditPointClick} />
+                )}
+              {!!Number(participant.formData[metric]) &&
+                isGameStarted &&
+                taskResult.currentTaskNumber === currentTaskNumber && (
+                  <div
+                    className={`${metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.BG)} ${
+                      Number(participant.formData[metric]) !== 3 ? 'bg-opacity-20' : ''
+                    } rounded-full h-7 w-7 flex items-center justify-center`}
+                  >
+                    <Typography
+                      element="span"
+                      className={metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.TEXT)}
+                      size="xs"
+                      weight="bold"
                     >
-                      <Typography
-                        element="span"
-                        className={metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.TEXT)}
-                        size="xs"
-                        weight="bold"
-                      >
-                        {participant.formData[metric]}
-                      </Typography>
-                    </div>
-                  )}
-                {!!participant.formData[metric] &&
-                  isGameStarted &&
-                  taskResult.currentTaskNumber !== currentTaskNumber && <div className="text-gray">voted</div>}
-                {!participant.formData[metric] &&
-                  isGameStarted &&
-                  taskResult.currentTaskNumber !== currentTaskNumber && <div className="text-gray">waiting..</div>}
-                {Number(participant.formData[metric]) === 0 &&
-                  isGameStarted &&
-                  taskResult.currentTaskNumber === currentTaskNumber && <div className="text-gray">🤔</div>}
-                {participant.formData[metric] === undefined &&
-                  isGameStarted &&
-                  taskResult.currentTaskNumber === currentTaskNumber && (
-                    <div className="text-gray">
-                      <IconCoffee />
-                    </div>
-                  )}
-              </div>
-            </li>
-          ))}
+                      {participant.formData[metric]}
+                    </Typography>
+                  </div>
+                )}
+              {!!participant.formData[metric] &&
+                isGameStarted &&
+                taskResult.currentTaskNumber !== currentTaskNumber && <div className="text-gray">voted</div>}
+              {!participant.formData[metric] && isGameStarted && taskResult.currentTaskNumber !== currentTaskNumber && (
+                <div className="text-gray">waiting..</div>
+              )}
+              {Number(participant.formData[metric]) === 0 &&
+                isGameStarted &&
+                taskResult.currentTaskNumber === currentTaskNumber && <div className="text-gray">🤔</div>}
+              {participant.formData[metric] === undefined &&
+                isGameStarted &&
+                taskResult.currentTaskNumber === currentTaskNumber && (
+                  <div className="text-gray">
+                    <IconCoffee />
+                  </div>
+                )}
+            </div>
+          </li>
+        ))}
       </ul>
     </>
   );

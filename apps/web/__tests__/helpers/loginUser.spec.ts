@@ -5,7 +5,7 @@ jest.mock('next-auth/react');
 
 describe('loginUser', () => {
   it('should call signIn with correct credentials', async () => {
-    const credentials = { email: 'test@example.com', password: 'password' };
+    const credentials = { email: 'test@example.com', password: 'password', providerId: "credentials" };
     const expectedRes = { ok: true };
     (signIn as jest.Mock).mockResolvedValueOnce(expectedRes);
 
