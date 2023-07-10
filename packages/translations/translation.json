@@ -57,6 +57,7 @@
     "GOOGLE_AUTH_TEXT": "Continue with Google",
     "NEW": "New!",
     "AUTHFORM_OTHER_OPTION_TEXT": "Or with email and password",
-    "CREATE_INVITATION": "Create Invitation"
+    "CREATE_INVITATION": "Create Invitation",
+    "TIME_REMAINING_BOX_TEXT": "Time remaining to create new invitation:"
   }
 }

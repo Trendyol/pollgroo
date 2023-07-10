@@ -45,7 +45,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       team.tasks = sortedTasks;
       team.badgeMembers = team.members.slice(0, 3);
       team.totalMembers = team.members.length;
-      team.isUserAllowedToInvite = req.userType === 'admin';
+      team.isUserAllowedToInvite = true;
       team.remainingTimeForNewInviteLink = Math.max(
         team.invitationLinkExpirationTime - Math.floor(Date.now() / 1000),
         0
