@@ -4,11 +4,11 @@ export const NAVIGATION_ITEMS = [
     href: '/dashboard',
     text: 'Dashboard',
   },
-  {
-    id: 1,
-    href: '/teams',
-    text: 'Teams',
-  },
+  // {
+  //   id: 1,
+  //   href: '/teams',
+  //   text: 'Teams',
+  // },
   {
     id: 2,
     href: '/myTeams',

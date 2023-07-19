@@ -45,4 +45,8 @@ interface TeamData {
   games: string[];
   createdAt: string;
   updatedAt: string;
+  invitationLinkExpirationTime: number;
+  invitationLink: string;
+  isUserAllowedToInvite: boolean;
+  remainingTimeForNewInviteLink: number;
 }

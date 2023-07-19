@@ -27,7 +27,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "socket.io-client": "^4.6.2",
-    "ui": "workspace:*"
+    "ui": "workspace:*",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -49,6 +50,7 @@
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
     "@types/testing-library__jest-dom": "^5.14.5",
+    "@types/uuid": "^9.0.2",
     "autoprefixer": "^10.4.13",
     "babel-loader": "^8.3.0",
     "cypress": "^12.3.0",
@@ -56,16 +58,16 @@
     "eslint": "7.32.0",
     "eslint-config-custom": "workspace:*",
     "helpers": "workspace:*",
+    "hooks": "workspace:*",
     "jest": "^29.3.1",
     "jest-presets": "workspace:*",
-    "hooks": "workspace:*",
+    "permissions": "workspace:*",
     "postcss": "^8.4.21",
     "postcss-loader": "^7.0.2",
     "start-server-and-test": "^1.15.2",
     "tailwindcss": "^3.2.4",
     "translations": "workspace:*",
     "tsconfig": "workspace:*",
-    "permissions": "workspace:*",
     "typescript": "^4.5.3"
   },
   "engines": {

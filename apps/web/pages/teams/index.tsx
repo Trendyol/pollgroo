@@ -4,6 +4,9 @@ import { GetServerSidePropsContext } from 'next';
 import { TeamsPage } from 'ui';
 import { TeamsContextProvider } from 'contexts';
 import Head from 'next/head';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { ExtendedSession } from '@/types/common';
 
 export default function Teams({ data, errorMessage }: any) {
   return (
@@ -23,6 +26,17 @@ export default function Teams({ data, errorMessage }: any) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const hostUrl = getHostUrl(context.req.headers.host);
+  const session: ExtendedSession | null = await getServerSession(context.req, context.res, authOptions);
+
+  if (session && session.user?.userType !== 'admin') {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+
   try {
     const res = await axios.get(`${hostUrl}/api/teams/get-teams`, {
       headers: {

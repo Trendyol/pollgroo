@@ -6,6 +6,7 @@ import { withAuthAndTeamMember } from '@/lib/authAndTeamMemberMiddleware';
 import Game from '../../models/game';
 import Task from '../../models/task';
 import User from '../../models/user';
+import { getHostUrl } from '@/helpers/getHostUrl';
 import('../../models/user');
 import('../../models/task');
 
@@ -23,7 +24,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       }
 
       const sortedTasks = team.tasks
-        .reduce((acc: ITask[], task:ITask) => {
+        .reduce((acc: ITask[], task: ITask) => {
           if (!task.score) {
             acc.push(task); // Add tasks with score > 0 to the end
           } else {
@@ -31,7 +32,7 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
           }
           return acc;
         }, [])
-        .sort((a:ITask, b:ITask) => {
+        .sort((a: ITask, b: ITask) => {
           if (a.score > b.score) {
             return -1; // Sort tasks with bigger score first
           } else if (a.score < b.score) {
@@ -44,6 +45,12 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       team.tasks = sortedTasks;
       team.badgeMembers = team.members.slice(0, 3);
       team.totalMembers = team.members.length;
+      team.isUserAllowedToInvite = true;
+      team.remainingTimeForNewInviteLink = Math.max(
+        team.invitationLinkExpirationTime - Math.floor(Date.now() / 1000),
+        0
+      );
+      team.invitationLink = `${getHostUrl(req.headers.host)}/join-team/${team.invitationLink}`
 
       res.status(200).json({ success: true, team });
     } catch (error) {

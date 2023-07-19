@@ -10,6 +10,14 @@ const TeamSchema = new Schema(
     members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
     games: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
+    invitationLink: {
+      type: String,
+      required: false,
+    },
+    invitationLinkExpirationTime: {
+      type: String,
+      required: false,
+    },
   },
   { versionKey: false, timestamps: true }
 );

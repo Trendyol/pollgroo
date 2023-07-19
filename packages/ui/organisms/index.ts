@@ -34,3 +34,5 @@ export { ParticipantsContainer } from './participantsContainer';
 export { MetricsFilter } from './metricsFilter';
 export { TaskResultForm } from './taskResultForm';
 export { NextTaskErrorPopup } from './nextTaskErrorPopup';
+export { TeamInvitationBox } from './teamInvitationBox';
+export { TimeRemainingBox } from './timeRemainingBox';

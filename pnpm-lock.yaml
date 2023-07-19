@@ -55,6 +55,7 @@ importers:
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
       '@types/testing-library__jest-dom': ^5.14.5
+      '@types/uuid': ^9.0.2
       autoprefixer: ^10.4.13
       axios: ^1.3.5
       babel-loader: ^8.3.0
@@ -83,6 +84,7 @@ importers:
       tsconfig: workspace:*
       typescript: ^4.5.3
       ui: workspace:*
+      uuid: ^9.0.0
     dependencies:
       '@next/font': 13.1.1
       axios: 1.3.5
@@ -95,6 +97,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       socket.io-client: 4.6.2
       ui: link:../../packages/ui
+      uuid: 9.0.0
     devDependencies:
       '@babel/core': 7.20.12
       '@playwright/test': 1.30.0
@@ -115,6 +118,7 @@ importers:
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10
       '@types/testing-library__jest-dom': 5.14.5
+      '@types/uuid': 9.0.2
       autoprefixer: 10.4.13_postcss@8.4.21
       babel-loader: 8.3.0_la66t7xldg4uecmyawueag5wkm
       cypress: 12.3.0
@@ -4415,6 +4419,10 @@ packages:
 
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
+    dev: true
+
+  /@types/uuid/9.0.2:
+    resolution: {integrity: sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==}
     dev: true
 
   /@types/webidl-conversions/7.0.0:
@@ -15120,6 +15128,11 @@ packages:
   /uuid/8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+
+  /uuid/9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    hasBin: true
+    dev: false
 
   /v8-compile-cache/2.3.0:
     resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==}
