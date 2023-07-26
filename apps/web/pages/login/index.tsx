@@ -4,8 +4,7 @@ import { useRouter } from 'next/router';
 import loginUser from '@/helpers/loginUser';
 import Head from 'next/head';
 import { useApp } from 'contexts';
-import { getSession, signIn } from 'next-auth/react';
-import { GetServerSidePropsContext } from 'next';
+import { signIn } from 'next-auth/react';
 
 const Login = () => {
   const { showLoader, setShowLoader, toasterContent, setToasterContent } = useApp();
@@ -73,20 +72,3 @@ const Login = () => {
 };
 
 export default Login;
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getSession(context);
-
-  if (session) {
-    return {
-      redirect: {
-        destination: '/dashboard',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-}
