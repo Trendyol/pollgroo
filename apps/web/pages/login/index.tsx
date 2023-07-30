@@ -4,12 +4,20 @@ import { useRouter } from 'next/router';
 import loginUser from '@/helpers/loginUser';
 import Head from 'next/head';
 import { useApp } from 'contexts';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 const Login = () => {
   const { showLoader, setShowLoader, toasterContent, setToasterContent } = useApp();
   const router = useRouter();
   const { callbackUrl } = router.query;
+  const { status } = useSession();
+
+  React.useEffect(() => {
+    if (status === 'authenticated') {
+      setToasterContent({ show: true, variant: 'success', text: 'Redirecting to dashboard..',  });
+      router.push((callbackUrl as string) || '/dashboard');
+    }
+  }, [status, callbackUrl, router, setShowLoader, setToasterContent]);
 
   const handleSubmit = async (data: FormValues) => {
     setShowLoader(true);
@@ -30,14 +38,7 @@ const Login = () => {
   const handleGoogleAuth = async () => {
     setShowLoader(true);
     try {
-      const res = await signIn('google');
-      setShowLoader(false);
-      if (res?.error) {
-        setToasterContent({ show: true, variant: 'error', text: res.error });
-      }
-      if (res?.ok) {
-        router.push((callbackUrl as string) || '/dashboard');
-      }
+      await signIn('google');
     } catch (err: unknown) {
       setShowLoader(false);
     }
@@ -54,10 +55,10 @@ const Login = () => {
       {toasterContent && (
         <Toaster
           show={toasterContent.show}
-          variant="error"
           text={toasterContent.text}
           className="absolute right-4 top-4 z-50"
           onClose={() => setToasterContent(undefined)}
+          autoClose={2000}
         />
       )}
       <Loader active={showLoader} />
