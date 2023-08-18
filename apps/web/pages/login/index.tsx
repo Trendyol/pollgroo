@@ -28,6 +28,7 @@ const Login = () => {
         setToasterContent({ show: true, variant: 'error', text: loginRes.error });
       }
       if (loginRes?.ok) {
+        setToasterContent(undefined);
         router.push((callbackUrl as string) || '/dashboard');
       }
     } catch (err: unknown) {
