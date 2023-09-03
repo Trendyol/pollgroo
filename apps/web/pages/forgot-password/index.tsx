@@ -13,7 +13,12 @@ const ForgotPassword = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <AuthPage logoUrl="/logo/pollgroo3.svg" type="forgotPassword" onSubmit={handleSubmit}></AuthPage>
+      <AuthPage
+        bannerVoteImage="/images/banner-vote-image.svg"
+        logoUrl="/logo/pollgroo3.svg"
+        type="forgotPassword"
+        onSubmit={handleSubmit}
+      ></AuthPage>
     </>
   );
 };

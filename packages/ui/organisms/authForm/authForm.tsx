@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import translate from 'translations';
 import Image from 'next/image';
+import GitHubButton from 'react-github-btn';
 
 interface FormValues {
   fullname?: string;
@@ -113,13 +114,26 @@ export const AuthForm = ({ type, onSubmit, onGoogleSubmit }: IProps) => {
   return (
     <section id="authForm" className="h-full p-4 flex flex-col justify-between lg:flex-1">
       <form className="flex flex-col h-full items-center gap-y-8" onSubmit={handleSubmit(submitHandler)}>
-        <div className="w-full">
-          <Typography className="font-bold text-black" element="h4" size="xxxl">
-            {HeaderText[type]}
-          </Typography>
-          <Typography className="mt-2.5 text-gray" element="p">
-            {DescriptionText[type]}
-          </Typography>
+        <div className="w-full relative">
+          <div>
+            <Typography className="font-bold text-black" element="h4" size="xxxl">
+              {HeaderText[type]}
+            </Typography>
+            <Typography className="mt-2.5 text-gray" element="p">
+              {DescriptionText[type]}
+            </Typography>
+          </div>
+          <div className="absolute top-1 right-0">
+            <GitHubButton
+              href="https://github.com/Trendyol/pollgroo"
+              data-color-scheme="no-preference: light; light: light; dark: light;"
+              data-size="large"
+              data-show-count="true"
+              aria-label="Star Trendyol/pollgroo on GitHub"
+            >
+              {translate('STAR')}
+            </GitHubButton>
+          </div>
         </div>
         {onGoogleSubmit && (
           <Button onClick={onGoogleSubmit} variant="secondary" fluid className="relative lg:hover:bg-extralightgray">
@@ -130,7 +144,7 @@ export const AuthForm = ({ type, onSubmit, onGoogleSubmit }: IProps) => {
                 width={20}
                 height={20}
               />
-              <Typography element="span" weight="medium" size='xs'>
+              <Typography element="span" weight="medium" size="xs">
                 {translate('GOOGLE_AUTH_TEXT')}
               </Typography>
               <Typography
@@ -145,14 +159,16 @@ export const AuthForm = ({ type, onSubmit, onGoogleSubmit }: IProps) => {
             </div>
           </Button>
         )}
-        <Typography
-          element="span"
-          color="silver"
-          size="xxs"
-          className="flex items-center before:border-b-gray before:border-b before:flex-shrink before:flex-grow before:mr-2 after:border-b-gray after:border-b after:flex-shrink after:flex-grow after:ml-2 w-full"
-        >
-          {translate('AUTHFORM_OTHER_OPTION_TEXT')}
-        </Typography>
+        {type === 'login' && (
+          <Typography
+            element="span"
+            color="silver"
+            size="xxs"
+            className="flex items-center before:border-b-gray before:border-b before:flex-shrink before:flex-grow before:mr-2 after:border-b-gray after:border-b after:flex-shrink after:flex-grow after:ml-2 w-full"
+          >
+            {translate('AUTHFORM_OTHER_OPTION_TEXT')}
+          </Typography>
+        )}
         {renderFormElements()}
         <Button className="h-11 text-white font-bold" type="submit" fluid>
           {ButtonText[type]}
