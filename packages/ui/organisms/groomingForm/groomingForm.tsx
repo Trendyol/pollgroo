@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useGrooming, useSocket } from 'contexts';
+import { useGrooming, useSocket, useApp } from 'contexts';
 import { GroomingTaskCard, LabeledScoringButtons } from '../../organisms';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useApp } from 'contexts';
 import { Button } from '../../atoms';
 import { isDeepEqual, isObjectEmpty } from 'helpers';
 import translate from 'translations';
@@ -22,6 +21,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
     tasks,
     isEditMetricPointClicked,
     setIsEditMetricPointClicked,
+    viewOnlyMode
   } = useGrooming();
   const { metrics } = groomingData;
   const currentTask = tasks[currentTaskNumber]?.detail;
@@ -105,7 +105,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
   }, [lastScores, getUserVoteFromLocalStorage]);
 
   if (!isGameStarted || taskResult.currentTaskNumber === currentTaskNumber) {
-    if (!isEditMetricPointClicked) {
+    if (!isEditMetricPointClicked || viewOnlyMode) {
       return null;
     }
   }
@@ -122,34 +122,36 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
         totalTaskNumber={tasks.length}
         disableEdit
       />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
-        {metrics.map((metric) => (
-          <Controller
-            key={metric._id}
-            name={metric.name}
-            control={control}
-            render={() => (
-              <LabeledScoringButtons
-                label={metric.title}
-                name={metric.name}
-                description={metric.description}
-                scores={metric.points}
-                error={!!errors[metric.name]}
-                errorMessage={errors[metric.name]?.message?.toString()}
-                getValues={getValues}
-                setValue={setValue}
-                triggerValidation={trigger}
-                currentTaskId={currentTask?._id}
-              />
-            )}
-          />
-        ))}
-        <div className="flex items-center gap-x-3">
-          <Button type="submit" variant="primary" className="h-10" disabled={isButtonDisabled} fluid>
-            {translate('VOTE')}
-          </Button>
-        </div>
-      </form>
+      {!viewOnlyMode && (
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
+          {metrics.map((metric) => (
+            <Controller
+              key={metric._id}
+              name={metric.name}
+              control={control}
+              render={() => (
+                <LabeledScoringButtons
+                  label={metric.title}
+                  name={metric.name}
+                  description={metric.description}
+                  scores={metric.points}
+                  error={!!errors[metric.name]}
+                  errorMessage={errors[metric.name]?.message?.toString()}
+                  getValues={getValues}
+                  setValue={setValue}
+                  triggerValidation={trigger}
+                  currentTaskId={currentTask?._id}
+                />
+              )}
+            />
+          ))}
+          <div className="flex items-center gap-x-3">
+            <Button type="submit" variant="primary" className="h-10" disabled={isButtonDisabled} fluid>
+              {translate('VOTE')}
+            </Button>
+          </div>
+        </form>
+      )}
     </>
   );
 };

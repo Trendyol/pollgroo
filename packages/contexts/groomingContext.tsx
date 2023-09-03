@@ -37,6 +37,8 @@ type GroomingContextValuesType = {
   updateGroomingTaskScore: Function;
   isEditMetricPointClicked: boolean;
   setIsEditMetricPointClicked: Function;
+  viewOnlyMode: boolean;
+  setViewOnlyMode: Function;
 };
 
 interface EditTaskPayload {
@@ -142,6 +144,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
   const [taskResult, setTaskResult] = useState({} as TaskResult);
   const [currentTaskNumber, setCurrentTaskNumber] = useState(data.currentTaskNumber);
   const [isEditMetricPointClicked, setIsEditMetricPointClicked] = useState(false);
+  const [viewOnlyMode, setViewOnlyMode] = useState(false);
 
   const addTaskToTheGrooming = useCallback(
     async (title: string, description: string, gameId: string) => {
@@ -305,7 +308,9 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       finishGrooming,
       updateGroomingTaskScore,
       isEditMetricPointClicked, 
-      setIsEditMetricPointClicked
+      setIsEditMetricPointClicked,
+      viewOnlyMode,
+      setViewOnlyMode
     }),
     [
       groomingData,
@@ -341,7 +346,9 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       finishGrooming,
       updateGroomingTaskScore,
       isEditMetricPointClicked, 
-      setIsEditMetricPointClicked
+      setIsEditMetricPointClicked,
+      viewOnlyMode,
+      setViewOnlyMode
     ]
   );
   return <GroomingContext.Provider value={values}>{children}</GroomingContext.Provider>;

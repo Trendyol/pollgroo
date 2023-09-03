@@ -17,7 +17,9 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         return res.status(403).json({ message: "You don't have any team. Join a team first."})
       }
 
-      const games = await Game.find({ team: { $in: user?.teams }, isFinished: false }).populate('team');
+      const games = await Game.find({ team: { $in: user?.teams }, isFinished: false })
+        .sort({ createdAt: -1 })
+        .populate('team');
 
       if (!games) {
         return res.status(404).json({ message: 'No Game Found' });
