@@ -7,12 +7,13 @@ export interface IProps {
   type: 'login' | 'register' | 'forgotPassword';
   onSubmit: (data: FormValues) => void;
   onGoogleSubmit?: () => void;
+  bannerVoteImage: string;
 }
 
-export const AuthPage = ({ logoUrl, type, onSubmit, onGoogleSubmit }: IProps) => {
+export const AuthPage = ({ logoUrl, type, onSubmit, onGoogleSubmit, bannerVoteImage }: IProps) => {
   return (
-    <div className="min-h-screen bg-white flex flex-col gap-6 lg:flex-row lg:w-full lg:p-5">
-      <AuthBanner logoUrl={logoUrl} />
+    <div className="min-h-screen bg-white flex flex-col gap-6 lg:flex-row lg:w-full lg:py-6 lg:px-16">
+      <AuthBanner logoUrl={logoUrl} bannerVoteImage={bannerVoteImage} />
       <AuthForm type={type} onSubmit={onSubmit} onGoogleSubmit={onGoogleSubmit} />
     </div>
   );
