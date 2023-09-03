@@ -16,17 +16,18 @@ import { Loader } from '../../molecules';
 import { SelectGroomingTasks } from '../../organisms/selectGroomingTasks';
 import { ExtendedSession, Participant } from '../../interfaces';
 import { useSession } from 'next-auth/react';
-import { Button } from '../../atoms';
+import { Button, Typography } from '../../atoms';
 import { useRouter } from 'next/router';
 import translate from 'translations';
-import { IconChevronLeft } from '@tabler/icons-react';
-
+import { IconChevronLeft, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
+import axios from "axios";
 export interface IProps {
   logoUrl: string;
 }
 
 export const GroomingPage = ({ logoUrl }: IProps) => {
   const [showNextTaskErrorPopup, setShowNextTaskErrorPopup] = useState(false);
+  const [showSettingsActionBox, setShowSettingsActionBox] = React.useState(false);
   const router = useRouter();
   const {
     groomingData,
@@ -44,7 +45,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     setIsEditMetricPointClicked,
     isEditMetricPointClicked,
   } = useGrooming();
-  const { showLoader } = useApp();
+  const { showLoader, setShowLoader } = useApp();
   const socket = useSocket();
   const { data: session } = useSession();
   const extendedSession = session as ExtendedSession;
@@ -194,6 +195,28 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     setIsEditMetricPointClicked(false);
   };
 
+  const handleSettingsClick = () => {
+    setShowSettingsActionBox(!showSettingsActionBox);
+  };
+
+  const handleCloseSettingsClick = () => {
+    setShowSettingsActionBox(false);
+  };
+
+  const handleDeleteGame = async () => {
+    setShowSettingsActionBox(false);
+    setShowLoader(true);
+    try {
+      const result = await axios.delete(`/api/games/${groomingData._id}`);
+      if(result.data.isSuccess){
+        router.push("/games");
+      }
+      setShowLoader(false);
+    } catch(e) {
+      setShowLoader(false);
+    }
+  };
+
   if (groomingData.isFinished) {
     return null;
   }
@@ -201,6 +224,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   return (
     <NavigationLayout logoUrl={logoUrl} subNavigationText={groomingData.title}>
       <div className="py-5 px-5 flex flex-col gap-y-5 lg:pt-10 lg:gap-y-10 lg:px-20">
+       <IconSettings className="ml-auto text-gray cursor-pointer" onClick={handleSettingsClick} />
         {isEditMetricPointClicked && (
           <Button variant="blackText" onClick={handleBackToTaskResultClick} className="text-left">
             <div className="flex gap-x-2">
@@ -241,6 +265,22 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       />
       <StickyGroomingBottomBox visible={groomingData.isGameMaster} />
       <Loader active={showLoader} />
+      {showSettingsActionBox && (
+        <div className="absolute w-32 z-10 top-36 right-32 bg-white border border-extralightgray rounded-md">
+          <IconX className="w-4 h-4 ml-auto m-1 cursor-pointer text-gray" onClick={handleCloseSettingsClick} />
+          <ul className="border-t border-extralightgray">
+            <li
+              className="flex items-center gap-x-2 p-2 cursor-pointer hover:bg-extralightgray"
+              onClick={handleDeleteGame}
+            >
+              <IconTrash className="text-red text-xs w-4 h-4" />
+              <Typography element="p" size="xxs" color="silver">
+                {translate('DELETE_GAME')}
+              </Typography>
+            </li>
+          </ul>
+        </div>
+      )}
     </NavigationLayout>
   );
 };
