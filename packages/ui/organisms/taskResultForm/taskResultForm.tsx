@@ -120,12 +120,14 @@ export const TaskResultForm = () => {
         <Typography element="h5" color="black" size="md" weight="semibold">
           Results
         </Typography>
-        <Typography element="p" color="gray" size="xs" weight="regular">
-          Score is
-          <Typography element="span" weight="bold" className="ml-1">
-            {taskResult.score}
+        {!!Number(taskResult.score) && (
+          <Typography element="p" color="gray" size="xs" weight="regular">
+            Score is
+            <Typography element="span" weight="bold" className="ml-1">
+              {taskResult.score}
+            </Typography>
           </Typography>
-        </Typography>
+        )}
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(submitHandler)}>
         <ul>
