@@ -1,8 +1,10 @@
 import React from 'react';
-import { Button } from '../../atoms';
+import { Button, Typography } from '../../atoms';
 import translate from 'translations';
 import { ProfileCirclesBox } from '../profileCirclesBox';
 import { useGrooming, useSocket } from 'contexts';
+import { IconEye, IconEyeOff } from '@tabler/icons-react';
+import classNames from 'classnames';
 
 interface IProps {
   visible: boolean;
@@ -18,6 +20,8 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
     currentTaskNumber,
     tasks,
     taskResult,
+    setViewOnlyMode,
+    viewOnlyMode
   } = useGrooming();
   const currentTask = tasks[currentTaskNumber];
   const socket = useSocket();
@@ -43,11 +47,34 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
     });
   };
 
+  const handleViewMode = () => {
+    setViewOnlyMode(!viewOnlyMode);
+  }
+
   return (
     <>
       <div className="fixed bottom-0 bg-white w-full shadow-2xl lg:pr-72 z-10">
         <div className="p-7 h-20 flex justify-between items-center lg:justify-end lg:gap-x-5">
-          <ProfileCirclesBox badgeMembers={participants} totalMembersNumber={participants.length} />
+          <div className="flex items-center gap-x-5">
+            <button
+              className={classNames('border rounded-lg px-3 py-2 flex items-center gap-x-3', {
+                'border-lightgray': !viewOnlyMode,
+                'hover:bg-extralightgray': !viewOnlyMode,
+                'border-green': viewOnlyMode,
+                'hover:bg-lightgreen': viewOnlyMode,
+                'hover:text-white': viewOnlyMode,
+                'text-green': viewOnlyMode,
+                'text-gray': !viewOnlyMode
+              })}
+              onClick={handleViewMode}
+            >
+              <Typography element="p" size="base" className="sm: hidden lg:block">
+                {!viewOnlyMode ? translate('VIEW_ONLY_MODE') : translate("VOTER_MODE")}
+              </Typography>
+              {!viewOnlyMode ? <IconEyeOff /> : <IconEye /> }
+            </button>
+            <ProfileCirclesBox badgeMembers={participants} totalMembersNumber={participants.length} />
+          </div>
           {!isGameStarted ? (
             <Button variant="primary" className="px-10 py-3" onClick={handleGroomingStart}>
               {translate('START')}

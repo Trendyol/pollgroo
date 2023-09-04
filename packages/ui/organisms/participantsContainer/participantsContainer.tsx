@@ -6,7 +6,7 @@ import { ProfileCircle, Loader } from '../../molecules';
 import translate from 'translations';
 import { MetricsFilter } from '../metricsFilter';
 import { METRIC_POINT_BG_COLORS, METRIC_POINT_COLOR_TYPES, METRIC_POINT_TEXT_COLORS } from './constants';
-import { IconCoffee, IconPencil } from '@tabler/icons-react';
+import { IconEye, IconPencil } from '@tabler/icons-react';
 
 interface IProps {
   userId: string;
@@ -23,6 +23,7 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
     setIsEditMetricPointClicked,
     isEditMetricPointClicked,
     setTaskResult,
+    viewOnlyMode
   } = useGrooming();
   const { showLoader, setShowLoader } = useApp();
   const [metric, setMetric] = useState(groomingData.metrics[0].name);
@@ -126,7 +127,7 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
             <div className="flex gap-x-2">
               {!isEditMetricPointClicked &&
                 participant.id === userId &&
-                taskResult.currentTaskNumber === currentTaskNumber && (
+                taskResult.currentTaskNumber === currentTaskNumber && !viewOnlyMode && (
                   <IconPencil className="text-gray lg:hover:cursor-pointer" onClick={handleEditPointClick} />
                 )}
               {!!Number(participant.formData[metric]) &&
@@ -160,7 +161,7 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
                 isGameStarted &&
                 taskResult.currentTaskNumber === currentTaskNumber && (
                   <div className="text-gray">
-                    <IconCoffee />
+                    <IconEye />
                   </div>
                 )}
             </div>
