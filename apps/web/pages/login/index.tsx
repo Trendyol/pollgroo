@@ -64,6 +64,7 @@ const Login = () => {
       )}
       <Loader active={showLoader} />
       <AuthPage
+        bannerVoteImage="/images/banner-vote-image.svg"
         logoUrl="/logo/pollgroo3.svg"
         type="login"
         onSubmit={handleSubmit}
