@@ -48,7 +48,12 @@ const Register = () => {
         />
       )}
       <Loader active={showLoader} />
-      <AuthPage logoUrl="/logo/pollgroo3.svg" type="register" onSubmit={handleSubmit}></AuthPage>
+      <AuthPage
+        logoUrl="/logo/pollgroo3.svg"
+        type="register"
+        onSubmit={handleSubmit}
+        bannerVoteImage="/images/banner-vote-image.svg"
+      ></AuthPage>
     </>
   );
 };
