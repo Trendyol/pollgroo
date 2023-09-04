@@ -44,6 +44,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     taskResult,
     setIsEditMetricPointClicked,
     isEditMetricPointClicked,
+    removeGroomingTask
   } = useGrooming();
   const { showLoader, setShowLoader } = useApp();
   const socket = useSocket();
@@ -191,6 +192,14 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     });
   };
 
+  const handleSkipAndFinishGrooming = async () => {
+    await removeGroomingTask(currentTask?.detail._id);
+    finishGrooming().then(() => {
+      router.push(`/grooming/${groomingData._id}/result`);
+      socket?.emit('finishGrooming', groomingData._id);
+    });
+  }
+
   const handleBackToTaskResultClick = () => {
     setIsEditMetricPointClicked(false);
   };
@@ -244,9 +253,14 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
           </div>
         )}
         {isGameStarted && groomingData.isGameMaster && isLastQuestion && (
-          <Button onClick={handleFinishGrooming} variant="primary" className="py-2 px-5" fluid>
-            {translate('FINISH_GAME')}
-          </Button>
+          <div className="ml-auto flex gap-x-3 w-full">
+            <Button onClick={handleSkipAndFinishGrooming} variant="secondary" className="py-2 px-5" fluid>
+              {translate('SKIP_AND_FINISH_GAME')}
+            </Button>
+            <Button onClick={handleFinishGrooming} variant="primary" className="py-2 px-5" fluid>
+              {translate('FINISH_GAME')}
+            </Button>
+          </div>
         )}
         <SelectGroomingTasks />
         <GroomingWaitingInfo />
