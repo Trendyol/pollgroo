@@ -263,7 +263,7 @@ export const GroomingContextProvider: React.FC<{ children: ReactNode; data: Groo
       }
       try {
         await axios.patch(`/api/tasks/${tasks[currentTaskNumber].detail._id}`, {
-          score,
+          score: Number(score),
           storyPoint,
         });
       } catch (err) {

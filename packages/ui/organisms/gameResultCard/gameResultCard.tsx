@@ -21,7 +21,7 @@ export const GameResultCard = ({ order, total, score, text, storyPoint }: IProps
         {text}
       </Typography>
       <div className="flex gap-x-2">
-        <GameResultCardScoreBadge label="Score" score={score} />
+        {!!score && <GameResultCardScoreBadge label="Score" score={score} />}
         {!!storyPoint && <GameResultCardScoreBadge label="Story Point" score={storyPoint} />}
       </div>
     </div>

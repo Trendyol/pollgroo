@@ -7,7 +7,7 @@ type GameContextValuesType = {
   setShowCreateGameModal: React.Dispatch<React.SetStateAction<boolean>>;
   gameCardData: GameCardData[];
   getGameCardData: Function;
-  postCreateGameData: (title: string, teamId: string) => void;
+  postCreateGameData: (title: string, teamId: string, gameType: string) => void;
   teamData: TeamData[];
 };
 
@@ -77,11 +77,12 @@ export const GameContextProvider: React.FC<{ children: ReactNode; data: GameCard
   }, [showCreateGameModal, teamData, setShowLoader]);
 
   const postCreateGameData = useCallback(
-    async (title: string, teamId: string) => {
+    async (title: string, teamId: string, gameType: string) => {
       try {
         await axios.post('api/games/create-game', {
           teamId,
           title,
+          gameType
         });
       } catch (err) {
         setShowLoader(false);

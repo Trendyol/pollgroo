@@ -4,24 +4,25 @@ import Game from '../models/game';
 import Team from '../models/team';
 import { withAuth } from '@/lib/authMiddleware';
 import { ExtendedNextApiRequest } from '../interfaces';
+import { gameTypes } from '../constants';
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       await connectToDatabase();
 
-      const { title, teamId } = req.body;
+      const { title, teamId, gameType } = req.body;
+
+      const metrics = gameTypes[gameType as keyof typeof gameTypes];
 
       const newGame = new Game({
         title,
         team: teamId,
-        gameMaster: req.userId
+        gameMaster: req.userId,
+        metrics
       });
 
-      await Team.findByIdAndUpdate(
-        teamId,
-        { $push: { games: newGame._id } }
-      );
+      await Team.findByIdAndUpdate(teamId, { $push: { games: newGame._id } });
 
       const game = await newGame.save();
 
