@@ -104,6 +104,13 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     router.push(`/grooming/${groomingData._id}/result`);
   }, [router, groomingData._id]);
 
+  const handleResetEstimates = (data: any) => {
+    localStorage.removeItem('taskResult');
+    localStorage.removeItem('userVote');
+    setTaskResult({});
+    setParticipants(data);
+  }
+
   useEffect(() => {
     if (groomingData.isFinished) {
       router.push(`/grooming/${groomingData._id}/result`);
@@ -116,6 +123,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     socket?.on('updateTaskResult', handleUpdateTaskResult);
     socket?.on('taskSelection', handleTaskSelection);
     socket?.on('finishGrooming', handleFinishGroomingRedirection);
+    socket?.on('resetEstimates', handleResetEstimates);
 
     const userVote = localStorage.getItem('userVote');
     if (userVote) {
@@ -136,6 +144,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       socket?.off('updateTaskResult', handleUpdateTaskResult);
       socket?.off('taskSelection', handleTaskSelection);
       socket?.off('finishGrooming', handleFinishGroomingRedirection);
+      socket?.off('resetEstimates', handleResetEstimates);
     };
   }, [
     groomingData._id,
@@ -156,6 +165,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     handleTaskSelection,
     handleFinishGroomingRedirection,
     currentTask?.detail._id,
+    handleResetEstimates
   ]);
 
   useEffect(() => {
@@ -242,7 +252,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
             </div>
           </Button>
         )}
-        {isGameStarted && groomingData.isGameMaster && !isLastQuestion && (
+        {!groomingData.isScrumPoker && isGameStarted && groomingData.isGameMaster && !isLastQuestion && (
           <div className="ml-auto flex gap-x-3 w-full">
             <Button onClick={handleSkip} variant="secondary" className="py-2 px-5" fluid>
               {translate('SKIP')}
@@ -252,7 +262,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
             </Button>
           </div>
         )}
-        {isGameStarted && groomingData.isGameMaster && isLastQuestion && (
+        {!groomingData.isScrumPoker && isGameStarted && groomingData.isGameMaster && isLastQuestion && (
           <div className="ml-auto flex gap-x-3 w-full">
             <Button onClick={handleSkipAndFinishGrooming} variant="secondary" className="py-2 px-5" fluid>
               {translate('SKIP_AND_FINISH_GAME')}

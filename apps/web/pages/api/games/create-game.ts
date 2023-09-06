@@ -5,6 +5,7 @@ import Team from '../models/team';
 import { withAuth } from '@/lib/authMiddleware';
 import { ExtendedNextApiRequest } from '../interfaces';
 import { gameTypes } from '../constants';
+import { GAME_TYPE } from '../enums';
 
 async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -19,7 +20,8 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
         title,
         team: teamId,
         gameMaster: req.userId,
-        metrics
+        metrics,
+        isScrumPoker: GAME_TYPE.SCRUM_POKER === gameType
       });
 
       await Team.findByIdAndUpdate(teamId, { $push: { games: newGame._id } });

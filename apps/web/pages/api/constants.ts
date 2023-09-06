@@ -54,4 +54,13 @@ export const gameTypes = {
       description: 'Story point of task',
     },
   ],
+  'Scrum Poker': [
+    {
+      name: 'storyPoint',
+      title: 'StoryPoint',
+      points: [1, 2, 3, 5, 8, 0],
+      weight: 0,
+      description: 'Story point of task',
+    },
+  ],
 };

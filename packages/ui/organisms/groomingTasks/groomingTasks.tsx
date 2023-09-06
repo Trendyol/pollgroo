@@ -8,7 +8,7 @@ import { GroomingTask } from '../../interfaces';
 export const GroomingTasks = () => {
   const { tasks, setIsSelectSelected, isSelectSelected, groomingData, isGameStarted } = useGrooming();
 
-  if (isGameStarted || isSelectSelected) {
+  if (isGameStarted || isSelectSelected || groomingData.isScrumPoker) {
     return null;
   }
 

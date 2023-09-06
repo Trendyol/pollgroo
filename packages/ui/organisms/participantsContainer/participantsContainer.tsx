@@ -131,7 +131,7 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
                   <IconPencil className="text-gray lg:hover:cursor-pointer" onClick={handleEditPointClick} />
                 )}
               {!!Number(participant.formData[metric]) &&
-                isGameStarted &&
+                (isGameStarted || groomingData.isScrumPoker) &&
                 taskResult.currentTaskNumber === currentTaskNumber && (
                   <div
                     className={`${metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.BG)} ${
@@ -149,16 +149,16 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
                   </div>
                 )}
               {!!participant.formData[metric] &&
-                isGameStarted &&
+                (isGameStarted || groomingData.isScrumPoker) &&
                 taskResult.currentTaskNumber !== currentTaskNumber && <div className="text-gray">voted</div>}
-              {!participant.formData[metric] && isGameStarted && taskResult.currentTaskNumber !== currentTaskNumber && (
+              {!participant.formData[metric] && (isGameStarted || groomingData.isScrumPoker) && taskResult.currentTaskNumber !== currentTaskNumber && (
                 <div className="text-gray">waiting..</div>
               )}
               {Number(participant.formData[metric]) === 0 &&
                 isGameStarted &&
                 taskResult.currentTaskNumber === currentTaskNumber && <div className="text-gray">🤔</div>}
               {participant.formData[metric] === undefined &&
-                isGameStarted &&
+                (isGameStarted || groomingData.isScrumPoker) &&
                 taskResult.currentTaskNumber === currentTaskNumber && (
                   <div className="text-gray">
                     <IconEye />
