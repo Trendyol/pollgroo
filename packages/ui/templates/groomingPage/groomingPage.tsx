@@ -104,12 +104,12 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     router.push(`/grooming/${groomingData._id}/result`);
   }, [router, groomingData._id]);
 
-  const handleResetEstimates = (data: any) => {
+  const handleResetEstimates = useCallback((data: any) => {
     localStorage.removeItem('taskResult');
     localStorage.removeItem('userVote');
     setTaskResult({});
     setParticipants(data);
-  }
+  },[setParticipants, setTaskResult])
 
   useEffect(() => {
     if (groomingData.isFinished) {
