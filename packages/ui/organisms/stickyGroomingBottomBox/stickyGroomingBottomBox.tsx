@@ -43,7 +43,7 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
       groomingId: groomingData._id,
       metrics: groomingData.metrics,
       currentTaskNumber,
-      taskId: currentTask.detail._id,
+      taskId: currentTask?.detail?._id,
     });
   };
 
@@ -75,7 +75,7 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
             </button>
             <ProfileCirclesBox badgeMembers={participants} totalMembersNumber={participants.length} />
           </div>
-          {!isGameStarted ? (
+          {!isGameStarted && !groomingData.isScrumPoker ? (
             <Button variant="primary" className="px-10 py-3" onClick={handleGroomingStart}>
               {translate('START')}
             </Button>

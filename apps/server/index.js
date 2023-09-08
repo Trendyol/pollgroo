@@ -199,6 +199,15 @@ io.on('connection', (socket) => {
     io.to(groomingId).emit('finishGrooming');
   });
 
+  socket.on('resetEstimates', () => {
+    groomingTaskResult[groomingId] = {};
+    groomings[groomingId] = groomings[groomingId]?.map((grooming) => {
+      grooming.formData = {};
+      return grooming;
+    });
+    io.to(groomingId).emit('resetEstimates', groomings[groomingId]);
+  })
+
   socket.on('disconnect', () => {
     console.log('disconnect');
     const disconnectedSocketId = socket.id;

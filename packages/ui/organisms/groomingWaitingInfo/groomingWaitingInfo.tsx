@@ -6,9 +6,9 @@ import { IconClock } from '@tabler/icons-react';
 
 export const GroomingWaitingInfo = () => {
   const { groomingData, isSelectSelected, isGameStarted } = useGrooming();
-  const { team, isGameMaster } = groomingData;
+  const { team, isGameMaster, isScrumPoker } = groomingData;
 
-  if (isGameStarted || isSelectSelected) {
+  if (isGameStarted || isSelectSelected || isScrumPoker) {
     return null;
   }
 

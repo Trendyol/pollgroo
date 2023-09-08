@@ -14,12 +14,16 @@ export interface IProps {
 }
 
 export const GroomingTaskCard = ({ title, taskId, description, gameId, disableEdit, order, totalTaskNumber }: IProps) => {
-  const { setSelectedTaskToEdit, setShowEditGroomingTaskModal } = useGrooming();
+  const { setSelectedTaskToEdit, setShowEditGroomingTaskModal, groomingData } = useGrooming();
 
   const handleClick = () => {
     setSelectedTaskToEdit({ _id: taskId, title, description, gameId });
     setShowEditGroomingTaskModal(true);
   };
+
+  if(groomingData.isScrumPoker){
+    return null;
+  }
 
   return (
     <div className="relative bg-lightblue py-2 pl-6 pr-10 rounded-2xl flex flex-col gap-y-3">

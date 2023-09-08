@@ -67,6 +67,7 @@ interface GroomingData {
   updatedAt: string;
   metrics: Metric[];
   isGameMaster: boolean;
+  isScrumPoker: boolean;
   currentTaskNumber: number;
 }
 

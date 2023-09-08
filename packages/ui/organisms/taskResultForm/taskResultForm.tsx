@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useGrooming, useSocket } from 'contexts';
 import { GroomingTaskCard } from '../groomingTaskCard';
 import { Button, Input, Typography } from '../../atoms';
-import { Metric } from '../../interfaces';
 import { IconReportAnalytics } from '@tabler/icons-react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -89,6 +88,10 @@ export const TaskResultForm = () => {
     });
   };
 
+  const handleResetEstimates = () => {
+    socket?.emit('resetEstimates');
+  }
+
   useEffect(() => {
     if (taskResult.averages) {
       Object.keys(taskResult.averages).forEach((key) => {
@@ -97,7 +100,13 @@ export const TaskResultForm = () => {
     }
   }, [taskResult.averages, setValue]);
 
-  if (!isGameStarted || taskResult.currentTaskNumber !== currentTaskNumber || isEditMetricPointClicked) {
+  if (!isGameStarted || taskResult.currentTaskNumber !== currentTaskNumber) {
+    if (!groomingData.isScrumPoker || !taskResult.averages) {
+      return null;
+    }
+  }
+
+  if(isEditMetricPointClicked){
     return null;
   }
 
@@ -139,7 +148,7 @@ export const TaskResultForm = () => {
               <Controller
                 name={metric.name}
                 control={control}
-                defaultValue={taskResult.averages[metric.name]}
+                defaultValue={taskResult?.averages ? taskResult?.averages[metric.name] : 'Error while fetching metrics'}
                 render={({ field }) => (
                   <Input
                     name={metric.name}
@@ -156,9 +165,16 @@ export const TaskResultForm = () => {
           ))}
         </ul>
         {groomingData.isGameMaster && (
-          <Button variant="primary" className="p-2 mt-1" type="submit">
-            Apply
-          </Button>
+          <div className="w-full flex gap-x-3">
+            {groomingData.isScrumPoker && (
+              <Button variant="secondary" className="p-2 mt-1" fluid onClick={handleResetEstimates}>
+                Reset Estimates
+              </Button>
+            )}
+            <Button variant="primary" className="p-2 mt-1" type="submit" fluid>
+              Apply
+            </Button>
+          </div>
         )}
       </form>
     </>

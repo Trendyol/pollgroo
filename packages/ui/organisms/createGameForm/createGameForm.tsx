@@ -117,7 +117,8 @@ export const CreateGameForm = () => {
     });
     const gameTypeOptions = [
       {id: "1", value: "StoryPoint only"},
-      {id: "2", value: "Prioritization Matrice"}
+      {id: "2", value: "Prioritization Matrice"},
+      {id: "3", value: "Scrum Poker"}
     ]
     return (
       <>

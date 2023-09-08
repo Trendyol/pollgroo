@@ -64,7 +64,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
 
   const onSubmit = (data: any) => {
     socket?.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
-    localStorage.setItem('userVote', JSON.stringify({ votes: getValues(), taskId: currentTask._id }));
+    localStorage.setItem('userVote', JSON.stringify({ votes: getValues(), taskId: currentTask?._id }));
     setToasterContent({
       show: true,
       variant: 'success',
@@ -75,7 +75,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
         groomingId: groomingData._id,
         metrics: groomingData.metrics,
         currentTaskNumber,
-        taskId: currentTask._id,
+        taskId: currentTask?._id,
       });
     }
   };
@@ -105,9 +105,13 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
   }, [lastScores, getUserVoteFromLocalStorage]);
 
   if (!isGameStarted || taskResult.currentTaskNumber === currentTaskNumber) {
-    if (!isEditMetricPointClicked || viewOnlyMode) {
+    if (!groomingData.isScrumPoker && !isEditMetricPointClicked || taskResult.averages && !isEditMetricPointClicked) {
       return null;
     }
+  }
+
+  if (groomingData.isScrumPoker && taskResult.averages && !isEditMetricPointClicked || viewOnlyMode) {
+    return null;
   }
 
   return (

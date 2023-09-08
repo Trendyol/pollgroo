@@ -14,6 +14,10 @@ const GameSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isScrumPoker: {
+      type: Boolean,
+      default: false,
+    },
     tasks: [
       {
         detail: { type: Schema.Types.ObjectId, ref: 'Task' },
