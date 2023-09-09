@@ -123,7 +123,7 @@ io.on('connection', (socket) => {
   }
 
   // If user already connected, just add socket to his / her object.
-  if (connectedUsers[user.id]) {
+  if (connectedUsers[user.id] && connectedUsers[user.id].groomingId === groomingId) {
     connectedUsers[user.id].socketIds.push(socket.id);
   } else {
     // If new user create necessary data.
@@ -156,7 +156,9 @@ io.on('connection', (socket) => {
 
     const voter = groomings[groomingId]?.find((user) => user.id === userId);
     const voterIndex = groomings[groomingId]?.findIndex((user) => user.id === userId);
-    voter.formData = formData;
+    if(voter){
+      voter.formData = formData;
+    }
     groomings[groomingId].splice(voterIndex, 1, voter);
 
     io.to(groomingId).emit('userVote', groomings[groomingId]);

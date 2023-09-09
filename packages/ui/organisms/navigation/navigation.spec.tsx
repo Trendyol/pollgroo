@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import * as nextRouter from 'next/router';
 import { Navigation } from './navigation';
-import { NAVIGATION_ITEMS } from './constants';
+import { NAVIGATION_ITEMS } from './navigationItems';
 
 describe('<Navigation /> specs', () => {
   let logoUrl: string;

@@ -21,7 +21,7 @@ export default function Team({ data }: IProps) {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <TeamContextProvider data={data}>
-        <TeamPage logoUrl="/logo/pollgroo3.svg" />
+        <TeamPage logoUrl="/logo/pollgroo3.svg" iconOnlyLogo='/logo/pollgroo-icon-only.svg' />
       </TeamContextProvider>
     </>
   );

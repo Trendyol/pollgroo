@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Typography } from '../../atoms';
+import { Button } from '../../atoms';
 import translate from 'translations';
 import { ProfileCirclesBox } from '../profileCirclesBox';
 import { useGrooming, useSocket } from 'contexts';
-import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import classNames from 'classnames';
+import { useApp } from 'contexts';
 
 interface IProps {
   visible: boolean;
@@ -19,13 +19,12 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
     groomingData,
     currentTaskNumber,
     tasks,
-    taskResult,
-    setViewOnlyMode,
-    viewOnlyMode
+    taskResult
   } = useGrooming();
-  const currentTask = tasks[currentTaskNumber];
+  const currentTask = tasks && tasks[currentTaskNumber];
   const socket = useSocket();
   const isShowButtonDisabled = taskResult.currentTaskNumber === currentTaskNumber;
+  const { isReducedNavbar } = useApp();
 
   if (!visible) {
     return null;
@@ -47,48 +46,51 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
     });
   };
 
-  const handleViewMode = () => {
-    setViewOnlyMode(!viewOnlyMode);
-  }
+  const handleResetEstimates = () => {
+    socket?.emit('resetEstimates');
+  };
+
+  const getButtons = () => {
+    if (!isGameStarted && !groomingData.isScrumPoker && groomingData.isGameMaster) {
+      return (
+        <Button variant="primary" className="px-10 py-3 mx-auto w-48" onClick={handleGroomingStart}>
+          {translate('START')}
+        </Button>
+      );
+    }
+    if (groomingData.isGameMaster && (isGameStarted || groomingData.isScrumPoker)) {
+      return (
+        <div className="flex items-center gap-x-3 ml-auto">
+          {groomingData.isScrumPoker && (
+            <Button variant="secondary" className="px-10 py-3 hover:bg-extralightgray" onClick={handleResetEstimates}>
+              Reset Estimates
+            </Button>
+          )}
+          <Button
+            variant="primary"
+            className={`px-10 py-3 ${isShowButtonDisabled ? 'opacity-25' : ''}`}
+            onClick={handleShowTaskResult}
+            disabled={isShowButtonDisabled}
+          >
+            {translate('SHOW')}
+          </Button>
+        </div>
+      );
+    }
+  };
 
   return (
     <>
-      <div className="fixed bottom-0 bg-white w-full shadow-2xl lg:pr-72 z-10">
-        <div className="p-7 h-20 flex justify-between items-center lg:justify-end lg:gap-x-5">
-          <div className="flex items-center gap-x-5">
-            <button
-              className={classNames('border rounded-lg px-3 py-2 flex items-center gap-x-3', {
-                'border-lightgray': !viewOnlyMode,
-                'hover:bg-extralightgray': !viewOnlyMode,
-                'border-green': viewOnlyMode,
-                'hover:bg-lightgreen': viewOnlyMode,
-                'hover:text-white': viewOnlyMode,
-                'text-green': viewOnlyMode,
-                'text-gray': !viewOnlyMode
-              })}
-              onClick={handleViewMode}
-            >
-              <Typography element="p" size="base" className="sm: hidden lg:block">
-                {!viewOnlyMode ? translate('VIEW_ONLY_MODE') : translate("VOTER_MODE")}
-              </Typography>
-              {!viewOnlyMode ? <IconEyeOff /> : <IconEye /> }
-            </button>
+      <div
+        className={classNames('fixed bottom-0 bg-white w-full shadow-2xl lg:pr-72 z-10', {
+          'lg:pr-24': isReducedNavbar,
+        })}
+      >
+        <div className="p-7 h-20 flex justify-between items-center lg:gap-x-5">
+          <div className='absolute'>
             <ProfileCirclesBox badgeMembers={participants} totalMembersNumber={participants.length} />
           </div>
-          {!isGameStarted && !groomingData.isScrumPoker ? (
-            <Button variant="primary" className="px-10 py-3" onClick={handleGroomingStart}>
-              {translate('START')}
-            </Button>
-          ) : (
-            <Button
-              variant="primary"
-              className={`px-10 py-3 ${isShowButtonDisabled ? 'opacity-25' : ''}`}
-              onClick={handleShowTaskResult}
-              disabled={isShowButtonDisabled}
-            >
-              {translate('SHOW')}
-            </Button>
-          )}
+          {getButtons()}
         </div>
       </div>
       <div className="h-20 mt-5"></div>

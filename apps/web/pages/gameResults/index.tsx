@@ -16,7 +16,7 @@ export default function GameResults({ data, errorMessage }: IProps) {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <GameResultsContextProvider data={data}>
-        <GameResultsPage logoUrl="/logo/pollgroo3.svg" />
+        <GameResultsPage logoUrl="/logo/pollgroo3.svg" iconOnlyLogo='/logo/pollgroo-icon-only.svg' />
       </GameResultsContextProvider>
     </>
   );

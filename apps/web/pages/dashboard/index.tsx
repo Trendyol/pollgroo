@@ -17,7 +17,7 @@ export default function Dashboard({ data }: IProps) {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <DashboardContextProvider gameCardData={data}>
-        <DashboardPage logoUrl="/logo/pollgroo3.svg" />
+        <DashboardPage logoUrl="/logo/pollgroo3.svg" iconOnlyLogo='/logo/pollgroo-icon-only.svg' />
       </DashboardContextProvider>
     </>
   );

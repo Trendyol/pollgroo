@@ -37,7 +37,7 @@ export default function GroomingResult() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <GroomingResultPage logoUrl="/logo/pollgroo3.svg" groomingDetail={finishedGroomingDetail} />
+      <GroomingResultPage logoUrl="/logo/pollgroo3.svg" iconOnlyLogo='/logo/pollgroo-icon-only.svg' groomingDetail={finishedGroomingDetail} />
       <Loader active={showLoader} />
     </>
   );

@@ -32,7 +32,7 @@ export default function Grooming({ data }: IProps) {
       <GroomingContextProvider data={data}>
         {extendedSession?.user.id && (
           <SocketProvider data={{user: extendedSession.user, groomingId: data._id}}>
-            <GroomingPage logoUrl="/logo/pollgroo3.svg" />
+            <GroomingPage logoUrl="/logo/pollgroo3.svg" iconOnlyLogo='/logo/pollgroo-icon-only.svg' />
           </SocketProvider>
         )}
       </GroomingContextProvider>

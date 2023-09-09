@@ -9,9 +9,10 @@ import { GameResultCard } from '../../organisms';
 export interface IProps {
   logoUrl: string;
   groomingDetail: GroomingResultData;
+  iconOnlyLogo: string;
 }
 
-export const GroomingResultPage = ({ logoUrl, groomingDetail }: IProps) => {
+export const GroomingResultPage = ({ logoUrl, groomingDetail, iconOnlyLogo }: IProps) => {
   const renderPageContents = () => {
     if (!Object.keys(groomingDetail).length) {
       return null;
@@ -45,7 +46,7 @@ export const GroomingResultPage = ({ logoUrl, groomingDetail }: IProps) => {
     );
   };
   return (
-    <NavigationLayout logoUrl={logoUrl} subNavigationText={groomingDetail?.title || 'loading..'}>
+    <NavigationLayout logoUrl={logoUrl} iconOnlyLogo={iconOnlyLogo} subNavigationText={groomingDetail?.title || 'loading..'}>
       {renderPageContents()}
     </NavigationLayout>
   );

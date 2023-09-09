@@ -7,15 +7,16 @@ interface IProps {
   logoUrl: string;
   subNavigationText: string;
   children: ReactNode;
+  iconOnlyLogo: string;
 }
 
-export const NavigationLayout = ({ logoUrl, subNavigationText, children }: IProps) => {
+export const NavigationLayout = ({ logoUrl, subNavigationText, children, iconOnlyLogo }: IProps) => {
   const { toasterContent, setToasterContent } = useApp();
 
   return (
     <div className="flex flex-col lg:flex-row">
       <div>
-        <Navigation logoUrl={logoUrl} />
+        <Navigation logoUrl={logoUrl} iconOnlyLogo={iconOnlyLogo} />
       </div>
 
       <main className="w-full">

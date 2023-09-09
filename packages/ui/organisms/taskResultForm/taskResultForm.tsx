@@ -22,11 +22,11 @@ export const TaskResultForm = () => {
     updateGroomingTaskScore,
     isEditMetricPointClicked,
   } = useGrooming();
-  const currentTask = tasks[currentTaskNumber]?.detail;
+  const currentTask = tasks && tasks[currentTaskNumber]?.detail;
   const socket = useSocket();
 
   const validationSchema = yup.object().shape({
-    ...groomingData.metrics.reduce((fields: { [key: string]: yup.NumberSchema }, metric) => {
+    ...groomingData.metrics?.reduce((fields: { [key: string]: yup.NumberSchema }, metric) => {
       fields[metric.name] = yup
         .number()
         .min(0, 'Minimum value you can enter is 0')
@@ -88,10 +88,6 @@ export const TaskResultForm = () => {
     });
   };
 
-  const handleResetEstimates = () => {
-    socket?.emit('resetEstimates');
-  }
-
   useEffect(() => {
     if (taskResult.averages) {
       Object.keys(taskResult.averages).forEach((key) => {
@@ -106,7 +102,7 @@ export const TaskResultForm = () => {
     }
   }
 
-  if(isEditMetricPointClicked){
+  if (isEditMetricPointClicked) {
     return null;
   }
 
@@ -120,6 +116,7 @@ export const TaskResultForm = () => {
         gameId={currentTask?.gameId}
         order={currentTaskNumber + 1}
         totalTaskNumber={tasks.length}
+        className='w-1/2 mx-auto'
         disableEdit
       />
       <div className="flex flex-col gap-y-5 items-center justify-center">
@@ -141,7 +138,7 @@ export const TaskResultForm = () => {
       <form className="flex flex-col" onSubmit={handleSubmit(submitHandler)}>
         <ul>
           {groomingData.metrics.map((metric) => (
-            <li key={metric._id} className="flex justify-between lg:grid items-center lg:grid-cols-2 mb-6">
+            <li key={metric._id} className="flex justify-between items-center lg:flex-col lg:gap-y-2 lg:w-1/2 lg:mx-auto mb-6">
               <Typography element="label" color="primary" weight="bold" size="xxs">
                 {metric.title}
               </Typography>
@@ -166,14 +163,11 @@ export const TaskResultForm = () => {
         </ul>
         {groomingData.isGameMaster && (
           <div className="w-full flex gap-x-3">
-            {groomingData.isScrumPoker && (
-              <Button variant="secondary" className="p-2 mt-1" fluid onClick={handleResetEstimates}>
-                Reset Estimates
+            {!groomingData.isScrumPoker && (
+              <Button variant="primary" className="p-2 mt-1" type="submit" fluid>
+                Apply
               </Button>
             )}
-            <Button variant="primary" className="p-2 mt-1" type="submit" fluid>
-              Apply
-            </Button>
           </div>
         )}
       </form>

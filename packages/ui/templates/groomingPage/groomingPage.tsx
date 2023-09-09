@@ -19,13 +19,15 @@ import { useSession } from 'next-auth/react';
 import { Button, Typography } from '../../atoms';
 import { useRouter } from 'next/router';
 import translate from 'translations';
-import { IconChevronLeft, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
-import axios from "axios";
+import { IconChevronLeft, IconEye, IconEyeOff, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
+import axios from 'axios';
+import classNames from 'classnames';
 export interface IProps {
   logoUrl: string;
+  iconOnlyLogo: string;
 }
 
-export const GroomingPage = ({ logoUrl }: IProps) => {
+export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
   const [showNextTaskErrorPopup, setShowNextTaskErrorPopup] = useState(false);
   const [showSettingsActionBox, setShowSettingsActionBox] = React.useState(false);
   const router = useRouter();
@@ -44,14 +46,16 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     taskResult,
     setIsEditMetricPointClicked,
     isEditMetricPointClicked,
-    removeGroomingTask
+    removeGroomingTask,
+    setViewOnlyMode,
+    viewOnlyMode,
   } = useGrooming();
   const { showLoader, setShowLoader } = useApp();
   const socket = useSocket();
   const { data: session } = useSession();
   const extendedSession = session as ExtendedSession;
-  const isLastQuestion = tasks.length - 1 === currentTaskNumber;
-  const currentTask = tasks[currentTaskNumber];
+  const isLastQuestion = tasks?.length - 1 === currentTaskNumber;
+  const currentTask = tasks && tasks[currentTaskNumber];
 
   const handleUserVote = useCallback(
     (data: Participant) => {
@@ -104,12 +108,15 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     router.push(`/grooming/${groomingData._id}/result`);
   }, [router, groomingData._id]);
 
-  const handleResetEstimates = useCallback((data: any) => {
-    localStorage.removeItem('taskResult');
-    localStorage.removeItem('userVote');
-    setTaskResult({});
-    setParticipants(data);
-  },[setParticipants, setTaskResult])
+  const handleResetEstimates = useCallback(
+    (data: any) => {
+      localStorage.removeItem('taskResult');
+      localStorage.removeItem('userVote');
+      setTaskResult({});
+      setParticipants(data);
+    },
+    [setParticipants, setTaskResult]
+  );
 
   useEffect(() => {
     if (groomingData.isFinished) {
@@ -129,6 +136,9 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     if (userVote) {
       const parsedUserVote = JSON.parse(userVote);
       if (parsedUserVote.taskId === currentTask?.detail._id) {
+        if(!parsedUserVote.taskId){
+          return;
+        }
         socket?.emit('userVote', {
           groomingId: groomingData._id,
           formData: JSON.parse(userVote).votes,
@@ -165,7 +175,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     handleTaskSelection,
     handleFinishGroomingRedirection,
     currentTask?.detail._id,
-    handleResetEstimates
+    handleResetEstimates,
   ]);
 
   useEffect(() => {
@@ -174,6 +184,9 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       const parsedTaskResult = JSON.parse(storedTaskResult);
       if (parsedTaskResult.taskId === currentTask?.detail._id) {
         setTaskResult(JSON.parse(storedTaskResult));
+      }
+      if(!parsedTaskResult.taskId){
+        setTaskResult({});
       }
     }
   }, [setTaskResult, currentTask?.detail._id]);
@@ -208,7 +221,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       router.push(`/grooming/${groomingData._id}/result`);
       socket?.emit('finishGrooming', groomingData._id);
     });
-  }
+  };
 
   const handleBackToTaskResultClick = () => {
     setIsEditMetricPointClicked(false);
@@ -227,13 +240,17 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
     setShowLoader(true);
     try {
       const result = await axios.delete(`/api/games/${groomingData._id}`);
-      if(result.data.isSuccess){
-        router.push("/games");
+      if (result.data.isSuccess) {
+        router.push('/games');
       }
       setShowLoader(false);
-    } catch(e) {
+    } catch (e) {
       setShowLoader(false);
     }
+  };
+
+  const handleViewMode = () => {
+    setViewOnlyMode(!viewOnlyMode);
   };
 
   if (groomingData.isFinished) {
@@ -241,9 +258,9 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
   }
 
   return (
-    <NavigationLayout logoUrl={logoUrl} subNavigationText={groomingData.title}>
+    <NavigationLayout logoUrl={logoUrl} iconOnlyLogo={iconOnlyLogo} subNavigationText={groomingData.title}>
       <div className="py-5 px-5 flex flex-col gap-y-5 lg:pt-10 lg:gap-y-10 lg:px-20">
-       <IconSettings className="ml-auto text-gray cursor-pointer" onClick={handleSettingsClick} />
+        <IconSettings className="ml-auto text-gray cursor-pointer" onClick={handleSettingsClick} />
         {isEditMetricPointClicked && (
           <Button variant="blackText" onClick={handleBackToTaskResultClick} className="text-left">
             <div className="flex gap-x-2">
@@ -290,7 +307,7 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
       <StickyGroomingBottomBox visible={groomingData.isGameMaster} />
       <Loader active={showLoader} />
       {showSettingsActionBox && (
-        <div className="absolute w-32 z-10 top-36 right-32 bg-white border border-extralightgray rounded-md">
+        <div className="absolute w-48 z-10 top-36 right-32 bg-white border border-extralightgray rounded-md">
           <IconX className="w-4 h-4 ml-auto m-1 cursor-pointer text-gray" onClick={handleCloseSettingsClick} />
           <ul className="border-t border-extralightgray">
             <li
@@ -301,6 +318,22 @@ export const GroomingPage = ({ logoUrl }: IProps) => {
               <Typography element="p" size="xxs" color="silver">
                 {translate('DELETE_GAME')}
               </Typography>
+            </li>
+            <li className="flex items-center gap-x-2 p-2 cursor-pointer hover:bg-extralightgray">
+              <button
+                className={classNames('flex items-center gap-x-3', {
+                  'border-lightgray': !viewOnlyMode,
+                  'hover:bg-extralightgray': !viewOnlyMode,
+                  'text-green': viewOnlyMode,
+                  'text-silver': !viewOnlyMode,
+                })}
+                onClick={handleViewMode}
+              >
+                {!viewOnlyMode ? <IconEyeOff className="w-4 h-4" /> : <IconEye className="w-4 h-4" />}
+                <Typography element="p" size="xxs" className="sm: hidden lg:block">
+                  {!viewOnlyMode ? translate('VIEW_ONLY_MODE') : translate('VOTER_MODE')}
+                </Typography>
+              </button>
             </li>
           </ul>
         </div>

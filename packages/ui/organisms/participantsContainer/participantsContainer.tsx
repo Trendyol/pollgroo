@@ -6,7 +6,7 @@ import { ProfileCircle, Loader } from '../../molecules';
 import translate from 'translations';
 import { MetricsFilter } from '../metricsFilter';
 import { METRIC_POINT_BG_COLORS, METRIC_POINT_COLOR_TYPES, METRIC_POINT_TEXT_COLORS } from './constants';
-import { IconEye, IconPencil } from '@tabler/icons-react';
+import { IconEye, IconPencil, IconHourglass, IconChecks } from '@tabler/icons-react';
 
 interface IProps {
   userId: string;
@@ -23,10 +23,10 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
     setIsEditMetricPointClicked,
     isEditMetricPointClicked,
     setTaskResult,
-    viewOnlyMode
+    viewOnlyMode,
   } = useGrooming();
   const { showLoader, setShowLoader } = useApp();
-  const [metric, setMetric] = useState(groomingData.metrics[0].name);
+  const [metric, setMetric] = useState(groomingData.metrics && groomingData.metrics[0].name);
   const loggedInUserFirstSortedParticipants = React.useMemo(() => {
     return participants?.sort((a, b) => (a.id === userId ? -1 : b.id === userId ? 1 : 0));
   }, [participants, userId]);
@@ -69,10 +69,6 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
     };
   }, [metric, setShowLoader]);
 
-  if (!participants) {
-    return null;
-  }
-
   const metricPointColorHandler = (participantPoint: number, pointColorType: METRIC_POINT_COLOR_TYPES) => {
     switch (pointColorType) {
       case METRIC_POINT_COLOR_TYPES.BG:
@@ -90,9 +86,13 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
     });
   };
 
+  if (!participants) {
+    return null;
+  }
+
   return (
-    <>
-      <Typography element="h5" color="black" size="md" weight="semibold">
+    <div className='w-1/2 mx-auto'>
+      <Typography element="h5" color="black" size="md" weight="semibold" className='mb-3'>
         {translate('PARTICIPANTS')}
       </Typography>
       <Loader active={showLoader} />
@@ -103,71 +103,90 @@ export const ParticipantsContainer = ({ userId }: IProps) => {
         visible={isGameStarted && currentTaskNumber === taskResult.currentTaskNumber}
       />
       <ul className="flex flex-col">
-        {loggedInUserFirstSortedParticipants?.map((participant: Participant) => (
-          <li
-            key={participant.id}
-            className="flex justify-between items-center border-b-2 border-bordergray last:border-b-0 py-2"
-          >
-            <div className="flex items-center gap-x-3">
-              <ProfileCircle
-                profileCircleBackgroundColor={participant.profileCircleBackgroundColor}
-                profileCircleText={participant.profileCircleText}
-                profileCircleTextColor={participant.profileCircleTextColor}
-                image={participant.image}
-              />
-              <Typography className="flex gap-x-2 items-center" element="p" color="black" size="xs" weight="medium">
-                {participant.fullname}
-                {participant.id === userId && (
-                  <Typography element="span" color="gray" size="xs">
-                    {translate('YOU')}
-                  </Typography>
-                )}
-              </Typography>
-            </div>
-            <div className="flex gap-x-2">
-              {!isEditMetricPointClicked &&
-                participant.id === userId &&
-                taskResult.currentTaskNumber === currentTaskNumber && !viewOnlyMode && (
-                  <IconPencil className="text-gray lg:hover:cursor-pointer" onClick={handleEditPointClick} />
-                )}
-              {!!Number(participant.formData[metric]) &&
-                (isGameStarted || groomingData.isScrumPoker) &&
-                taskResult.currentTaskNumber === currentTaskNumber && (
-                  <div
-                    className={`${metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.BG)} ${
-                      Number(participant.formData[metric]) !== 3 ? 'bg-opacity-20' : ''
-                    } rounded-full h-7 w-7 flex items-center justify-center`}
-                  >
-                    <Typography
-                      element="span"
-                      className={metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.TEXT)}
-                      size="xs"
-                      weight="bold"
-                    >
-                      {participant.formData[metric]}
+        {loggedInUserFirstSortedParticipants?.map((participant: Participant) => {
+          const votedStatusCondition =
+            (!!participant.formData[metric] || Number(participant.formData[metric]) === 0) &&
+            (isGameStarted || groomingData.isScrumPoker) &&
+            taskResult.currentTaskNumber !== currentTaskNumber;
+          const waitingStatusCondition =
+            !participant.formData[metric] &&
+            Number(participant.formData[metric]) !== 0 &&
+            (isGameStarted || groomingData.isScrumPoker) &&
+            taskResult.currentTaskNumber !== currentTaskNumber;
+          const undecidedVoteResultCondition =
+            Number(participant.formData[metric]) === 0 &&
+            (isGameStarted || groomingData.isScrumPoker) &&
+            taskResult.currentTaskNumber === currentTaskNumber;
+          const unVotedVoteStatusResultCondition =
+            participant.formData[metric] === undefined &&
+            (isGameStarted || groomingData.isScrumPoker) &&
+            taskResult.currentTaskNumber === currentTaskNumber;
+          return (
+            <li
+              key={participant.id}
+              className="flex justify-between items-center border-b-2 border-bordergray last:border-b-0 py-2"
+            >
+              <div className="flex items-center gap-x-3">
+                <ProfileCircle
+                  profileCircleBackgroundColor={participant.profileCircleBackgroundColor}
+                  profileCircleText={participant.profileCircleText}
+                  profileCircleTextColor={participant.profileCircleTextColor}
+                  image={participant.image}
+                />
+                <Typography className="flex gap-x-2 items-center" element="p" color="black" size="xs" weight="medium">
+                  {participant.fullname}
+                  {participant.id === userId && (
+                    <Typography element="span" color="gray" size="xs">
+                      {translate('YOU')}
                     </Typography>
+                  )}
+                </Typography>
+              </div>
+              <div className="flex gap-x-2">
+                {!isEditMetricPointClicked &&
+                  participant.id === userId &&
+                  taskResult.currentTaskNumber === currentTaskNumber &&
+                  !viewOnlyMode && (
+                    <IconPencil className="text-gray lg:hover:cursor-pointer" onClick={handleEditPointClick} />
+                  )}
+                {!!Number(participant.formData[metric]) &&
+                  (isGameStarted || groomingData.isScrumPoker) &&
+                  taskResult.currentTaskNumber === currentTaskNumber && (
+                    <div
+                      className={`${metricPointColorHandler(
+                        participant.formData[metric],
+                        METRIC_POINT_COLOR_TYPES.BG
+                      )} ${
+                        Number(participant.formData[metric]) !== 3 ? 'bg-opacity-20' : ''
+                      } rounded-full h-7 w-7 flex items-center justify-center`}
+                    >
+                      <Typography
+                        element="span"
+                        className={metricPointColorHandler(participant.formData[metric], METRIC_POINT_COLOR_TYPES.TEXT)}
+                        size="xs"
+                        weight="bold"
+                      >
+                        {participant.formData[metric]}
+                      </Typography>
+                    </div>
+                  )}
+                {votedStatusCondition && <div className="text-green"><IconChecks /></div>}
+                {waitingStatusCondition && (
+                  <div className="text-gray">
+                    <IconHourglass />
                   </div>
                 )}
-              {!!participant.formData[metric] &&
-                (isGameStarted || groomingData.isScrumPoker) &&
-                taskResult.currentTaskNumber !== currentTaskNumber && <div className="text-gray">voted</div>}
-              {!participant.formData[metric] && (isGameStarted || groomingData.isScrumPoker) && taskResult.currentTaskNumber !== currentTaskNumber && (
-                <div className="text-gray">waiting..</div>
-              )}
-              {Number(participant.formData[metric]) === 0 &&
-                isGameStarted &&
-                taskResult.currentTaskNumber === currentTaskNumber && <div className="text-gray">🤔</div>}
-              {participant.formData[metric] === undefined &&
-                (isGameStarted || groomingData.isScrumPoker) &&
-                taskResult.currentTaskNumber === currentTaskNumber && (
+                {undecidedVoteResultCondition && <div className="text-gray">🤔</div>}
+                {unVotedVoteStatusResultCondition && (
                   <div className="text-gray">
                     <IconEye />
                   </div>
                 )}
-            </div>
-          </li>
-        ))}
+              </div>
+            </li>
+          );
+        })}
       </ul>
-    </>
+    </div>
   );
 };
