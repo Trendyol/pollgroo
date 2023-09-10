@@ -19,6 +19,7 @@ export interface IProps {
   name: string;
   currentTaskId: string;
   description?: string;
+  groomingId?: string;
 }
 
 export const LabeledScoringButtons = ({
@@ -32,14 +33,13 @@ export const LabeledScoringButtons = ({
   name,
   currentTaskId,
   description,
+  groomingId,
 }: IProps) => {
   const [isShowDescriptionPopup, setIsShowDescriptionPopup] = useState(false);
   const { isMobile } = useMobileDetect();
   useEffect(() => {
     const storedValue = getUserVoteFromLocalStorage();
-    if (storedValue || storedValue === 0) {
-      setValue(name, storedValue);
-    }
+    setValue(name, storedValue);
   }, [name, setValue]);
 
   const handleClick = (score: number) => {
@@ -49,54 +49,61 @@ export const LabeledScoringButtons = ({
     }
   };
 
-  const getUserVoteFromLocalStorage = () => {    
+  const getUserVoteFromLocalStorage = () => {
     const userVote = localStorage.getItem('userVote');
     if (userVote) {
       const parsedUserVote = JSON.parse(userVote);
-      if (parsedUserVote.taskId === currentTaskId)
+      if (parsedUserVote.taskId === currentTaskId && parsedUserVote.gameId === groomingId)
         return parsedUserVote.votes[name];
     }
     return null;
-  }
+  };
 
   const renderScoringButtons = () => {
     return scores.map((score) => {
       const buttonIsSelected = getValues()[name] === score;
-      let variant = "secondary";
+      let variant = 'secondary';
 
-      if (buttonIsSelected) { 
-        if (getUserVoteFromLocalStorage() === score && (!!getUserVoteFromLocalStorage() || getUserVoteFromLocalStorage() === 0)) {
-          variant = "success";
+      if (buttonIsSelected) {
+        if (
+          getUserVoteFromLocalStorage() === score &&
+          (!!getUserVoteFromLocalStorage() || getUserVoteFromLocalStorage() === 0)
+        ) {
+          variant = 'success';
         } else if (getUserVoteFromLocalStorage() !== score || !getUserVoteFromLocalStorage()) {
-          variant = "primary";
+          variant = 'primary';
         }
       }
 
       return (
-        <ScoringButton key={`${name}-scoring-button-${score}`} variant={variant as keyof typeof ScoringButtonVariant} onClick={() => handleClick(score)}>
-          {score === 0 ? "?" : score}
+        <ScoringButton
+          key={`${name}-scoring-button-${score}`}
+          variant={variant as keyof typeof ScoringButtonVariant}
+          onClick={() => handleClick(score)}
+        >
+          {score === 0 ? '?' : score}
         </ScoringButton>
-      )
+      );
     });
-  }
+  };
 
   const renderDescription = () => {
     if (!description) {
       return null;
     }
 
-    const icon = <span className="w-4 h-4 flex justify-center items-center bg-yellow/50 rounded-full pointer group-hover:bg-yellow lg:transition-all duration-300">
-      <IconAlertSmall className="text-white w-5" />
-    </span>;
+    const icon = (
+      <span className="w-4 h-4 flex justify-center items-center bg-yellow/50 rounded-full pointer group-hover:bg-yellow lg:transition-all duration-300">
+        <IconAlertSmall className="text-white w-5" />
+      </span>
+    );
 
     if (isMobile) {
       return (
         <>
           <a onClick={() => setIsShowDescriptionPopup(true)}>{icon}</a>
           <Popup title={label} show={isShowDescriptionPopup} onClose={() => setIsShowDescriptionPopup(false)}>
-            <div className="pt-2">
-              {description}
-            </div>
+            <div className="pt-2">{description}</div>
           </Popup>
         </>
       );
@@ -106,7 +113,7 @@ export const LabeledScoringButtons = ({
         {icon}
       </Tooltip>
     );
-  }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center gap-2.5">
@@ -116,9 +123,7 @@ export const LabeledScoringButtons = ({
         </Typography>
         {renderDescription()}
       </div>
-      <div className="flex flex-row gap-2.5">
-        {renderScoringButtons()}
-      </div>
+      <div className="flex flex-row gap-2.5">{renderScoringButtons()}</div>
       {error && (
         <Typography
           className="w-full py-1.5 text-center rounded-lg bg-lightred"

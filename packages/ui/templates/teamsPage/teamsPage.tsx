@@ -9,6 +9,7 @@ import { Loader } from '../../molecules';
 
 interface IProps {
   logoUrl: string;
+  iconOnlyLogo: string;
 }
 
 interface ExtendedTeamData extends TeamData {
@@ -16,7 +17,7 @@ interface ExtendedTeamData extends TeamData {
   badgeMembers: UserData[];
 }
 
-export const TeamsPage = ({ logoUrl }: IProps) => {
+export const TeamsPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
   const { teams, setShowCreateTeamModal } = useTeams();
   const { showLoader } = useApp();
 
@@ -25,7 +26,7 @@ export const TeamsPage = ({ logoUrl }: IProps) => {
   };
 
   return (
-    <NavigationLayout logoUrl={logoUrl} subNavigationText="Teams">
+    <NavigationLayout logoUrl={logoUrl} iconOnlyLogo={iconOnlyLogo} subNavigationText="Teams">
       <div className="px-6 py-10 lg:px-20">
         <Button className="ml-auto block" variant="text" onClick={handleCreateClick}>
           {translate('CREATE_PLUS')}

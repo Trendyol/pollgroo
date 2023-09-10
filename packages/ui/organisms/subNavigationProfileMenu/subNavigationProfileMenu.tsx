@@ -3,7 +3,6 @@ import { Typography } from '../../atoms';
 import { useSession, signOut } from 'next-auth/react';
 import { ExtendedSession } from '../../interfaces';
 import { ProfileCircle } from '../../molecules';
-import { IconLogout } from '@tabler/icons-react';
 
 export const SubNavigationProfileMenu = () => {
   const { data: session } = useSession();
@@ -26,7 +25,6 @@ export const SubNavigationProfileMenu = () => {
             profileCircleText={extendedSession.user.profileCircleText}
             image={extendedSession.user.image}
           />
-          <IconLogout className="text-silver cursor-pointer" onClick={() => signOut({ callbackUrl: '/login' })} />
         </div>
       </div>
     </>

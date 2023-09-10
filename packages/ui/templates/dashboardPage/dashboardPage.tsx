@@ -8,13 +8,14 @@ import translate from 'translations';
 
 interface IProps {
   logoUrl: string;
+  iconOnlyLogo: string;
 }
 
-export const DashboardPage = ({ logoUrl }: IProps) => {
+export const DashboardPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
   const { gameCardData } = useDashboard();
 
   return (
-    <NavigationLayout logoUrl={logoUrl} subNavigationText="Dashboard">
+    <NavigationLayout logoUrl={logoUrl} iconOnlyLogo={iconOnlyLogo} subNavigationText="Dashboard">
       <div className="px-6 pt-10 lg:px-20">
         {!!gameCardData.length ? (
           <div className="pt-5 flex flex-col gap-5 lg:pt-10 lg:grid lg:grid-cols-3">

@@ -15,7 +15,7 @@ export default function MyTeams({ data, errorMessage }: any) {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <TeamsContextProvider data={data}>
-        <MyTeamsPage logoUrl="/logo/pollgroo3.svg" />
+        <MyTeamsPage logoUrl="/logo/pollgroo3.svg" iconOnlyLogo='/logo/pollgroo-icon-only.svg' />
       </TeamsContextProvider>
     </>
   );

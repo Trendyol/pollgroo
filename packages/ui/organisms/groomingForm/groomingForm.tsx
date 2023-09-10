@@ -24,11 +24,11 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
     viewOnlyMode
   } = useGrooming();
   const { metrics } = groomingData;
-  const currentTask = tasks[currentTaskNumber]?.detail;
+  const currentTask = tasks && tasks[currentTaskNumber]?.detail;
   const socket = useSocket();
 
   const validationSchema = yup.object().shape({
-    ...metrics.reduce((fields: { [key: string]: yup.StringSchema }, metric) => {
+    ...metrics?.reduce((fields: { [key: string]: yup.StringSchema }, metric) => {
       fields[metric.name] = yup.string().required(`${metric.title} is required`);
       return fields;
     }, {}),
@@ -64,7 +64,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
 
   const onSubmit = (data: any) => {
     socket?.emit('userVote', { groomingId: groomingData._id, formData: data, userId });
-    localStorage.setItem('userVote', JSON.stringify({ votes: getValues(), taskId: currentTask?._id }));
+    localStorage.setItem('userVote', JSON.stringify({ votes: getValues(), taskId: currentTask?._id, gameId: groomingData._id }));
     setToasterContent({
       show: true,
       variant: 'success',
@@ -124,6 +124,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
         gameId={currentTask?.gameId}
         order={currentTaskNumber + 1}
         totalTaskNumber={tasks.length}
+        className='w-1/2 mx-auto'
         disableEdit
       />
       {!viewOnlyMode && (
@@ -145,12 +146,13 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
                   setValue={setValue}
                   triggerValidation={trigger}
                   currentTaskId={currentTask?._id}
+                  groomingId={groomingData._id}
                 />
               )}
             />
           ))}
           <div className="flex items-center gap-x-3">
-            <Button type="submit" variant="primary" className="h-10" disabled={isButtonDisabled} fluid>
+            <Button type="submit" variant="primary" className="h-10 w-96 mx-auto" disabled={isButtonDisabled}>
               {translate('VOTE')}
             </Button>
           </div>

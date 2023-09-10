@@ -6,15 +6,16 @@ import { Loader } from '../../molecules';
 
 interface IProps {
   logoUrl: string;
+  iconOnlyLogo: string;
 }
 
-export const TeamPage = ({ logoUrl }: IProps) => {
+export const TeamPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
   const [showMembersModal, setShowMembersModal] = useState(false);
   const { team } = useTeam();
   const { showLoader } = useApp();
 
   return (
-    <NavigationLayout logoUrl={logoUrl} subNavigationText={team.name}>
+    <NavigationLayout logoUrl={logoUrl} iconOnlyLogo={iconOnlyLogo} subNavigationText={team.name}>
       <div className="flex flex-col gap-y-5 px-6 pt-10 lg:px-20">
         <TeamInvitationBox />
         <TeamSettingsBox setShowMembersModal={setShowMembersModal} />

@@ -17,7 +17,7 @@ export const GroomingTasks = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
       <Typography element="h5" color="black" size="md" weight="semibold">
         {translate('GROOMING_TASKS')}
       </Typography>

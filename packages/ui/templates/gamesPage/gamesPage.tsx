@@ -9,9 +9,10 @@ import { Loader } from '../../molecules';
 
 export interface IProps {
   logoUrl: string;
+  iconOnlyLogo: string;
 }
 
-export const GamesPage = ({ logoUrl }: IProps) => {
+export const GamesPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
   const { gameCardData, setShowCreateGameModal } = useGame();
   const { showLoader } = useApp();
 
@@ -20,7 +21,7 @@ export const GamesPage = ({ logoUrl }: IProps) => {
   };
 
   return (
-    <NavigationLayout logoUrl={logoUrl} subNavigationText="Games">
+    <NavigationLayout logoUrl={logoUrl} iconOnlyLogo={iconOnlyLogo} subNavigationText="Games">
       <div className="px-6 pt-10 lg:px-20">
         <Button className="ml-auto block" variant="text" onClick={handleCreateClick}>
           {translate('CREATE_PLUS')}

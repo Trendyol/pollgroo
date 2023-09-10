@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useMemo, ReactNode, useState } from 'react';
 
 interface ToasterContent {
-  show: boolean,
-  variant: string,
-  text: string
+  show: boolean;
+  variant: string;
+  text: string;
 }
 
 type AppContextValuesType = {
@@ -11,16 +11,19 @@ type AppContextValuesType = {
   showLoader: boolean;
   setShowLoader: (value: boolean) => void;
   setToasterContent: (content: ToasterContent | undefined) => void;
+  isReducedNavbar: boolean;
+  setIsReducedNavbar: (value: boolean) => void;
 };
 
 const AppContext = createContext({} as AppContextValuesType);
 
 export const AppContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isReducedNavbar, setIsReducedNavbar] = React.useState(true);
   const [showLoader, setShowLoader] = useState(false);
   const [toasterContent, setToasterContent] = useState<ToasterContent | undefined>({
     show: false,
-    variant: "success",
-    text: ""
+    variant: 'success',
+    text: '',
   });
 
   const values = useMemo(
@@ -29,8 +32,10 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({ children
       showLoader,
       setShowLoader,
       setToasterContent,
+      setIsReducedNavbar,
+      isReducedNavbar,
     }),
-    [toasterContent, showLoader, setShowLoader, setToasterContent]
+    [toasterContent, showLoader, setShowLoader, setToasterContent, isReducedNavbar, setIsReducedNavbar]
   );
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };
