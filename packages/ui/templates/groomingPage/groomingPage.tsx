@@ -21,7 +21,7 @@ import { useSession } from 'next-auth/react';
 import { Button, Typography } from '../../atoms';
 import { useRouter } from 'next/router';
 import translate from 'translations';
-import { IconCheck, IconChevronLeft, IconCopy, IconEye, IconEyeOff, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
+import { IconCheck, IconChevronLeft, IconCopy, IconEye, IconEyeOff, IconTrash } from '@tabler/icons-react';
 import axios from 'axios';
 import classNames from 'classnames';
 export interface IProps {
@@ -33,6 +33,7 @@ export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
   const [showNextTaskErrorPopup, setShowNextTaskErrorPopup] = useState(false);
   const [showSettingsActionBox, setShowSettingsActionBox] = React.useState(false);
   const [isInviteLinkCopied, setIsInviteLinkCopied] = useState(false);
+  const [resetScrumPokerForm, setResetScrumPokerForm] = useState(0);
   const router = useRouter();
   const {
     groomingData,
@@ -51,7 +52,7 @@ export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
     isEditMetricPointClicked,
     removeGroomingTask,
     setViewOnlyMode,
-    viewOnlyMode,
+    viewOnlyMode
   } = useGrooming();
   const { showLoader, setShowLoader } = useApp();
   const socket = useSocket();
@@ -117,8 +118,10 @@ export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
       localStorage.removeItem('userVote');
       setTaskResult({});
       setParticipants(data);
+      setIsEditMetricPointClicked(false);
+      setResetScrumPokerForm((prev: number) => prev + 1);
     },
-    [setParticipants, setTaskResult]
+    [setParticipants, setTaskResult, setIsEditMetricPointClicked, setResetScrumPokerForm]
   );
 
   useEffect(() => {
@@ -311,7 +314,7 @@ export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
         <SelectGroomingTasks />
         <GroomingWaitingInfo />
         <GroomingTasks />
-        <GroomingForm userId={extendedSession?.user.id} />
+        <GroomingForm userId={extendedSession?.user.id} resetScrumPokerForm={resetScrumPokerForm} />
         <TaskResultForm />
         <ParticipantsContainer userId={extendedSession?.user.id} />
       </div>

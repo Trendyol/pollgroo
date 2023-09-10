@@ -8,7 +8,7 @@ import { Button } from '../../atoms';
 import { isDeepEqual, isObjectEmpty } from 'helpers';
 import translate from 'translations';
 
-export const GroomingForm = ({ userId }: { userId?: string }) => {
+export const GroomingForm = ({ userId, resetScrumPokerForm }: { resetScrumPokerForm: number; userId?: string;  }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const { setToasterContent } = useApp();
   const {
@@ -147,6 +147,7 @@ export const GroomingForm = ({ userId }: { userId?: string }) => {
                   triggerValidation={trigger}
                   currentTaskId={currentTask?._id}
                   groomingId={groomingData._id}
+                  resetScrumPokerForm={resetScrumPokerForm}
                 />
               )}
             />

@@ -20,6 +20,7 @@ export interface IProps {
   currentTaskId: string;
   description?: string;
   groomingId?: string;
+  resetScrumPokerForm: number;
 }
 
 export const LabeledScoringButtons = ({
@@ -34,13 +35,10 @@ export const LabeledScoringButtons = ({
   currentTaskId,
   description,
   groomingId,
+  resetScrumPokerForm
 }: IProps) => {
   const [isShowDescriptionPopup, setIsShowDescriptionPopup] = useState(false);
   const { isMobile } = useMobileDetect();
-  useEffect(() => {
-    const storedValue = getUserVoteFromLocalStorage();
-    setValue(name, storedValue);
-  }, [name, setValue]);
 
   const handleClick = (score: number) => {
     setValue(name, score);
@@ -114,6 +112,11 @@ export const LabeledScoringButtons = ({
       </Tooltip>
     );
   };
+
+  useEffect(() => {
+    const storedValue = getUserVoteFromLocalStorage();
+    setValue(name, storedValue);
+  }, [name, setValue, currentTaskId, resetScrumPokerForm]);
 
   return (
     <div className="flex flex-col justify-center items-center gap-2.5">
