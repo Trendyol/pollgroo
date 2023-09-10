@@ -36,3 +36,5 @@ export { TaskResultForm } from './taskResultForm';
 export { NextTaskErrorPopup } from './nextTaskErrorPopup';
 export { TeamInvitationBox } from './teamInvitationBox';
 export { TimeRemainingBox } from './timeRemainingBox';
+export { GroomingInfoBox } from './groomingInfoBox';
+export { ConnectionPopup } from './connectionPopup';

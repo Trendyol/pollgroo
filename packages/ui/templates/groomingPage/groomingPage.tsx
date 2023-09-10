@@ -11,15 +11,17 @@ import {
   ParticipantsContainer,
   TaskResultForm,
   NextTaskErrorPopup,
+  GroomingInfoBox,
+  ConnectionPopup
 } from '../../organisms';
-import { Loader } from '../../molecules';
+import { Loader, Popup } from '../../molecules';
 import { SelectGroomingTasks } from '../../organisms/selectGroomingTasks';
 import { ExtendedSession, Participant } from '../../interfaces';
 import { useSession } from 'next-auth/react';
 import { Button, Typography } from '../../atoms';
 import { useRouter } from 'next/router';
 import translate from 'translations';
-import { IconChevronLeft, IconEye, IconEyeOff, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
+import { IconCheck, IconChevronLeft, IconCopy, IconEye, IconEyeOff, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
 import axios from 'axios';
 import classNames from 'classnames';
 export interface IProps {
@@ -30,6 +32,7 @@ export interface IProps {
 export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
   const [showNextTaskErrorPopup, setShowNextTaskErrorPopup] = useState(false);
   const [showSettingsActionBox, setShowSettingsActionBox] = React.useState(false);
+  const [isInviteLinkCopied, setIsInviteLinkCopied] = useState(false);
   const router = useRouter();
   const {
     groomingData,
@@ -231,8 +234,23 @@ export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
     setShowSettingsActionBox(!showSettingsActionBox);
   };
 
-  const handleCloseSettingsClick = () => {
-    setShowSettingsActionBox(false);
+  const getInviteLink = () => {
+    let currentUrl: string = '';
+    if (typeof window !== 'undefined') {
+      currentUrl = window.location.href;
+    }
+    return currentUrl;
+  }
+
+  const handleCopyInviteLinkClick = () => {
+    navigator.clipboard
+      .writeText(getInviteLink())
+      .then(() => {
+        setIsInviteLinkCopied(true);
+      })
+      .catch((error) => {
+        console.error('Unable to copy text: ', error);
+      });
   };
 
   const handleDeleteGame = async () => {
@@ -249,7 +267,8 @@ export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
     }
   };
 
-  const handleViewMode = () => {
+  const handleViewMode = (event: any) => {
+    event.stopPropagation();
     setViewOnlyMode(!viewOnlyMode);
   };
 
@@ -260,7 +279,7 @@ export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
   return (
     <NavigationLayout logoUrl={logoUrl} iconOnlyLogo={iconOnlyLogo} subNavigationText={groomingData.title}>
       <div className="py-5 px-5 flex flex-col gap-y-5 lg:pt-10 lg:gap-y-10 lg:px-20">
-        <IconSettings className="ml-auto text-gray cursor-pointer" onClick={handleSettingsClick} />
+        <GroomingInfoBox />
         {isEditMetricPointClicked && (
           <Button variant="blackText" onClick={handleBackToTaskResultClick} className="text-left">
             <div className="flex gap-x-2">
@@ -304,40 +323,51 @@ export const GroomingPage = ({ logoUrl, iconOnlyLogo }: IProps) => {
         changeTask={changeTask}
         taskId={currentTask?.detail._id}
       />
-      <StickyGroomingBottomBox visible={groomingData.isGameMaster} />
+      <StickyGroomingBottomBox visible={groomingData.isGameMaster} handleSettingsClick={handleSettingsClick} />
       <Loader active={showLoader} />
-      {showSettingsActionBox && (
-        <div className="absolute w-48 z-10 top-36 right-32 bg-white border border-extralightgray rounded-md">
-          <IconX className="w-4 h-4 ml-auto m-1 cursor-pointer text-gray" onClick={handleCloseSettingsClick} />
-          <ul className="border-t border-extralightgray">
-            <li
-              className="flex items-center gap-x-2 p-2 cursor-pointer hover:bg-extralightgray"
-              onClick={handleDeleteGame}
+      <Popup show={showSettingsActionBox} onClose={handleSettingsClick} title="Settings">
+        <ul className="mt-5">
+          <li
+            className="flex items-center gap-x-2 py-2 cursor-pointer hover:bg-extralightgray border-b border-lightgray"
+            onClick={handleCopyInviteLinkClick}
+          >
+            {isInviteLinkCopied ? (
+              <IconCheck className=" text-xs w-4 h-4 text-green" />
+            ) : (
+              <IconCopy className=" text-xs w-4 h-4 text-silver" />
+            )}
+            <Typography element="p" size="xxs" color="silver" className="break-all">
+              {getInviteLink()}
+            </Typography>
+          </li>
+          <li className="flex items-center gap-x-2 py-2 cursor-pointer hover:bg-extralightgray border-b border-lightgray">
+            <button
+              className={classNames('flex items-center gap-x-2 w-full', {
+                'border-lightgray': !viewOnlyMode,
+                'hover:bg-extralightgray': !viewOnlyMode,
+                'text-green': viewOnlyMode,
+                'text-silver': !viewOnlyMode,
+              })}
+              onClick={handleViewMode}
             >
-              <IconTrash className="text-red text-xs w-4 h-4" />
-              <Typography element="p" size="xxs" color="silver">
-                {translate('DELETE_GAME')}
+              {!viewOnlyMode ? <IconEyeOff className="w-4 h-4" /> : <IconEye className="w-4 h-4" />}
+              <Typography element="p" size="xxs" className="sm: hidden lg:block">
+                {!viewOnlyMode ? translate('VIEW_ONLY_MODE') : translate('VOTER_MODE')}
               </Typography>
-            </li>
-            <li className="flex items-center gap-x-2 p-2 cursor-pointer hover:bg-extralightgray">
-              <button
-                className={classNames('flex items-center gap-x-3', {
-                  'border-lightgray': !viewOnlyMode,
-                  'hover:bg-extralightgray': !viewOnlyMode,
-                  'text-green': viewOnlyMode,
-                  'text-silver': !viewOnlyMode,
-                })}
-                onClick={handleViewMode}
-              >
-                {!viewOnlyMode ? <IconEyeOff className="w-4 h-4" /> : <IconEye className="w-4 h-4" />}
-                <Typography element="p" size="xxs" className="sm: hidden lg:block">
-                  {!viewOnlyMode ? translate('VIEW_ONLY_MODE') : translate('VOTER_MODE')}
-                </Typography>
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+            </button>
+          </li>
+          <li
+            className="flex items-center gap-x-2 py-2 cursor-pointer hover:bg-extralightgray"
+            onClick={handleDeleteGame}
+          >
+            <IconTrash className="text-red text-xs w-4 h-4" />
+            <Typography element="p" size="xxs" color="silver">
+              {translate('DELETE_GAME')}
+            </Typography>
+          </li>
+        </ul>
+      </Popup>
+      <ConnectionPopup />
     </NavigationLayout>
   );
 };

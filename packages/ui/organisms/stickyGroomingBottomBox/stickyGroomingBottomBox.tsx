@@ -5,12 +5,14 @@ import { ProfileCirclesBox } from '../profileCirclesBox';
 import { useGrooming, useSocket } from 'contexts';
 import classNames from 'classnames';
 import { useApp } from 'contexts';
+import { IconSettings } from '@tabler/icons-react';
 
 interface IProps {
   visible: boolean;
+  handleSettingsClick: () => void;
 }
 
-export const StickyGroomingBottomBox = ({ visible }: IProps) => {
+export const StickyGroomingBottomBox = ({ visible, handleSettingsClick }: IProps) => {
   const {
     participants,
     startGrooming,
@@ -19,7 +21,7 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
     groomingData,
     currentTaskNumber,
     tasks,
-    taskResult
+    taskResult,
   } = useGrooming();
   const currentTask = tasks && tasks[currentTaskNumber];
   const socket = useSocket();
@@ -53,14 +55,18 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
   const getButtons = () => {
     if (!isGameStarted && !groomingData.isScrumPoker && groomingData.isGameMaster) {
       return (
-        <Button variant="primary" className="px-10 py-3 mx-auto w-48" onClick={handleGroomingStart}>
-          {translate('START')}
-        </Button>
+        <div className='flex items-center gap-x-3 mx-auto'>
+          <IconSettings className="text-gray cursor-pointer" onClick={handleSettingsClick} />
+          <Button variant="primary" className="px-10 py-3 w-48" onClick={handleGroomingStart}>
+            {translate('START')}
+          </Button>
+        </div>
       );
     }
     if (groomingData.isGameMaster && (isGameStarted || groomingData.isScrumPoker)) {
       return (
         <div className="flex items-center gap-x-3 ml-auto">
+          <IconSettings className="text-gray cursor-pointer" onClick={handleSettingsClick} />
           {groomingData.isScrumPoker && (
             <Button variant="secondary" className="px-10 py-3 hover:bg-extralightgray" onClick={handleResetEstimates}>
               Reset Estimates
@@ -87,7 +93,7 @@ export const StickyGroomingBottomBox = ({ visible }: IProps) => {
         })}
       >
         <div className="p-7 h-20 flex justify-between items-center lg:gap-x-5">
-          <div className='absolute'>
+          <div className="absolute">
             <ProfileCirclesBox badgeMembers={participants} totalMembersNumber={participants.length} />
           </div>
           {getButtons()}
