@@ -1,0 +1,1 @@
+export { GroomingInfoBox } from "./groomingInfoBox";

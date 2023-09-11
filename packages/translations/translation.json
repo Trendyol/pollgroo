@@ -64,6 +64,10 @@
     "VOTER_MODE": "Voter Mode",
     "SKIP_AND_FINISH_GAME": "Skip and Finish Game",
     "APPLY_CHANGES": "Apply The Changes",
-    "STAR": "Buy me a star 🤩"
+    "STAR": "Buy me a star 🤩",
+    "INVITE": "Invite Link",
+    "GAME_INVITE_POPUP_WARNING": "Only members of {0} can access this grooming !",
+    "GROOMING_SOCKET_CONNECTION_TEXT": "We were trying to establish your connection, but since we use a free service, waiting times for the first users of the day can be up to 1 minute. Thank you for choosing us!",
+    "GROOMING_SOCKET_CONNECTION_WARNING_TEXT": "If you encounter this warning in the ongoing game, that means something went wrong, please do not hesitate to refresh the page and give us a feedback."
   }
 }
