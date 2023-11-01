@@ -60,6 +60,7 @@ const Login = () => {
           className="absolute right-4 top-4 z-50"
           onClose={() => setToasterContent(undefined)}
           autoClose={2000}
+          variant={toasterContent.variant}
         />
       )}
       <Loader active={showLoader} />
