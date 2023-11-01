@@ -2,7 +2,7 @@ import React, { createContext, useContext, useMemo, ReactNode, useState } from '
 
 interface ToasterContent {
   show: boolean;
-  variant: string;
+  variant: 'success' | 'error' | 'warning';
   text: string;
 }
 
