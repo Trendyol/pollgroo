@@ -110,7 +110,7 @@ export const GroomingForm = ({ userId, resetScrumPokerForm }: { resetScrumPokerF
     }
   }
 
-  if (groomingData.isScrumPoker && taskResult.averages && !isEditMetricPointClicked || viewOnlyMode) {
+  if (groomingData.isScrumPoker && taskResult.averages && !isEditMetricPointClicked) {
     return null;
   }
 
